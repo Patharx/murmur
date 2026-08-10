@@ -1,0 +1,13 @@
+.DS_Store
+xcuserdata/
+*.xcuserstate
+build/
+DerivedData/
+.swiftpm/
+Secrets.xcconfig
+GoogleService-Info.plist
+proxy/.dev.vars
+proxy/node_modules/
+proxy/.wrangler/
+*.mobileprovision
+*.p8

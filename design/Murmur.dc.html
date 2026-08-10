@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/nocturne-a2bd1af9-dfc6-448c-9da8-a971d1c5ba71/styles.css">
+<script src="_ds/nocturne-a2bd1af9-dfc6-448c-9da8-a971d1c5ba71/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:#101220;font-family:"Inter",system-ui,sans-serif;color:#e9e9ed}
+a{color:#9184d9}a:hover{color:#b5abfc}
+@keyframes murPulse{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.7);opacity:0}100%{transform:scale(1.7);opacity:0}}
+@keyframes murFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes murSpin{to{transform:rotate(360deg)}}
+@keyframes murBreathe{0%,100%{transform:scale(1);opacity:.72}50%{transform:scale(1.07);opacity:1}}
+</style>
+</helmet>
+
+<section id="t3" style="padding:48px 56px 44px;border-bottom:1px solid rgba(233,233,237,.08)">
+  <div style="display:flex;align-items:baseline;gap:10px;margin:0 0 9px">
+    <a href="#t3" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#9184d9;color:#161826;border-radius:4px;text-decoration:none">3</a>
+    <span style="font:500 13px/1.2 Inter,system-ui;color:#e9e9ed">The first week, and why Ask stays one question long</span>
+  </div>
+  <div style="max-width:840px;font-size:13.5px;line-height:1.7;color:rgba(233,233,237,.62);margin-bottom:32px;text-wrap:pretty">
+    The <strong style="color:#e9e9ed;font-weight:500">Notebook age</strong> switcher above the phone in <a href="#1a">1a</a> is live — flip between day one, first week and four months in, and every screen changes. <a href="#3a">3a</a> is what the empty states say and why; <a href="#3b">3b</a> is the Ask question you asked about.
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start">
+
+    <div id="3a" style="display:flex;flex-direction:column;gap:11px;flex:none">
+      <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+        <a href="#3a" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">3a</a>
+        <span><strong style="color:#e9e9ed;font-weight:500">Day one is mostly absence.</strong> Dashed outlines, not cards. The app says what it's waiting for and then gets out of the way.</span>
+      </div>
+      <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;gap:30px">
+        <div style="width:250px;flex:none;display:flex;flex-direction:column;gap:11px">
+          <div style="border-radius:12px;border:1px dashed rgba(233,233,237,.16);padding:15px;display:flex;flex-direction:column;gap:7px">
+            <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.4)">Sunday</div>
+            <div style="font-size:14px;line-height:1.55;color:rgba(233,233,237,.66);text-wrap:pretty">On Sunday I'll read the week back to you. Until then this stays out of your way.</div>
+          </div>
+          <div style="border-radius:12px;border:1px dashed rgba(233,233,237,.16);padding:15px;font-size:13.5px;line-height:1.6;color:rgba(233,233,237,.55);text-wrap:pretty">Nothing yet. After a week or so I'll start noticing what you keep coming back to, and they'll appear here on their own.</div>
+          <div style="border-radius:12px;border:1px dashed rgba(233,233,237,.16);padding:15px;font-size:13.5px;line-height:1.6;color:rgba(233,233,237,.55);text-wrap:pretty">One note isn't much to ask questions of yet. Come back in a week — this gets useful somewhere around the fiftieth note.</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">The rules</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">Dashed, never solid.</strong> An empty state drawn as a filled card looks like a thing that failed to load. Drawn as an outline, it reads as a space reserved — which is the truth.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">Say when, not what.</strong> Every empty state names the moment it fills — Sunday, a week, the fiftieth note. "No data yet" tells you nothing; "come back in a week" is a promise you can hold the app to.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">Never ask for effort.</strong> No "add 5 notes to unlock", no checklist, no progress ring. The only thing that fills a notebook is living with it, and gamifying that is the fastest way back to being a work app.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">Day one is allowed to be quiet.</strong> Today shows one note and a headline — <em>"Your first note. That's the whole app, really."</em> Nothing else. The onboarding already promised it would stay out of the way; this is the app keeping that promise on the day it's easiest to break.</div>
+          <div style="margin-top:auto;font-size:12px;line-height:1.6;color:rgba(233,233,237,.4);text-wrap:pretty">The first Sunday letter is deliberately short and says so — "Four notes, which isn't many, so this will be short." Under-promising in week one is how you survive the comparison to week twenty.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="3b" style="display:flex;flex-direction:column;gap:11px;flex:none">
+      <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+        <a href="#3b" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">3b</a>
+        <span><strong style="color:#e9e9ed;font-weight:500">One question, one answer.</strong> What we have now already is this — the discipline is in what we refuse to add.</span>
+      </div>
+      <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;gap:22px">
+          <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+            <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#b5abfc">What we built</div>
+            <div style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;line-height:1.55;color:rgba(233,233,237,.65)">
+              <div>Ask a question · get an answer · see the notes it read</div>
+              <div>Tapping the field clears it and starts over</div>
+              <div>No history, no follow-up field, no "regenerate"</div>
+              <div>Answer capped around 200 words</div>
+              <div>Sources always shown, always tappable</div>
+            </div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+            <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.4)">What a chatbot would be</div>
+            <div style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;line-height:1.55;color:rgba(233,233,237,.42)">
+              <div>A scrolling message thread you return to</div>
+              <div>"Tell me more" · "What about June?"</div>
+              <div>The model remembering what you just asked</div>
+              <div>Answers that end in a question back</div>
+              <div>An assistant with a name and a personality</div>
+            </div>
+          </div>
+        </div>
+        <div style="height:1px;background:linear-gradient(to right,rgba(233,233,237,.16),transparent)"></div>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">The difference is who is doing the thinking.</strong> One question, one answer sends you back to your own notes — the sources are the point, and the answer is a route in. A conversation replaces your notes: after four turns you're talking to the model about your life instead of reading what you actually said.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">It also protects the tone.</strong> Follow-ups are where a model starts performing — being encouraging, asking how that made you feel, offering to help you process it. Every one of those is a therapist impression, and it's the exact failure this product is defined against. A single answer has nowhere to drift.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">And it keeps the cost honest.</strong> Conversation history compounds — turn five carries turns one through four. One-shot means every question costs the same two cents, which is what lets you not meter it and never charge a subscription for it.</div>
+          <div style="font-size:12.5px;line-height:1.65;color:rgba(233,233,237,.45);text-wrap:pretty;padding-top:2px">The honest cost: some questions genuinely need a follow-up, and those users will re-ask with more words. That's a real trade, and I'd still take it — re-asking is a small friction, and becoming a chatbot is not a small one.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="margin:30px 0 0;font:12.5px/1.6 Inter,system-ui;color:rgba(233,233,237,.45)">Try next: "design the moment the read-backs run out" · "show me quick capture on the Lock Screen" · "write the App Store page"</p>
+</section>
+
+<section id="t2" style="padding:48px 56px 44px;border-bottom:1px solid rgba(233,233,237,.08)">
+  <div style="display:flex;align-items:baseline;gap:10px;margin:0 0 9px">
+    <a href="#t2" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#9184d9;color:#161826;border-radius:4px;text-decoration:none">2</a>
+    <span style="font:500 13px/1.2 Inter,system-ui;color:#e9e9ed">Dictate-into-a-note, and the two gaps I'd close next</span>
+  </div>
+  <div style="max-width:840px;font-size:13.5px;line-height:1.7;color:rgba(233,233,237,.62);margin-bottom:36px;text-wrap:pretty">
+    <a href="#2a">2a</a> is live in the prototype — open the pencil on Today, then <em>Say it instead</em>. <a href="#2b">2b</a> and <a href="#2c">2c</a> are the two things I think are actually missing, and I've deliberately stopped at two: everything else on my list made the app bigger without making it better.
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start">
+
+    <div id="2a" style="display:flex;flex-direction:column;gap:11px;flex:none">
+      <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+        <a href="#2a" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">2a</a>
+        <span><strong style="color:#e9e9ed;font-weight:500">Say it instead</strong> — dictation inside a written note. Not a mode switch: the same note, carrying on mid-sentence.</span>
+      </div>
+      <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;gap:30px">
+        <div style="width:250px;flex:none;display:flex;flex-direction:column;gap:12px">
+          <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px">
+            <div style="font-size:14.5px;line-height:1.7;white-space:pre-wrap"><span style="color:rgba(233,233,237,.8)">That the house was never the point.
+
+That I've been angry at a building because it's easier than being</span><span style="color:rgba(181,171,252,.95)"> angry at her. What I want is to see her more, and every</span><span style="color:#9184d9">▍</span></div>
+          </div>
+          <div style="border-radius:12px;background:linear-gradient(155deg,rgba(66,58,106,.5),rgba(35,37,50,.7));box-shadow:0 0 0 1px rgba(145,132,217,.32);padding:13px 14px;display:flex;align-items:center;gap:12px">
+            <div style="position:relative;width:36px;height:36px;flex:none;display:flex;align-items:center;justify-content:center">
+              <span style="position:absolute;inset:0;border-radius:50%;background:#9184d9;opacity:.4;animation:murPulse 2s ease-out infinite"></span>
+              <span style="position:relative;width:36px;height:36px;border-radius:50%;background:#9184d9;display:flex;align-items:center;justify-content:center">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#161826" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="11" rx="3" fill="#161826" stroke="none"></rect><path d="M5 11a7 7 0 0014 0"></path><path d="M12 18v3"></path></svg>
+              </span>
+            </div>
+            <div style="flex:1;min-width:0;font-size:11.5px;color:rgba(233,233,237,.55);line-height:1.45">Carries on where you left off · 0:14</div>
+            <div style="flex:none;font-size:12.5px;font-weight:500;color:#b5abfc;border:1px solid rgba(145,132,217,.5);border-radius:8px;padding:7px 12px">Done</div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Why it's built this way</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">The dictated words come in <span style="color:#b5abfc">tinted</span> and settle to normal text when you tap Done. That tint is the whole design: it says <em>this part wasn't typed, and you haven't read it yet</em>. Without it, dictation errors get silently absorbed into something you believe you wrote.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">It appends mid-sentence rather than starting a block, because the actual moment this serves is running out of patience with the keyboard halfway through a thought. A separate "voice attachment" would be a different, worse feature.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">The audio is <strong style="color:#e9e9ed;font-weight:500">kept</strong>, not discarded — the note becomes a hybrid with an .m4a beside it. This is also why the label is "Say it instead" and not "Dictate": dictation implies the voice was a means to text. Here it's just the other way of talking.</div>
+          <div style="margin-top:auto;font-size:12px;line-height:1.6;color:rgba(233,233,237,.4);text-wrap:pretty">Build note: on-device recognition only, streaming into the buffer at the cursor. No network, so it works on the tube.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="2b" style="display:flex;flex-direction:column;gap:11px;flex:none">
+      <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+        <a href="#2b" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">2b</a>
+        <span><strong style="color:#e9e9ed;font-weight:500">Gap 1 — threads have no home.</strong> Claude names them on every note and recap, and then they lead nowhere.</span>
+      </div>
+      <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;gap:30px">
+        <div style="width:250px;flex:none;border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Thread</div>
+            <div style="font-size:21px;font-weight:500;letter-spacing:-.02em;margin-top:4px">Kate</div>
+            <div style="font-size:12px;color:rgba(233,233,237,.45);margin-top:3px">14 notes since March</div>
+          </div>
+          <div style="font-size:13px;line-height:1.65;color:rgba(233,233,237,.72);text-wrap:pretty;padding-bottom:12px;border-bottom:1px solid rgba(233,233,237,.08)">It started as the house. Around June it stopped being about the house. Last week you made a plan.</div>
+          <div style="position:relative;padding-left:17px;display:flex;flex-direction:column;gap:14px">
+            <div style="position:absolute;left:3px;top:5px;bottom:5px;width:1px;background:linear-gradient(to bottom,transparent,rgba(145,132,217,.45) 10px,rgba(145,132,217,.45) calc(100% - 10px),transparent)"></div>
+            <div style="position:relative"><span style="position:absolute;left:-17px;top:5px;width:7px;height:7px;border-radius:50%;background:#9184d9;box-shadow:0 0 0 3px #232532"></span><div style="font-size:10.5px;color:rgba(233,233,237,.4)">Yesterday</div><div style="font-size:13px;font-weight:500;line-height:1.35;margin-top:2px">Draft of the letter</div></div>
+            <div style="position:relative"><span style="position:absolute;left:-17px;top:5px;width:7px;height:7px;border-radius:50%;background:#9184d9;box-shadow:0 0 0 3px #232532"></span><div style="font-size:10.5px;color:rgba(233,233,237,.4)">6 Aug</div><div style="font-size:13px;font-weight:500;line-height:1.35;margin-top:2px">Bus home — something shifted</div></div>
+            <div style="position:relative"><span style="position:absolute;left:-17px;top:5px;width:7px;height:7px;border-radius:50%;background:#5d5294;box-shadow:0 0 0 3px #232532"></span><div style="font-size:10.5px;color:rgba(233,233,237,.4)">21 Jun</div><div style="font-size:13px;font-weight:500;line-height:1.35;margin-top:2px">The house, again</div></div>
+            <div style="position:relative"><span style="position:absolute;left:-17px;top:5px;width:7px;height:7px;border-radius:50%;background:#423a6a;box-shadow:0 0 0 3px #232532"></span><div style="font-size:10.5px;color:rgba(233,233,237,.4)">14 Mar</div><div style="font-size:13px;font-weight:500;line-height:1.35;margin-top:2px">First mention</div></div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Why this is the missing screen</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">Search assumes you remember a word. Folders assume you filed correctly at 7am on a walk. Neither is how anyone actually returns to a personal notebook — you come back wanting <em>the thing about my sister</em>, and you want to see how it moved.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">This is also the only screen whose value <em>compounds</em>. Everything else is as good on day one as on day four hundred. A thread with fourteen months in it is something no notes app you're competing with can show, and it costs nothing extra — Claude is already emitting these names on every note.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">No new navigation: thread chips already exist on the note detail and the recaps. Make them tappable. That's the entire cost.</div>
+          <div style="margin-top:auto;font-size:12px;line-height:1.6;color:rgba(233,233,237,.4);text-wrap:pretty">The one-line arc at the top is a cheap Sonnet call over the thread's summaries, cached and regenerated only when the thread gains a note.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="2c" style="display:flex;flex-direction:column;gap:11px;flex:none">
+      <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+        <a href="#2c" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">2c</a>
+        <span><strong style="color:#e9e9ed;font-weight:500">Gap 2 — you have to open the app.</strong> For a thought you have while walking, that's already too late.</span>
+      </div>
+      <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;gap:30px">
+        <div style="width:250px;flex:none;display:flex;flex-direction:column;gap:11px">
+          <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px;display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:9px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="2" stroke-linecap="round"><rect x="3" y="7" width="3" height="10" rx="1.5" fill="#b5abfc" stroke="none"></rect><path d="M11 5v14M16 8v8M21 10v4"></path></svg></div>
+            <div><div style="font-size:13.5px;font-weight:500">Action Button</div><div style="font-size:11.5px;color:rgba(233,233,237,.45);margin-top:1px">Press and hold. Recording before it's out of your pocket.</div></div>
+          </div>
+          <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px;display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:9px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"></rect><path d="M9 7h6"></path></svg></div>
+            <div><div style="font-size:13.5px;font-weight:500">Lock Screen control</div><div style="font-size:11.5px;color:rgba(233,233,237,.45);margin-top:1px">One tap, no Face ID, no unlock.</div></div>
+          </div>
+          <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px;display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:9px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg></div>
+            <div><div style="font-size:13.5px;font-weight:500">"Hey Siri, murmur"</div><div style="font-size:11.5px;color:rgba(233,233,237,.45);margin-top:1px">The driving case. Hands never leave the wheel.</div></div>
+          </div>
+          <div style="border-radius:12px;background:linear-gradient(150deg,#262a60,#1d2043);box-shadow:0 0 0 1px rgba(145,132,217,.28);padding:14px;font-size:12.5px;line-height:1.6;color:rgba(243,245,254,.8);text-wrap:pretty">All three land in the same place: recording, transcribing on device, filed to Odds &amp; ends until you say otherwise.</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Why this outranks any screen</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">You named the two primary uses as walking and driving. In both, the current path is: get the phone out, unlock it, find the app, wait for it to load, tap record. That is five steps and about eight seconds, and the specific thoughts this product exists to catch do not survive eight seconds.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">This is the difference between an app people admire and an app people use. It adds no screens, no navigation, and no clutter — it's entirely outside the app, which is the point.</div>
+          <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">It's also the cheapest thing on this page to build: an App Intent, a Control Center widget, and a Lock Screen control are roughly a day each, and the Action Button is free once the intent exists.</div>
+          <div style="margin-top:auto;font-size:12px;line-height:1.6;color:rgba(233,233,237,.4);text-wrap:pretty">I'd put this ahead of <a href="#2b">2b</a> in the build order, and ahead of most of the polish in <a href="#1a">1a</a>.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:30px;max-width:840px">
+    <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600;margin-bottom:11px">Considered and deliberately left out</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <div style="flex:1;min-width:250px;border-radius:10px;border:1px solid rgba(233,233,237,.1);padding:13px 14px;font-size:12.5px;line-height:1.6;color:rgba(233,233,237,.55);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">Tags, links, backlinks.</strong> Threads already do this without asking the user to do filing work while walking.</div>
+      <div style="flex:1;min-width:250px;border-radius:10px;border:1px solid rgba(233,233,237,.1);padding:13px 14px;font-size:12.5px;line-height:1.6;color:rgba(233,233,237,.55);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">Streaks and stats.</strong> The fastest way to turn a notebook back into a work app. The heat map in <a href="#1e">1e</a> is the honest version — it shows habit without scoring it.</div>
+      <div style="flex:1;min-width:250px;border-radius:10px;border:1px solid rgba(233,233,237,.1);padding:13px 14px;font-size:12.5px;line-height:1.6;color:rgba(233,233,237,.55);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">Ask your notes anything.</strong> Tempting, cheap to build, and it turns a notebook into a chatbot. The read-back is the better shape: it comes to you, unprompted, once a day.</div>
+      <div style="flex:1;min-width:250px;border-radius:10px;border:1px solid rgba(233,233,237,.1);padding:13px 14px;font-size:12.5px;line-height:1.6;color:rgba(233,233,237,.55);text-wrap:pretty"><strong style="color:#e9e9ed;font-weight:500">Sharing and collaboration.</strong> The single clearest signal that a personal app has started becoming a work one.</div>
+    </div>
+  </div>
+
+  <p style="margin:30px 0 0;font:12.5px/1.6 Inter,system-ui;color:rgba(233,233,237,.45)">Try next: "build the thread screen into the prototype" · "design the first week, when there's nothing to read back" · "show me the Lock Screen and Action Button states"</p>
+</section>
+
+<section id="t1" style="padding:48px 56px 44px">
+  <div style="display:flex;align-items:baseline;gap:10px;margin:0 0 9px">
+    <a href="#t1" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#9184d9;color:#161826;border-radius:4px;text-decoration:none">1</a>
+    <span style="font:500 13px/1.2 Inter,system-ui;color:#e9e9ed">Murmur — a notebook that is nobody's colleague</span>
+  </div>
+  <div style="max-width:840px;font-size:13.5px;line-height:1.7;color:rgba(233,233,237,.62);margin-bottom:36px;text-wrap:pretty">
+    Opens to Today, folders, local-first with Drive backup, AI labelled but quiet, warm first-person copy. Spoken and written notes live in one stream — the pencil beside the search icon opens the writing screen, and anything held only on the phone carries an <em>on phone</em> mark you can tap to push up. The vocabulary is deliberately domestic — <em>notebook</em>, <em>evening</em>, <em>carry forward</em> — never <em>action item</em> or <em>meeting</em>. <a href="#1a">1a</a> is the working prototype. <a href="#1b">1b</a>–<a href="#1e">1e</a> are the alternates on the four axes you asked about.
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:46px;align-items:flex-start">
+
+    <div id="1a" style="display:flex;flex-direction:column;gap:12px;flex:none">
+      <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5)">
+        <a href="#1a" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none">1a</a>Interactive — every screen, real state
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 12px;border-radius:10px;border:1px solid rgba(233,233,237,.1)">
+        <span style="font:600 10px/1.2 Inter,system-ui;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4)">Notebook age</span>
+        <sc-for list="{{ eraChips }}" as="e" hint-placeholder-count="3">
+          <div onClick="{{ e.pick }}" style="cursor:pointer;font:500 12px/1 Inter,system-ui;padding:7px 11px;border-radius:8px;border:1px solid {{ e.border }};background:{{ e.bg }};color:{{ e.fg }}">{{ e.label }}</div>
+        </sc-for>
+      </div>
+
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" width="{{ 402 }}" height="{{ 874 }}" hint-size="402px,874px">
+      <div style="height:100%;display:flex;flex-direction:column;background:#161826;font-family:Inter,system-ui,sans-serif">
+        <div style="flex:1;overflow:auto;padding-top:58px">
+
+          <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+          <div style="min-height:100%;display:flex;flex-direction:column;padding:0 24px 10px;animation:murFade .3s ease both">
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px">
+              <div style="width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b5abfc,#5d5294);animation:murBreathe 4.5s ease-in-out infinite"></div>
+              <div>
+                <div style="font-size:31px;line-height:1.18;font-weight:500;letter-spacing:-.025em;text-wrap:pretty">Say it or write it.<br>I'll keep it either way.</div>
+                <div style="font-size:15px;line-height:1.65;color:rgba(233,233,237,.6);margin-top:15px;text-wrap:pretty">The thought you had on a walk. The letter you drafted at midnight. The three lines you copied out of a book. Murmur holds all of it in one notebook, and once a day reads it back to you.</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:13px;margin-top:4px">
+                <sc-for list="{{ introPoints }}" as="p" hint-placeholder-count="3">
+                  <div style="display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.55;color:rgba(233,233,237,.66)"><span style="color:#9184d9;font-variant-numeric:tabular-nums">{{ p.n }}</span><span>{{ p.t }}</span></div>
+                </sc-for>
+              </div>
+            </div>
+            <div onClick="{{ goToday }}" style="cursor:pointer;text-align:center;font-size:15px;font-weight:500;color:#b5abfc;border:1px solid rgba(145,132,217,.55);border-radius:10px;padding:14px;margin-bottom:26px" style-hover="background:rgba(145,132,217,.12)">Start my notebook</div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ isToday }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:0 20px 26px;display:flex;flex-direction:column;gap:20px;animation:murFade .28s ease both">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+              <div>
+                <div style="font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">Thursday, 6 August</div>
+                <div style="font-size:28px;font-weight:500;letter-spacing:-.025em;margin-top:6px;text-wrap:pretty">{{ todayGreeting }}</div>
+              </div>
+              <div style="display:flex;gap:7px;flex:none;margin-top:16px">
+                <div onClick="{{ goWrite }}" style="cursor:pointer;width:37px;height:37px;border-radius:10px;border:1px solid rgba(233,233,237,.14);display:flex;align-items:center;justify-content:center" style-hover="border-color:#9184d9">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(233,233,237,.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"></path></svg>
+                </div>
+                <div onClick="{{ goSearch }}" style="cursor:pointer;width:37px;height:37px;border-radius:10px;border:1px solid rgba(233,233,237,.14);display:flex;align-items:center;justify-content:center" style-hover="border-color:#9184d9">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(233,233,237,.7)" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21" stroke-linecap="round"></path></svg>
+                </div>
+              </div>
+            </div>
+
+            <sc-if value="{{ showRecapCard }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ goRecaps }}" style="cursor:pointer;position:relative;overflow:hidden;border-radius:14px;padding:17px;background:linear-gradient(150deg,#262a60,#1d2043);box-shadow:0 0 0 1px rgba(145,132,217,.32)">
+              <div style="position:absolute;top:-46px;right:-34px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#4c5397,transparent 70%);opacity:.45"></div>
+              <div style="position:relative;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:7px">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#b5abfc"><path d="M12 2l1.9 5.6L20 9.5l-4.6 3.6L16 19l-4-3-4 3 .6-5.9L4 9.5l6.1-1.9z"></path></svg>
+                  <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#b5abfc">Sunday · your week</span>
+                </div>
+                <div style="font-size:16.5px;line-height:1.45;font-weight:500;color:#f3f5fe;text-wrap:pretty">Eleven notes, nine of them outside. The good ones happened while you were moving.</div>
+                <div style="font-size:12.5px;color:rgba(243,245,254,.55)">Read it back · a minute</div>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ eraDay1 }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:14px;padding:17px;border:1px dashed rgba(233,233,237,.16);display:flex;flex-direction:column;gap:7px">
+              <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.4)">Sunday</div>
+              <div style="font-size:14.5px;line-height:1.55;color:rgba(233,233,237,.66);text-wrap:pretty">On Sunday I'll read the week back to you. Until then this stays out of your way.</div>
+            </div>
+            </sc-if>
+
+            <div style="display:flex;gap:8px;overflow:auto;padding-bottom:2px">
+              <sc-for list="{{ folders }}" as="f" hint-placeholder-count="4">
+                <div onClick="{{ f.pick }}" style="cursor:pointer;flex:none;font-size:12.5px;font-weight:500;padding:7px 12px;border-radius:8px;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.fg }}">{{ f.label }}</div>
+              </sc-for>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">{{ listHeading }}</div>
+              <sc-for list="{{ notes }}" as="n" hint-placeholder-count="4">
+                <div onClick="{{ n.open }}" style="cursor:pointer;border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px 15px;display:flex;gap:13px;align-items:flex-start" style-hover="box-shadow:0 0 0 1px #5d5294">
+                  <div style="width:30px;height:30px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;background:rgba(145,132,217,.14);margin-top:1px">
+                    <sc-if value="{{ n.isVoice }}" hint-placeholder-val="{{ true }}">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="11" rx="3" fill="#b5abfc" stroke="none"></rect><path d="M5 11a7 7 0 0014 0"></path><path d="M12 18v3"></path></svg>
+                    </sc-if>
+                    <sc-if value="{{ n.isText }}" hint-placeholder-val="{{ false }}">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h8"></path></svg>
+                    </sc-if>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                    <div style="font-size:15px;font-weight:500;line-height:1.3;letter-spacing:-.01em;color:#e9e9ed">{{ n.title }}</div>
+                    <div style="font-size:12.5px;line-height:1.45;color:rgba(233,233,237,.5);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ n.preview }}</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-top:3px">
+                      <span style="font-size:11px;color:rgba(233,233,237,.4)">{{ n.time }}</span>
+                      <span style="width:2px;height:2px;border-radius:50%;background:rgba(233,233,237,.3)"></span>
+                      <span style="font-size:11px;color:rgba(233,233,237,.4)">{{ n.dur }}</span>
+                      <span style="width:2px;height:2px;border-radius:50%;background:rgba(233,233,237,.3)"></span>
+                      <span style="font-size:11px;color:rgba(233,233,237,.4)">{{ n.folder }}</span>
+                      <sc-if value="{{ n.isLocal }}" hint-placeholder-val="{{ false }}">
+                        <span style="display:flex;align-items:center;gap:4px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.42);border:1px solid rgba(233,233,237,.14);border-radius:5px;padding:1px 6px">
+                          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(233,233,237,.5)" stroke-width="2.4" stroke-linecap="round"><path d="M12 4v11m0 0l-4-4m4 4l4-4M4 20h16"></path></svg>on phone
+                        </span>
+                      </sc-if>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ isWrite }}" hint-placeholder-val="{{ false }}">
+          <div style="height:100%;display:flex;flex-direction:column;padding:0 20px 10px;animation:murFade .28s ease both">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div onClick="{{ goToday }}" style="cursor:pointer;font-size:14px;color:rgba(233,233,237,.5);padding:6px 2px">Close</div>
+              <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.42)">Written</div>
+              <div onClick="{{ goToday }}" style="cursor:pointer;font-size:14px;font-weight:500;color:#b5abfc;padding:6px 2px">Keep</div>
+            </div>
+
+            <div style="margin-top:22px;font-size:23px;font-weight:500;letter-spacing:-.022em;line-height:1.25;color:{{ draftTitleColor }};text-wrap:pretty">{{ draftTitle }}</div>
+
+            <div style="margin-top:14px;font-size:15.5px;line-height:1.75;text-wrap:pretty;white-space:pre-wrap;flex:1;overflow:auto"><span style="color:rgba(233,233,237,.8)">{{ draftBody }}</span><span style="color:{{ dictatedColor }}">{{ dictatedText }}</span><span style="color:#9184d9">▍</span></div>
+
+            <div style="display:flex;flex-direction:column;gap:9px;padding:14px 0 4px">
+              <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(233,233,237,.45)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(233,233,237,.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg>
+                <span>{{ draftSaveState }}</span>
+              </div>
+              <div style="display:flex;gap:8px;overflow:auto">
+                <sc-for list="{{ draftFolders }}" as="f" hint-placeholder-count="4">
+                  <div onClick="{{ f.pick }}" style="cursor:pointer;flex:none;font-size:12.5px;font-weight:500;padding:7px 12px;border-radius:8px;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.fg }}">{{ f.label }}</div>
+                </sc-for>
+              </div>
+              <div onClick="{{ toggleDraftSync }}" style="cursor:pointer;display:flex;align-items:center;gap:11px;border-radius:11px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:12px 14px" style-hover="box-shadow:0 0 0 1px #5d5294">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 19a4.5 4.5 0 01-.6-8.96A6 6 0 0117.7 9.4 4.3 4.3 0 0117.5 19z"></path></svg>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14px;font-weight:500">{{ draftSyncTitle }}</div>
+                  <div style="font-size:11.5px;color:rgba(233,233,237,.45);margin-top:1px">{{ draftSyncSub }}</div>
+                </div>
+                <div style="width:44px;height:26px;border-radius:13px;flex:none;padding:3px;background:{{ draftSyncTrack }};transition:background .18s ease;display:flex;justify-content:{{ draftSyncJust }}">
+                  <span style="width:20px;height:20px;border-radius:50%;background:#f3f5fe;display:block"></span>
+                </div>
+              </div>
+            </div>
+
+            <sc-if value="{{ notDictating }}" hint-placeholder-val="{{ true }}">
+            <div style="flex:none;border-top:1px solid rgba(233,233,237,.08);padding:10px 0 2px;display:flex;gap:18px;align-items:center">
+              <sc-for list="{{ composeTools }}" as="c" hint-placeholder-count="3">
+                <div style="cursor:pointer;font-size:13px;color:rgba(233,233,237,.5)" style-hover="color:#b5abfc">{{ c.t }}</div>
+              </sc-for>
+              <div onClick="{{ startDictate }}" style="cursor:pointer;margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;color:#b5abfc;border:1px solid rgba(145,132,217,.45);border-radius:8px;padding:7px 11px" style-hover="background:rgba(145,132,217,.12)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="11" rx="3" fill="#b5abfc" stroke="none"></rect><path d="M5 11a7 7 0 0014 0"></path><path d="M12 18v3"></path></svg>Say it instead
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ dictating }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:none;border-radius:12px;background:linear-gradient(155deg,rgba(66,58,106,.5),rgba(35,37,50,.7));box-shadow:0 0 0 1px rgba(145,132,217,.32);padding:13px 14px;display:flex;align-items:center;gap:13px">
+              <div style="position:relative;width:38px;height:38px;flex:none;display:flex;align-items:center;justify-content:center">
+                <span style="position:absolute;inset:0;border-radius:50%;background:#9184d9;opacity:.4;animation:murPulse 2s ease-out infinite"></span>
+                <span style="position:relative;width:38px;height:38px;border-radius:50%;background:#9184d9;display:flex;align-items:center;justify-content:center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#161826" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="11" rx="3" fill="#161826" stroke="none"></rect><path d="M5 11a7 7 0 0014 0"></path><path d="M12 18v3"></path></svg>
+                </span>
+              </div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;align-items:center;gap:2px;height:22px">
+                  <sc-for list="{{ dictBars }}" as="b" hint-placeholder-count="26">
+                    <div style="flex:1;border-radius:1px;background:#b5abfc;opacity:.8;height:{{ b.h }}px;transition:height .1s linear"></div>
+                  </sc-for>
+                </div>
+                <div style="font-size:11.5px;color:rgba(233,233,237,.5)">Carries on where you left off · {{ dictClock }}</div>
+              </div>
+              <div onClick="{{ stopDictate }}" style="cursor:pointer;flex:none;font-size:13px;font-weight:500;color:#b5abfc;border:1px solid rgba(145,132,217,.5);border-radius:8px;padding:8px 13px" style-hover="background:rgba(145,132,217,.12)">Done</div>
+            </div>
+            </sc-if>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ isRecording }}" hint-placeholder-val="{{ false }}">
+          <div style="height:100%;display:flex;flex-direction:column;padding:0 20px 14px;animation:murFade .28s ease both">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div onClick="{{ goToday }}" style="cursor:pointer;font-size:14px;color:rgba(233,233,237,.5);padding:6px 2px">Never mind</div>
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#9184d9;box-shadow:0 0 10px #9184d9"></span>
+                <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#b5abfc">Listening</span>
+              </div>
+              <div style="width:62px"></div>
+            </div>
+
+            <div style="margin-top:34px;text-align:center">
+              <div style="font-size:50px;font-weight:500;letter-spacing:-.035em;font-variant-numeric:tabular-nums">{{ clock }}</div>
+              <div style="font-size:12px;color:rgba(233,233,237,.42);margin-top:3px">Written down on this iPhone — nothing sent yet</div>
+            </div>
+
+            <div style="height:90px;display:flex;align-items:center;justify-content:center;gap:3px;margin-top:22px">
+              <sc-for list="{{ bars }}" as="b" hint-placeholder-count="40">
+                <div style="width:3px;border-radius:2px;background:#9184d9;opacity:.85;height:{{ b.h }}px;transition:height .1s linear"></div>
+              </sc-for>
+            </div>
+
+            <div style="flex:1;margin-top:20px;overflow:auto;border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:16px">
+              <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.4);margin-bottom:9px">As you speak</div>
+              <div style="font-size:15px;line-height:1.7;color:rgba(233,233,237,.85);text-wrap:pretty">{{ liveText }}<span style="color:#9184d9">▍</span></div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:center;gap:34px;padding:24px 0 10px">
+              <div onClick="{{ togglePause }}" style="cursor:pointer;width:52px;height:52px;border-radius:50%;border:1px solid rgba(233,233,237,.18);display:flex;align-items:center;justify-content:center" style-hover="border-color:#9184d9">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="rgba(233,233,237,.75)"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>
+              </div>
+              <div onClick="{{ stopRec }}" style="cursor:pointer;position:relative;width:74px;height:74px;border-radius:50%;background:#9184d9;display:flex;align-items:center;justify-content:center;box-shadow:0 0 32px rgba(145,132,217,.42)">
+                <span style="position:absolute;inset:0;border-radius:50%;background:#9184d9;animation:murPulse 2s ease-out infinite"></span>
+                <span style="position:relative;width:23px;height:23px;border-radius:5px;background:#161826"></span>
+              </div>
+              <div onClick="{{ addMark }}" style="cursor:pointer;width:52px;height:52px;border-radius:50%;border:1px solid rgba(233,233,237,.18);display:flex;align-items:center;justify-content:center" style-hover="border-color:#9184d9">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(233,233,237,.75)" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"></path></svg>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ isNote }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 20px 26px;display:flex;flex-direction:column;gap:18px;animation:murFade .28s ease both">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div onClick="{{ goToday }}" style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:14px;color:rgba(233,233,237,.6);padding:4px 0">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(233,233,237,.6)" stroke-width="2" stroke-linecap="round"><path d="M7 1L1 7l6 6"></path></svg>Today
+              </div>
+              <div style="display:flex;gap:6px">
+                <div style="width:34px;height:34px;border-radius:9px;border:1px solid rgba(233,233,237,.14);display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="border-color:#9184d9">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(233,233,237,.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 15v4a2 2 0 002 2h12a2 2 0 002-2v-4"></path></svg>
+                </div>
+                <div style="width:34px;height:34px;border-radius:9px;border:1px solid rgba(233,233,237,.14);display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="border-color:#9184d9">
+                  <svg width="18" height="4" viewBox="0 0 22 6" fill="rgba(233,233,237,.7)"><circle cx="3" cy="3" r="2.2"></circle><circle cx="11" cy="3" r="2.2"></circle><circle cx="19" cy="3" r="2.2"></circle></svg>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size:25px;font-weight:500;line-height:1.25;letter-spacing:-.022em;text-wrap:pretty">{{ note.title }}</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:9px;flex-wrap:wrap">
+                <span style="font-size:12px;color:rgba(233,233,237,.45)">{{ note.time }}</span>
+                <span style="width:2px;height:2px;border-radius:50%;background:rgba(233,233,237,.3)"></span>
+                <span style="font-size:12px;color:rgba(233,233,237,.45)">{{ note.dur }}</span>
+                <span style="width:2px;height:2px;border-radius:50%;background:rgba(233,233,237,.3)"></span>
+                <span style="font-size:12px;color:rgba(233,233,237,.45)">{{ note.folder }}</span>
+                <span onClick="{{ pushNote }}" style="cursor:pointer;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:{{ syncFg }};border:1px solid {{ syncBorder }};border-radius:5px;padding:1px 6px">{{ syncLabel }}</span>
+              </div>
+            </div>
+
+            <sc-if value="{{ hasAudio }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:center;gap:12px;border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:12px 14px">
+              <div onClick="{{ togglePlay }}" style="cursor:pointer;width:38px;height:38px;border-radius:50%;background:rgba(145,132,217,.16);display:flex;align-items:center;justify-content:center;flex:none">
+                <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="#b5abfc"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>
+                </sc-if>
+                <sc-if value="{{ notPlaying }}" hint-placeholder-val="{{ true }}">
+                  <svg width="12" height="13" viewBox="0 0 14 16" fill="#b5abfc"><path d="M2 1.5l10 6.5-10 6.5z"></path></svg>
+                </sc-if>
+              </div>
+              <div style="flex:1;display:flex;align-items:center;gap:2px;height:26px">
+                <sc-for list="{{ staticBars }}" as="b" hint-placeholder-count="32">
+                  <div style="flex:1;border-radius:1px;background:{{ b.c }};height:{{ b.h }}px"></div>
+                </sc-for>
+              </div>
+              <span style="font-size:11.5px;color:rgba(233,233,237,.45);font-variant-numeric:tabular-nums">{{ note.dur }}</span>
+            </div>
+            </sc-if>
+
+            <div style="border-radius:12px;padding:16px;background:linear-gradient(155deg,rgba(66,58,106,.5),rgba(35,37,50,.65));box-shadow:0 0 0 1px rgba(145,132,217,.28)">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px">
+                <div style="display:flex;align-items:center;gap:7px">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#b5abfc"><path d="M12 2l1.9 5.6L20 9.5l-4.6 3.6L16 19l-4-3-4 3 .6-5.9L4 9.5l6.1-1.9z"></path></svg>
+                  <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#b5abfc">The gist</span>
+                </div>
+                <span style="font-size:10.5px;color:rgba(233,233,237,.35)">{{ summaryMeta }}</span>
+              </div>
+              <sc-if value="{{ summarizing }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:10px;padding:6px 0 4px">
+                  <span style="width:15px;height:15px;border-radius:50%;border:2px solid rgba(145,132,217,.25);border-top-color:#b5abfc;animation:murSpin .8s linear infinite;display:block"></span>
+                  <span style="font-size:13.5px;color:rgba(233,233,237,.6)">Reading it back…</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ hasSummary }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ note.summary }}" as="s" hint-placeholder-count="3">
+                    <div style="display:flex;gap:10px;font-size:14px;line-height:1.6;color:rgba(233,233,237,.86);text-wrap:pretty"><span style="color:#9184d9;flex:none">—</span><span>{{ s.t }}</span></div>
+                  </sc-for>
+                  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:5px">
+                    <sc-for list="{{ note.threads }}" as="a" hint-placeholder-count="2">
+                      <div onClick="{{ a.open }}" style="cursor:pointer;font-size:11.5px;color:rgba(233,233,237,.65);border:1px solid rgba(233,233,237,.14);border-radius:7px;padding:4px 9px" style-hover="border-color:#9184d9;color:#b5abfc">{{ a.t }}</div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ noSummary }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ summarize }}" style="cursor:pointer;text-align:center;font-size:13.5px;font-weight:500;color:#b5abfc;border:1px solid rgba(145,132,217,.5);border-radius:8px;padding:9px" style-hover="background:rgba(145,132,217,.12)">Read it back to me</div>
+              </sc-if>
+            </div>
+
+            <div>
+              <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.4);margin-bottom:9px">What you said</div>
+              <div style="font-size:15px;line-height:1.75;color:rgba(233,233,237,.78);text-wrap:pretty;white-space:pre-wrap">{{ note.transcript }}</div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ isRecaps }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 20px 26px;display:flex;flex-direction:column;gap:18px;animation:murFade .28s ease both">
+            <div style="font-size:29px;font-weight:500;letter-spacing:-.025em">Read back</div>
+
+            <sc-if value="{{ recapWaiting }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:14px;padding:18px;border:1px dashed rgba(233,233,237,.16);display:flex;flex-direction:column;gap:9px">
+              <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.4)">Not yet</div>
+              <div style="font-size:14.5px;line-height:1.65;color:rgba(233,233,237,.66);text-wrap:pretty">{{ recapWaitCopy }}</div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ recapReady }}" hint-placeholder-val="{{ true }}">
+            <div style="border-radius:14px;padding:18px;background:linear-gradient(160deg,#262a60,#1a1c33);box-shadow:0 0 0 1px rgba(145,132,217,.28);display:flex;flex-direction:column;gap:13px">
+              <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#b5abfc">{{ recap.kicker }}</div>
+              <div style="font-size:15px;line-height:1.75;color:rgba(243,245,254,.9);white-space:pre-wrap;text-wrap:pretty">{{ recap.prose }}</div>
+              <div style="height:1px;background:linear-gradient(to right,rgba(181,171,252,.35),transparent)"></div>
+              <div style="display:flex;gap:20px">
+                <sc-for list="{{ recap.stats }}" as="s" hint-placeholder-count="3">
+                  <div>
+                    <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;color:#f3f5fe">{{ s.v }}</div>
+                    <div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(243,245,254,.45);font-weight:600;margin-top:2px">{{ s.l }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <sc-if value="{{ showWeekNav }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;gap:8px;align-items:center">
+              <sc-for list="{{ weekNav }}" as="w" hint-placeholder-count="3">
+                <div onClick="{{ w.pick }}" style="cursor:pointer;font-size:12.5px;font-weight:500;padding:7px 12px;border-radius:8px;border:1px solid {{ w.border }};background:{{ w.bg }};color:{{ w.fg }}">{{ w.label }}</div>
+              </sc-for>
+            </div>
+            </sc-if>
+
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">{{ recap.sectionLabel }}</div>
+              <sc-for list="{{ recap.threads }}" as="t" hint-placeholder-count="3">
+                <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px 15px;display:flex;flex-direction:column;gap:7px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                    <div style="font-size:15px;font-weight:500;letter-spacing:-.01em">{{ t.name }}</div>
+                    <div style="font-size:10.5px;color:#b5abfc;border:1px solid rgba(145,132,217,.35);border-radius:5px;padding:1px 6px;flex:none;white-space:nowrap">{{ t.count }}</div>
+                  </div>
+                  <div style="font-size:13px;line-height:1.6;color:rgba(233,233,237,.6);text-wrap:pretty">{{ t.body }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="border-radius:12px;padding:15px;background:linear-gradient(150deg,#262a60,#1d2043);box-shadow:0 0 0 1px rgba(145,132,217,.3)">
+              <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#b5abfc;margin-bottom:10px">{{ recap.carryLabel }}</div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ recap.carry }}" as="c" hint-placeholder-count="3">
+                  <div style="display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.55;color:rgba(243,245,254,.85)">
+                    <span style="width:14px;height:14px;border-radius:4px;border:1.5px solid rgba(181,171,252,.55);flex:none;margin-top:3px"></span><span>{{ c.t }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="font-size:12px;line-height:1.6;color:rgba(233,233,237,.4);text-wrap:pretty">Written on Sunday morning, and kept in your Drive alongside the notes it came from.</div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 20px 26px;display:flex;flex-direction:column;gap:16px;animation:murFade .28s ease both">
+            <div style="font-size:29px;font-weight:500;letter-spacing:-.025em">Ask</div>
+            <div onClick="{{ askReset }}" style="cursor:pointer;display:flex;align-items:center;gap:9px;border-radius:10px;background:#232532;box-shadow:0 0 0 1px #5d5294;padding:11px 13px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(233,233,237,.45)" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5L21 21" stroke-linecap="round"></path></svg>
+              <sc-if value="{{ askIsIdle }}" hint-placeholder-val="{{ true }}">
+                <span style="font-size:15px;color:rgba(233,233,237,.85)">garden</span><span style="color:#9184d9">▍</span>
+              </sc-if>
+              <sc-if value="{{ askAnswered }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:15px;color:rgba(233,233,237,.85);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ askQ }}</span>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ askIsIdle }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div style="font-size:12.5px;line-height:1.55;color:rgba(233,233,237,.45);text-wrap:pretty">{{ askIdleCopy }}</div>
+              <sc-if value="{{ askCanAsk }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ askSuggestions }}" as="a" hint-placeholder-count="3">
+                <div onClick="{{ a.run }}" style="cursor:pointer;display:flex;align-items:center;gap:10px;border-radius:10px;border:1px solid rgba(145,132,217,.3);padding:11px 13px;font-size:13.5px;line-height:1.45;color:#d2cefd;text-wrap:pretty" style-hover="background:rgba(145,132,217,.1);border-color:#9184d9">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#9184d9" style="flex:none"><path d="M12 2l1.9 5.6L20 9.5l-4.6 3.6L16 19l-4-3-4 3 .6-5.9L4 9.5l6.1-1.9z"></path></svg>{{ a.q }}
+                </div>
+              </sc-for>
+              </sc-if>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ askThinking }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:10px;border-radius:12px;background:linear-gradient(155deg,rgba(66,58,106,.5),rgba(35,37,50,.65));box-shadow:0 0 0 1px rgba(145,132,217,.28);padding:16px">
+              <span style="width:15px;height:15px;border-radius:50%;border:2px solid rgba(145,132,217,.25);border-top-color:#b5abfc;animation:murSpin .8s linear infinite;display:block;flex:none"></span>
+              <span style="font-size:13.5px;color:rgba(233,233,237,.6)">Reading back through 214 notes…</span>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ askAnswered }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:12px;background:linear-gradient(155deg,rgba(66,58,106,.5),rgba(35,37,50,.65));box-shadow:0 0 0 1px rgba(145,132,217,.28);padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:14.5px;line-height:1.7;color:rgba(233,233,237,.88);white-space:pre-wrap;text-wrap:pretty">{{ askA }}</div>
+              <div style="height:1px;background:linear-gradient(to right,rgba(145,132,217,.35),transparent)"></div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.4)">Read from</div>
+                <sc-for list="{{ askSrc }}" as="s" hint-placeholder-count="3">
+                  <div onClick="{{ s.open }}" style="cursor:pointer;display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(233,233,237,.62)" style-hover="color:#b5abfc">
+                    <span style="width:4px;height:4px;border-radius:50%;background:#9184d9;flex:none"></span>{{ s.t }}
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ showResults }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">{{ resultHeading }}</div>
+              <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+                <div onClick="{{ r.open }}" style="cursor:pointer;border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px 15px;display:flex;flex-direction:column;gap:5px" style-hover="box-shadow:0 0 0 1px #5d5294">
+                  <div style="font-size:15px;font-weight:500;letter-spacing:-.01em">{{ r.title }}</div>
+                  <div style="font-size:13px;line-height:1.55;color:rgba(233,233,237,.55)">{{ r.snippet }}</div>
+                  <div style="font-size:11px;color:rgba(233,233,237,.38);margin-top:2px">{{ r.time }}</div>
+                </div>
+              </sc-for>
+            </div>
+            </sc-if>
+
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px">
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">Threads</div>
+              <div style="font-size:12.5px;line-height:1.55;color:rgba(233,233,237,.45);text-wrap:pretty;margin-top:-4px">The things you keep coming back to, whether or not you meant to.</div>
+              <sc-if value="{{ noThreads }}" hint-placeholder-val="{{ false }}">
+                <div style="border-radius:12px;border:1px dashed rgba(233,233,237,.16);padding:15px;font-size:13.5px;line-height:1.6;color:rgba(233,233,237,.55);text-wrap:pretty">{{ threadsEmptyCopy }}</div>
+              </sc-if>
+              <sc-for list="{{ threadList }}" as="t" hint-placeholder-count="4">
+                <div onClick="{{ t.open }}" style="cursor:pointer;border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px 15px;display:flex;align-items:center;gap:12px" style-hover="box-shadow:0 0 0 1px #5d5294">
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:15px;font-weight:500;letter-spacing:-.01em">{{ t.name }}</div>
+                    <div style="font-size:12px;color:rgba(233,233,237,.45);margin-top:2px">{{ t.sub }}</div>
+                  </div>
+                  <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(233,233,237,.3)" stroke-width="2" stroke-linecap="round" style="flex:none"><path d="M1 1l6 6-6 6"></path></svg>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ isThread }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 20px 26px;display:flex;flex-direction:column;gap:18px;animation:murFade .28s ease both">
+            <div onClick="{{ goSearch }}" style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:14px;color:rgba(233,233,237,.6);padding:4px 0;align-self:flex-start">
+              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(233,233,237,.6)" stroke-width="2" stroke-linecap="round"><path d="M7 1L1 7l6 6"></path></svg>Threads
+            </div>
+
+            <div>
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">Thread</div>
+              <div style="font-size:29px;font-weight:500;letter-spacing:-.025em;margin-top:5px">{{ threadView.name }}</div>
+              <div style="font-size:12.5px;color:rgba(233,233,237,.45);margin-top:4px">{{ threadView.count }} notes since {{ threadView.since }} · last {{ threadView.last }}</div>
+            </div>
+
+            <div style="border-radius:12px;padding:16px;background:linear-gradient(155deg,rgba(66,58,106,.5),rgba(35,37,50,.65));box-shadow:0 0 0 1px rgba(145,132,217,.28)">
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#b5abfc"><path d="M12 2l1.9 5.6L20 9.5l-4.6 3.6L16 19l-4-3-4 3 .6-5.9L4 9.5l6.1-1.9z"></path></svg>
+                <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#b5abfc">How it's moved</span>
+              </div>
+              <div style="font-size:14.5px;line-height:1.65;color:rgba(233,233,237,.86);text-wrap:pretty">{{ threadView.arc }}</div>
+            </div>
+
+            <div style="position:relative;padding-left:21px;display:flex;flex-direction:column;gap:20px;margin-top:2px">
+              <div style="position:absolute;left:4px;top:7px;bottom:7px;width:1px;background:linear-gradient(to bottom,transparent,rgba(145,132,217,.45) 14px,rgba(145,132,217,.45) calc(100% - 14px),transparent)"></div>
+              <sc-for list="{{ threadView.notes }}" as="n" hint-placeholder-count="5">
+                <div onClick="{{ n.open }}" style="position:relative;cursor:pointer">
+                  <span style="position:absolute;left:-21px;top:6px;width:9px;height:9px;border-radius:50%;background:{{ n.dot }};box-shadow:0 0 0 3px #161826"></span>
+                  <div style="font-size:11px;color:rgba(233,233,237,.4)">{{ n.d }}</div>
+                  <div style="font-size:15px;font-weight:500;line-height:1.35;letter-spacing:-.01em;margin-top:3px;text-wrap:pretty;color:{{ n.color }}" style-hover="color:#b5abfc">{{ n.t }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 20px 26px;display:flex;flex-direction:column;gap:20px;animation:murFade .28s ease both">
+            <div style="font-size:29px;font-weight:500;letter-spacing:-.025em">Settings</div>
+
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">Where your notes live</div>
+              <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;overflow:hidden">
+                <sc-for list="{{ drives }}" as="d" hint-placeholder-count="4">
+                  <div onClick="{{ d.pick }}" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:14px 15px;border-bottom:1px solid rgba(233,233,237,.07)">
+                    <div style="width:30px;height:30px;border-radius:8px;background:rgba(145,132,217,.12);display:flex;align-items:center;justify-content:center;flex:none">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 19a4.5 4.5 0 01-.6-8.96A6 6 0 0117.7 9.4 4.3 4.3 0 0117.5 19z"></path></svg>
+                    </div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:15px;font-weight:500">{{ d.name }}</div>
+                      <div style="font-size:12px;color:rgba(233,233,237,.45);margin-top:1px">{{ d.sub }}</div>
+                    </div>
+                    <div style="width:19px;height:19px;border-radius:50%;flex:none;border:1.5px solid {{ d.ring }};display:flex;align-items:center;justify-content:center;background:{{ d.fill }}">
+                      <sc-if value="{{ d.on }}" hint-placeholder-val="{{ true }}">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#161826" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+                <div style="padding:12px 15px;font-size:12px;color:rgba(233,233,237,.42);line-height:1.55">Everything is written to the phone first. Voice notes go up as an .m4a and a .md side by side; written notes go up as plain .md — in folders that mirror the app, so your notebook is still readable if Murmur disappears.</div>
+                <div onClick="{{ pushAll }}" style="cursor:pointer;display:flex;align-items:center;gap:11px;padding:13px 15px;border-top:1px solid rgba(233,233,237,.07)" style-hover="background:rgba(145,132,217,.06)">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#b5abfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V6m0 0l-5 5m5-5l5 5"></path></svg>
+                  <div style="flex:1;font-size:14px;font-weight:500;color:#b5abfc">{{ pendingLabel }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">Reading back</div>
+              <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;overflow:hidden">
+                <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="4">
+                  <div onClick="{{ t.flip }}" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:14px 15px;border-bottom:1px solid rgba(233,233,237,.07)">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:15px;font-weight:500">{{ t.name }}</div>
+                      <div style="font-size:12px;color:rgba(233,233,237,.45);margin-top:1px;line-height:1.45">{{ t.sub }}</div>
+                    </div>
+                    <div style="width:44px;height:26px;border-radius:13px;flex:none;padding:3px;background:{{ t.track }};transition:background .18s ease;display:flex;justify-content:{{ t.just }}">
+                      <span style="width:20px;height:20px;border-radius:50%;background:#f3f5fe;display:block"></span>
+                    </div>
+                  </div>
+                </sc-for>
+                <div style="padding:12px 15px;font-size:12px;color:rgba(233,233,237,.42);line-height:1.55">Transcription runs on your iPhone. Only the text goes to Claude, and only for the parts you turn on above.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.42);font-weight:600">What you paid for</div>
+              <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:15px;display:flex;flex-direction:column;gap:10px">
+                <div style="font-size:14.5px;line-height:1.6;color:rgba(233,233,237,.82);text-wrap:pretty">You bought Murmur once, in March. Read-backs are covered until <span style="color:#d2cefd">March 2031</span>.</div>
+                <div style="height:6px;border-radius:3px;background:#3f424d;overflow:hidden"><div style="width:9%;height:100%;background:#9184d9"></div></div>
+                <div style="font-size:12px;line-height:1.55;color:rgba(233,233,237,.45);text-wrap:pretty">At the rate you're going that's about £4 of reading a year. When it runs out you can add your own API key for nothing, or buy another five years. The notebook itself never expires.</div>
+              </div>
+            </div>
+
+            <div onClick="{{ goIntro }}" style="cursor:pointer;border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:14px 15px;display:flex;align-items:center;gap:12px" style-hover="box-shadow:0 0 0 1px #5d5294">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="rgba(233,233,237,.7)"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.4 9.4 0 015 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0022 12c0-5.5-4.5-10-10-10z"></path></svg>
+              <div style="flex:1">
+                <div style="font-size:15px;font-weight:500">Murmur is open source</div>
+                <div style="font-size:12px;color:rgba(233,233,237,.45);margin-top:1px">Read the code, or run it against your own API key</div>
+              </div>
+              <span style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:rgba(233,233,237,.4);border:1px solid rgba(233,233,237,.14);border-radius:5px;padding:1px 6px;flex:none">welcome</span>
+              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(233,233,237,.35)" stroke-width="2" stroke-linecap="round"><path d="M1 1l6 6-6 6"></path></svg>
+            </div>
+          </div>
+          </sc-if>
+
+        </div>
+
+        <div style="flex:none;height:86px;padding:8px 10px 0;display:flex;align-items:flex-start;justify-content:space-between;background:rgba(22,24,38,.88);backdrop-filter:blur(18px);border-top:1px solid rgba(233,233,237,.08)">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+            <div onClick="{{ t.go }}" style="flex:1;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:5px;color:{{ t.color }}">
+              <sc-if value="{{ t.isRec }}" hint-placeholder-val="{{ false }}">
+                <div style="width:56px;height:56px;border-radius:50%;background:#9184d9;display:flex;align-items:center;justify-content:center;margin-top:-22px;box-shadow:0 6px 22px rgba(145,132,217,.4)">
+                  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#161826" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="11" rx="3" fill="#161826" stroke="none"></rect><path d="M5 11a7 7 0 0014 0"></path><path d="M12 18v3"></path></svg>
+                </div>
+              </sc-if>
+              <sc-if value="{{ t.isTab }}" hint-placeholder-val="{{ true }}">
+                <div style="height:22px;display:flex;align-items:center">{{ t.icon }}</div>
+                <div style="font-size:10px;font-weight:500">{{ t.label }}</div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </x-import>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:34px;flex:none">
+
+      <div id="1b" style="display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+          <a href="#1b" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">1b</a>
+          <span><strong style="color:#e9e9ed;font-weight:500">Home layout</strong> — a vertical day-thread instead of cards. Notes hang off a single line, so a day reads like one continuous thought rather than a filing cabinet.</span>
+        </div>
+        <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;gap:34px">
+          <div style="width:236px;flex:none;display:flex;flex-direction:column;gap:16px">
+            <div>
+              <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Thursday</div>
+              <div style="font-size:22px;font-weight:500;letter-spacing:-.022em;margin-top:5px;text-wrap:pretty">A quiet one, mostly</div>
+            </div>
+            <div style="position:relative;padding-left:19px;display:flex;flex-direction:column;gap:18px">
+              <div style="position:absolute;left:4px;top:6px;bottom:6px;width:1px;background:linear-gradient(to bottom,transparent,rgba(145,132,217,.5) 12px,rgba(145,132,217,.5) calc(100% - 12px),transparent)"></div>
+              <sc-for list="{{ thread }}" as="t" hint-placeholder-count="4">
+                <div style="position:relative">
+                  <span style="position:absolute;left:-19px;top:5px;width:9px;height:9px;border-radius:50%;background:{{ t.dot }};box-shadow:0 0 0 3px #161826"></span>
+                  <div style="font-size:10.5px;color:rgba(233,233,237,.4);font-variant-numeric:tabular-nums">{{ t.time }}</div>
+                  <div style="font-size:14px;font-weight:500;line-height:1.35;margin-top:3px;letter-spacing:-.01em">{{ t.title }}</div>
+                  <div style="font-size:12px;line-height:1.5;color:rgba(233,233,237,.5);margin-top:3px;text-wrap:pretty">{{ t.body }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Why</div>
+            <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">Cards say <em>records</em>. A thread says <em>a day</em>. For journaling and walk-thoughts the sequence is the meaning — a note at 7am and one at 9pm are related by being the same day, and the line makes that free. Folders move into the search sheet instead of a chip row, because in this layout time is the primary index and topic is the secondary one.</div>
+            <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">Costs you at-a-glance scanning of a long back catalogue. Best paired with <a href="#1e">1e</a>'s calendar, which gives back the overview this trades away.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="1c" style="display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+          <a href="#1c" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">1c</a>
+          <span><strong style="color:#e9e9ed;font-weight:500">Recording UI</strong> — no waveform, no transcript. One breathing orb that answers to your voice. Built for the pocket and the car.</span>
+        </div>
+        <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;gap:34px;align-items:stretch">
+          <div style="width:236px;flex:none;border-radius:12px;background:radial-gradient(120% 90% at 50% 32%,#1d2043,#161826);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:34px 20px">
+            <div style="position:relative;width:132px;height:132px;display:flex;align-items:center;justify-content:center">
+              <span style="position:absolute;width:132px;height:132px;border-radius:50%;background:rgba(145,132,217,.13);animation:murPulse 3s ease-out infinite"></span>
+              <span style="position:absolute;width:132px;height:132px;border-radius:50%;background:rgba(145,132,217,.13);animation:murPulse 3s ease-out infinite 1.5s"></span>
+              <span style="width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 36% 30%,#c4bcff,#6f63b8);animation:murBreathe 3.4s ease-in-out infinite;box-shadow:0 0 44px rgba(145,132,217,.4)"></span>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:30px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums">2:14</div>
+              <div style="font-size:12px;color:rgba(233,233,237,.45);margin-top:4px">Tap anywhere when you're done</div>
+            </div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Why</div>
+            <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">A live transcript invites you to read it, and reading your own half-formed sentence mid-thought is the fastest way to stop having the thought. The orb gives you only what you need to trust it's on: that it moves with your voice. Everything else waits.</div>
+            <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">Whole-screen tap target — usable while walking, in a coat pocket, glancing at it once. <a href="#1a">1a</a>'s waveform + transcript is the better choice at a desk; this one is the better choice everywhere you said you'd actually use it.</div>
+            <div style="margin-top:auto;font-size:12px;line-height:1.6;color:rgba(233,233,237,.4);text-wrap:pretty">Suggestion: ship both, switched by whether the phone is locked or in your hand.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="1d" style="display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+          <a href="#1d" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">1d</a>
+          <span><strong style="color:#e9e9ed;font-weight:500">Recap format</strong> — a letter instead of a dashboard. Claude writes you a short second-person note; the stats sit underneath as a footer, not a headline.</span>
+        </div>
+        <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;gap:34px">
+          <div style="width:236px;flex:none;border-radius:12px;background:linear-gradient(160deg,#262a60,#1a1c33);box-shadow:0 0 0 1px rgba(145,132,217,.25);padding:20px 19px;display:flex;flex-direction:column;gap:14px">
+            <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#b5abfc">Sunday, from your week</div>
+            <div style="font-size:14.5px;line-height:1.72;color:rgba(243,245,254,.88);text-wrap:pretty">You recorded eleven times this week, and nine of them were outside.<br><br>Monday and Tuesday you were turning over the same worry about your sister. By Thursday you'd stopped arguing with it and started making a plan — the note from the bus is the one where it turns.<br><br>You also read a lot about soil.</div>
+            <div style="height:1px;background:linear-gradient(to right,rgba(181,171,252,.35),transparent)"></div>
+            <div style="display:flex;gap:16px">
+              <div><div style="font-size:17px;font-weight:500">11</div><div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(243,245,254,.45);font-weight:600">notes</div></div>
+              <div><div style="font-size:17px;font-weight:500">48m</div><div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(243,245,254,.45);font-weight:600">spoken</div></div>
+              <div><div style="font-size:17px;font-weight:500">3</div><div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(243,245,254,.45);font-weight:600">threads</div></div>
+            </div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Why</div>
+            <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">Every work tool recaps you with bullets and counts, because work wants extractable items. A personal week isn't a set of items — it's a shape. Prose can say <em>you'd stopped arguing with it</em>; a bullet list structurally cannot.</div>
+            <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">This is also the format that survives being an email digest untouched, which you asked for. The prompt should forbid advice — it observes, it doesn't coach.</div>
+            <div style="margin-top:auto;font-size:12px;line-height:1.6;color:rgba(233,233,237,.4);text-wrap:pretty">Risk: prose is where an LLM's tone gets syrupy fastest. Cap it at 120 words and ban the word "journey".</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="1e" style="display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 Inter,system-ui;color:rgba(233,233,237,.5);max-width:640px">
+          <a href="#1e" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(145,132,217,.2);color:#b5abfc;border-radius:5px;text-decoration:none;flex:none">1e</a>
+          <span><strong style="color:#e9e9ed;font-weight:500">Navigation</strong> — drop the tab bar. One screen, a held record button, and a year-calendar you pull down to.</span>
+        </div>
+        <div style="width:640px;border-radius:12px;background:#161826;box-shadow:0 0 0 1px #3f424d;padding:24px 26px;display:flex;gap:34px">
+          <div style="width:236px;flex:none;display:flex;flex-direction:column;gap:14px">
+            <div style="border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:15px">
+              <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600;margin-bottom:11px">August</div>
+              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px">
+                <sc-for list="{{ heat }}" as="d" hint-placeholder-count="35">
+                  <div style="aspect-ratio:1;border-radius:3px;background:{{ d.c }}"></div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;margin-top:12px;font-size:10.5px;color:rgba(233,233,237,.4)">
+                <span>quiet</span>
+                <span style="flex:1;height:4px;border-radius:2px;background:linear-gradient(to right,#232532,#3f424d,#5d5294,#9184d9)"></span>
+                <span>full</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;border-radius:12px;background:#232532;box-shadow:0 0 0 1px #3f424d;padding:12px 14px">
+              <div style="width:44px;height:44px;border-radius:50%;background:#9184d9;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 4px 18px rgba(145,132,217,.35)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#161826" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="11" rx="3" fill="#161826" stroke="none"></rect><path d="M5 11a7 7 0 0014 0"></path><path d="M12 18v3"></path></svg>
+              </div>
+              <div style="font-size:12.5px;line-height:1.5;color:rgba(233,233,237,.62);text-wrap:pretty">Hold to talk, release to keep. Swipe up while holding to throw it away.</div>
+            </div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,233,237,.4);font-weight:600">Why</div>
+            <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">Five tabs is the shape of an app with a product team. A notebook has one surface. Recaps become a card in the stream on the evening they arrive, search is a pull-down, settings hides behind a long-press on the calendar — every destination reachable, none of them permanently occupying the bottom of the screen.</div>
+            <div style="font-size:13px;line-height:1.7;color:rgba(233,233,237,.62);text-wrap:pretty">The year heat-map is doing real work here: it's the only affordance in any of these options that shows you the <em>habit</em> rather than the contents, and habit is the thing a personal notebook lives or dies on.</div>
+            <div style="margin-top:auto;font-size:12px;line-height:1.6;color:rgba(233,233,237,.4);text-wrap:pretty">Hold-to-talk is the single riskiest call: it's wonderful one-handed and terrible for a nine-minute note. Would need a lock-slide, like a voice memo in a chat app.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p style="margin:34px 0 0;font:12.5px/1.6 Inter,system-ui;color:rgba(233,233,237,.45)">Try next: "build <a href="#1b">1b</a> into the prototype" · "combine <a href="#1c">1c</a>'s orb with <a href="#1a">1a</a>'s transcript" · "show me <a href="#1e">1e</a> as a full interactive screen" · "draft the GitHub README and API structure"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:1100}}">
+const NOTES = [
+  { id:'garden', title:"My father's garden, and the thing about rows", preview:"Walking past the allotments and it hit me why he planted in rows even when it wasted space — it wasn't about yield.", time:'7:42 AM', dur:'4:18', folder:'Walks', isVoice:true,
+    transcript:"Walking past the allotments on Wren Street and it hit me why my father planted in rows even when it wasted half the bed. It wasn't about yield. He grew up with his own father doing it and the row was the inheritance, not the vegetables. I've been thinking about that with the writing thing too — that some of what I do is just the shape I was handed, and I keep trying to optimise a shape that was never about efficiency in the first place. I don't think that's bad. I think I just want to know which parts I picked and which parts I inherited.",
+    summary:[{t:"You worked out that your father's insistence on planting in rows was inherited practice, not agronomy — the form was the point."},{t:"You extended that to your own writing habits, and to the question of which of your methods you actually chose."},{t:"You landed somewhere kind about it: not wanting to change it, just wanting to know which is which."}],
+    threads:[{t:'Your father'},{t:'Writing'},{t:'Inheritance'}] },
+  { id:'soil', title:"Soil book — the chapter on fungal networks", preview:"Reading notes. The mycorrhizal stuff is much stranger than the popular version of it suggests.", time:'11:15 AM', dur:'2:40', folder:'Reading', isVoice:true,
+    transcript:"Chapter four. The mycorrhizal networks aren't the friendly internet everyone describes — a lot of it is parasitic or at best a rough trade. Trees do move carbon but the fungi are taking a cut and sometimes taking the lot. Note to self: the popular version flattened this into a nice story and I fell for it for about two years.",
+    summary:[{t:"Chapter four complicates the 'wood wide web' story you'd absorbed — the exchange is often parasitic, not cooperative."},{t:"You flagged that you'd believed the simplified version for about two years."}],
+    threads:[{t:'Soil'},{t:'Things I got wrong'}] },
+  { id:'sister', title:"Bus home. Something shifted about Kate.", preview:"I stopped rehearsing the argument. Made a plan instead.", time:'6:31 PM', dur:'6:02', folder:'Reflections', isVoice:true,
+    transcript:"On the bus. I've been running the same argument with Kate in my head all week and today I just didn't. I think because I finally admitted I'm not going to win it and I don't actually want to win it. What I want is to see her more. So: call on Sunday, don't mention the house, ask about the boys. That's it. That's the whole plan.",
+    summary:[{t:"You stopped rehearsing the argument with Kate — you realised winning it isn't what you want."},{t:"What you actually want is to see her more often."},{t:"You made a concrete plan: call Sunday, don't raise the house, ask about the boys."}],
+    threads:[{t:'Kate'},{t:'Reflections'}] },
+  { id:'idea', title:"Typed — three lines about the fence", preview:"Cheaper to replace the whole run than to keep patching. Ask Dev who he used.", time:'8:05 PM', dur:'3 lines', folder:'Odds & ends', isVoice:false,
+    transcript:"Cheaper to replace the whole run than keep patching it.\nAsk Dev who he used.\nDo it before the wet weather.",
+    summary:[{t:"You've decided replacing the whole fence run beats patching it again."},{t:"You want it done before the wet weather."},{t:"Third time this month you've meant to ask Dev and haven't."}],
+    threads:[{t:'The fence'},{t:'Odds & ends'}] }
+];
+
+NOTES.push(
+  { id:'letter', title:'Draft of the letter I probably won\'t send', preview:"Typed at the kitchen table. Three paragraphs, and the third one is the only honest one.", time:'Yesterday, 10:40 PM', dur:'340 words', folder:'Written', isVoice:false, local:true,
+    transcript:"I've started this four times.\n\nWhat I want to say is that the house was never the point, and I think you know that, and I think I've let it stand in for everything else for about two years now because it's easier to be angry about a building.\n\nThe honest paragraph: I miss you. That's the whole letter. Everything above this line is scaffolding.",
+    summary:[{t:"A letter you drafted and didn't send — the house standing in for something else for two years."},{t:"You named the honest version in the last paragraph: you miss her."},{t:"You called everything above it scaffolding, which is usually your tell that you already know the answer."}],
+    threads:[{t:'Kate'},{t:'Written'}] },
+  { id:'commonplace', title:'Commonplace book — three lines from the soil book', preview:"Copied out by hand because I wanted to slow down enough to actually read them.", time:'Tue, 9:12 PM', dur:'120 words', folder:'Written', isVoice:false, local:true,
+    transcript:"\"The exchange is rarely equal, and equality was never the arrangement.\"\n\n\"A forest is not a community. It is a negotiation.\"\n\n\"Roots do not reach. They are recruited.\"\n\nAll three are about the same thing and I want to steal the last one for something.",
+    summary:[{t:"Three lines copied out from the soil book, all circling the same idea: exchange without equality."},{t:"You flagged the third — 'roots do not reach, they are recruited' — as one you want to use somewhere."}],
+    threads:[{t:'Reading'},{t:'Written'}] }
+);
+
+const THREADS = [
+  { id:'kate', name:'Kate', count:14, since:'March', last:'Yesterday',
+    arc:"It started as the house. Around June it stopped being about the house. Last week you made a plan.",
+    notes:[{t:'Draft of the letter I probably won\'t send', d:'Yesterday', dot:'#9184d9'},
+           {t:'Bus home. Something shifted about Kate.', d:'6 Aug', dot:'#9184d9'},
+           {t:'The house, again', d:'21 Jun', dot:'#5d5294'},
+           {t:'Dad on the phone — he asked after her', d:'12 May', dot:'#423a6a'},
+           {t:'First mention', d:'14 Mar', dot:'#423a6a'}] },
+  { id:'father', name:'Your father', count:9, since:'February', last:'Today',
+    arc:"Nearly always on a walk, and nearly always about inherited habits rather than about him.",
+    notes:[{t:"My father's garden, and the thing about rows", d:'Today', dot:'#9184d9'},
+           {t:'The way he answered the phone', d:'2 Aug', dot:'#5d5294'},
+           {t:'Rows again — I keep coming back to this', d:'19 Jul', dot:'#5d5294'},
+           {t:'First mention', d:'8 Feb', dot:'#423a6a'}] },
+  { id:'reading', name:'Reading', count:22, since:'January', last:'Today',
+    arc:"Steady, unemotional, and the only thread you keep without any feeling attached to it.",
+    notes:[{t:'Soil book — the chapter on fungal networks', d:'Today', dot:'#9184d9'},
+           {t:'Commonplace book — three lines', d:'Tue', dot:'#9184d9'},
+           {t:'Started the soil book', d:'28 Jul', dot:'#5d5294'}] },
+  { id:'fence', name:'The fence', count:4, since:'June', last:'Today',
+    arc:"Unresolved. You have now meant to call Dev three times.",
+    notes:[{t:'Typed — three lines about the fence', d:'Today', dot:'#9184d9'},
+           {t:'The back garden, eventually', d:'Mon', dot:'#5d5294'},
+           {t:'Fence panel came down again', d:'14 Jun', dot:'#423a6a'}] }
+];
+
+const WEEKS = [
+  { label:'This week', kicker:'Sunday, from your week',
+    prose:"You recorded eleven times this week, and nine of them were outside.\n\nMonday and Tuesday you were turning over the same worry about your sister. By Thursday you'd stopped arguing with it and started making a plan — the note from the bus is the one where it turns, and the letter you drafted the next night says it more plainly than any of the spoken ones did.\n\nYou also read a lot about soil.",
+    stats:[{v:'11',l:'notes'},{v:'48m',l:'spoken'},{v:'3',l:'threads'}],
+    sectionLabel:'Threads running through the week', carryLabel:'Carrying into next week',
+    threads:[
+      {name:'Kate', count:'4 notes, Mon–Thu', body:"The clearest arc of your week: a worry on Monday, an argument you kept rehearsing, then a plan on Thursday. You sounded lighter after."},
+      {name:'Your father', count:'3 notes', body:"He came up on every walk past the allotments. Twice about inherited habits rather than about him directly."},
+      {name:'Reading', count:'3 notes', body:"Two chapters in and already revising things you thought you knew. The only thread with no feeling attached to it."}],
+    carry:[{t:"Sunday's call with Kate."},{t:"Finish the soil chapter — you stopped at four."},{t:"Write the rows idea properly. Third week you've said it."}] },
+  { label:'27 Jul', kicker:'Sunday, 27 July',
+    prose:"A thinner week — six notes, and four of them under a minute.\n\nMost of it was logistics: the fence, the car, a list for the shop. The one that wasn't was Wednesday evening, where you talked for eleven minutes about your father's hands and then didn't mention him again all week.\n\nYou started the soil book on the Monday.",
+    stats:[{v:'6',l:'notes'},{v:'21m',l:'spoken'},{v:'2',l:'threads'}],
+    sectionLabel:'Threads running through the week', carryLabel:'Carrying into next week',
+    threads:[
+      {name:'Your father', count:'1 note, Wed', body:"Eleven minutes, and the longest note you'd made in a month. You haven't returned to it since."},
+      {name:'The fence', count:'2 notes', body:"Mentioned twice, resolved neither time. This is where 'ask Dev' first appears."}],
+    carry:[{t:"Ask Dev about the fence."},{t:"The soil book — you'd just started."}] },
+  { label:'20 Jul', kicker:'Sunday, 20 July',
+    prose:"Nine notes, almost all of them in the car.\n\nThis was the week the argument with Kate was loudest — five separate notes rehearsing it, each one a little more tired than the last. Nothing resolved. You did note on Friday that you were bored of your own position, which reads now like the beginning of the change.\n\nOne note about rows, which you said you'd write up properly.",
+    stats:[{v:'9',l:'notes'},{v:'52m',l:'spoken'},{v:'2',l:'threads'}],
+    sectionLabel:'Threads running through the week', carryLabel:'Carrying into next week',
+    threads:[
+      {name:'Kate', count:'5 notes', body:"The loudest week of this thread. Rehearsal without movement, until Friday's note where you said you were bored of your own argument."},
+      {name:'Your father', count:'1 note', body:"Rows again. You said you'd write it up properly."}],
+    carry:[{t:"Write the rows idea properly. First time you said it."},{t:"Stop rehearsing the Kate argument."}] }
+];
+
+const FIRSTWEEK = {
+  label:'This week', kicker:'Sunday · your first one',
+  prose:"Four notes, which isn't many, so this will be short.\n\nTwo of them were about your father — the garden on Thursday morning, and the way he plants in rows. You didn't set out to talk about him either time; both started as something else.\n\nThe other two were a book and a fence.\n\nI'll have more to say next week.",
+  stats:[{v:'4',l:'notes'},{v:'13m',l:'spoken'},{v:'—',l:'threads'}],
+  sectionLabel:'Starting to notice', carryLabel:'You said you would',
+  threads:[{name:'Your father', count:'2 notes', body:"Came up twice without you meaning it to. Too early to call it a thread, but I'm watching it."}],
+  carry:[{t:"Write the rows idea properly."},{t:"Ask Dev about the fence."}]
+};
+
+const ASKS = [
+  { q:'What do I keep meaning to do and never do?',
+    a:"Three things, and you've said all of them more than twice.\n\nCalling Dev about the fence — first in June, again on Monday, again today. Writing up the idea about rows properly; you've said \"I'll do this properly later\" three weeks running. And finishing the soil book, which you stopped at chapter four on the 28th.\n\nThe fence is the only one with a deadline attached. You said \"before the wet weather.\"",
+    src:['Typed — three lines about the fence','Rows again','Started the soil book'] },
+  { q:'When did I stop being angry about the house?',
+    a:"Around the 21st of June you were still arguing it. By the 6th of August you weren't.\n\nThe note from the bus is where it turns — you said you'd finally admitted you weren't going to win it and didn't actually want to. In the letter you drafted yesterday you put it more plainly: the house was standing in for something else, and had been for about two years.",
+    src:['Bus home. Something shifted about Kate.','Draft of the letter','The house, again'] },
+  { q:'What was I reading in the spring?',
+    a:"Mostly essays, and you didn't like many of them.\n\nThe soil book started on the 28th of July, so that's later. Before it you had a run of three books between March and May that you abandoned — you noted each time that you'd got about forty pages in.",
+    src:['Started the soil book','Forty pages again'] }
+];
+
+const DICT = "What I want is to see her more, and every version of this letter that argues the point is a version that doesn't say that.";
+
+const FOLDERS = ['All', 'Written', 'Walks', 'Reflections', 'Reading', 'Odds & ends'];
+
+const RECAPS = {
+  day: {
+    kicker: 'Wednesday, 5 August · evening',
+    headline: "Three notes, and all of them were you talking yourself out of an argument.",
+    sectionLabel: 'What you came back to',
+    carryLabel: 'Worth keeping',
+    stats: [{v:'3',l:'notes'},{v:'12m',l:'spoken'},{v:'2',l:'threads'}],
+    threads: [
+      {name:'Kate', count:'2 notes', body:"You went from rehearsing what you'd say to deciding you don't want to say it. The bus note is where it turns."},
+      {name:'The fence', count:'1 note', body:"Practical, unresolved. You've now mentioned Dev twice this month without calling him."}
+    ],
+    carry: [{t:"Call Kate on Sunday — the boys, not the house."},{t:"Text Dev about the fence before the weather turns."},{t:"You said 'I'll write this properly later' about the rows idea. You didn't."}]
+  },
+  week: {
+    kicker: 'Sunday, from your week',
+    prose: "You recorded eleven times this week, and nine of them were outside.\n\nMonday and Tuesday you were turning over the same worry about your sister. By Thursday you'd stopped arguing with it and started making a plan — the note from the bus is the one where it turns, and the letter you drafted the next night says it more plainly than any of the spoken ones did.\n\nYou also read a lot about soil.",
+    headline: "Eleven notes, nine of them outdoors. The good ones all happened while you were moving.",
+    sectionLabel: 'Threads running through the week',
+    carryLabel: 'Carrying into next week',
+    stats: [{v:'11',l:'notes'},{v:'48m',l:'spoken'},{v:'3',l:'threads'}],
+    threads: [
+      {name:'Kate', count:'4 notes, Mon–Thu', body:"The clearest arc of your week: a worry on Monday, an argument you kept rehearsing, then a plan on Thursday. You sounded lighter after."},
+      {name:'Your father', count:'3 notes', body:"He came up on every walk past the allotments. Twice about inherited habits rather than about him directly."},
+      {name:'Soil & reading', count:'3 notes', body:"You're two chapters in and already revising things you thought you knew. This is the only thread with no feeling attached to it."}
+    ],
+    carry: [{t:"Sunday's call with Kate."},{t:"Finish the soil chapter — you stopped at four."},{t:"Write the rows idea properly. Third week you've said it."}]
+  }
+};
+
+class Component extends DCLogic {
+  state = { screen:'today', folder:'All', noteId:'garden', playing:false, summarizing:false,
+    summarized:{garden:true, soil:true, sister:true, idea:false, letter:true, commonplace:false},
+    era:'full', weekIdx:0, t:0, drive:'gdrive', local:{idea:true, letter:true, commonplace:true},
+    draftFolder:'Written', draftSync:true, dictating:false, dictT:0, dictKept:false,
+    threadId:'kate', askIdx:null, asking:false,
+    tog:{weekly:true, threads:true, gist:true, ask:true} };
+
+  pushNote = () => { const id = this.state.noteId;
+    this.setState(s => ({ local: {...s.local, [id]: !s.local[id]} })); };
+
+  componentDidMount() { this.iv = setInterval(() => this.setState(s =>
+    ({t:s.t+1, dictT: s.dictating ? s.dictT+1 : s.dictT})), 110); }
+  componentWillUnmount() { clearInterval(this.iv); }
+
+  go = (screen) => () => this.setState({ screen });
+
+  renderVals() {
+    const s = this.state, sc = s.screen;
+    const era = s.era;
+    const day1 = era === 'day1', wk1 = era === 'week1', full = era === 'full';
+    const eraNotes = day1 ? NOTES.slice(0,1) : wk1 ? NOTES.slice(0,4) : NOTES;
+    const eraThreads = day1 ? [] : wk1 ? THREADS.slice(0,2).map(t =>
+      ({...t, count:2, since:'this week', arc:"Two notes so far. Too early to say what this is yet — I'll tell you when it has a shape."})) : THREADS;
+
+    const note = NOTES.find(n => n.id === s.noteId) || NOTES[0];
+    const summarized = !!s.summarized[note.id];
+    const summaryLines = (note.summary && note.summary.length) ? note.summary
+      : [{t:"A short note — there wasn't much here to read back."}];
+    const filtered = s.folder === 'All' ? eraNotes : eraNotes.filter(n => n.folder === s.folder);
+
+    const secs = 74 + Math.floor(s.t / 9);
+    const clock = String(Math.floor(secs/60)).padStart(2,'0') + ':' + String(secs%60).padStart(2,'0');
+    const bars = Array.from({length:40}, (_,i) => ({
+      h: 6 + Math.abs(Math.sin((s.t*0.32 + i*0.55)) * Math.cos(i*0.21 + s.t*0.09)) * 62
+    }));
+    const staticBars = Array.from({length:32}, (_,i) => ({
+      h: 4 + Math.abs(Math.sin(i*1.7) * Math.cos(i*0.6)) * 20,
+      c: s.playing && i < 11 ? '#b5abfc' : 'rgba(145,132,217,.4)'
+    }));
+
+    const FULL = "and it hit me why my father planted in rows even when it wasted half the bed — it wasn't about yield, it was";
+    const words = FULL.split(' ');
+    const liveText = "Walking past the allotments on Wren Street " + words.slice(0, 1 + (Math.floor(s.t/5) % (words.length+1))).join(' ');
+
+    const icon = (d, on) => React.createElement('svg', {width:21, height:21, viewBox:'0 0 24 24', fill:'none',
+      stroke: on ? '#b5abfc' : 'rgba(233,233,237,.42)', strokeWidth:1.9, strokeLinecap:'round', strokeLinejoin:'round'},
+      React.createElement('path', {d}));
+
+    const tabDefs = [
+      {k:'today', label:'Today', d:'M4 5.5h16v15H4zM4 10h16M8 3v4M16 3v4'},
+      {k:'search', label:'Ask', d:'M11 4a7 7 0 100 14 7 7 0 000-14zM16.5 16.5L21 21'},
+      {k:'rec'},
+      {k:'recaps', label:'Weekly', d:'M4 5h7a2 2 0 012 2v13a2 2 0 00-2-2H4zM20 5h-7a2 2 0 00-2 2v13a2 2 0 012-2h7z'},
+      {k:'settings', label:'You', d:'M12 12a4 4 0 100-8 4 4 0 000 8zM5 21a7 7 0 0114 0'}
+    ];
+    const tabs = tabDefs.map(t => t.k === 'rec'
+      ? { isRec:true, isTab:false, go:this.go('record'), color:'transparent', label:'', icon:null }
+      : { isRec:false, isTab:true, go:this.go(t.k), label:t.label,
+          color: sc === t.k ? '#b5abfc' : 'rgba(233,233,237,.42)', icon: icon(t.d, sc === t.k) });
+
+    const on = '#b5abfc', off = 'rgba(233,233,237,.55)';
+    const openNote = (id) => () => this.setState({screen:'note', noteId:id});
+    const findNote = (title) => { const m = NOTES.find(n =>
+      n.title.toLowerCase().slice(0,18) === title.toLowerCase().slice(0,18)); return m ? m.id : null; };
+
+    const drives = [
+      {k:'gdrive', name:'Google Drive', sub:'Murmur/ — 214 notes, synced 4 min ago'},
+      {k:'dropbox', name:'Dropbox', sub:'Same folder layout'},
+      {k:'onedrive', name:'OneDrive', sub:'Same folder layout'},
+      {k:'local', name:'Just this iPhone', sub:'Nothing leaves the device. Export by hand.'}
+    ].map(d => ({...d, on: s.drive === d.k, pick: () => this.setState({drive: d.k}),
+      ring: s.drive === d.k ? '#9184d9' : 'rgba(233,233,237,.25)',
+      fill: s.drive === d.k ? '#9184d9' : 'transparent'}));
+
+    const toggles = [
+      {k:'weekly', name:'A letter on Sunday', sub:'Your week, written back to you as prose'},
+      {k:'threads', name:'Notice recurring threads', sub:'Groups notes that keep circling the same thing'},
+      {k:'gist', name:'The gist, on longer notes', sub:'Skipped on anything under a minute — short notes are their own summary'},
+      {k:'ask', name:'Let me ask my notes questions', sub:'Searching happens on this phone; only the notes it finds are read'}
+    ].map(t => ({...t, flip: () => this.setState(st => ({tog:{...st.tog, [t.k]: !st.tog[t.k]}})),
+      track: s.tog[t.k] ? '#9184d9' : '#3f424d', just: s.tog[t.k] ? 'flex-end' : 'flex-start'}));
+
+    const heat = Array.from({length:35}, (_,i) => {
+      const v = (Math.sin(i*1.9)*Math.cos(i*0.7)+1)/2;
+      const c = i > 30 ? '#232532' : v > 0.78 ? '#9184d9' : v > 0.55 ? '#5d5294' : v > 0.3 ? '#423a6a' : '#2b2741';
+      return { c };
+    });
+
+    return {
+      isWrite: sc==='write', goWrite: this.go('write'),
+      draftTitle: 'Things I keep meaning to say to Kate',
+      draftTitleColor: 'rgba(233,233,237,.92)',
+      draftBody: "That the house was never the point.\n\nThat I've been angry at a building because it's easier than being",
+      draftSaveState: 'Kept on this iPhone as you type — no connection needed',
+      draftFolders: ['Written','Reflections','Reading','Odds & ends'].map(f => ({ label:f,
+        pick: () => this.setState({draftFolder:f}),
+        bg: s.draftFolder===f ? 'rgba(145,132,217,.16)' : 'transparent',
+        border: s.draftFolder===f ? '#9184d9' : 'rgba(233,233,237,.14)',
+        fg: s.draftFolder===f ? '#b5abfc' : 'rgba(233,233,237,.6)' })),
+      toggleDraftSync: () => this.setState(st => ({draftSync: !st.draftSync})),
+      draftSyncTitle: s.draftSync ? 'Copy to Google Drive' : 'Keep on this phone only',
+      draftSyncSub: s.draftSync ? 'Written as a .md file, next to your voice notes' : "Nothing leaves the device. You can push it up later.",
+      draftSyncTrack: s.draftSync ? '#9184d9' : '#3f424d',
+      draftSyncJust: s.draftSync ? 'flex-end' : 'flex-start',
+      composeTools: [{t:'Aa'},{t:'List'},{t:'Quote'}],
+      dictating: s.dictating, notDictating: !s.dictating,
+      startDictate: () => this.setState({dictating:true, dictT:0}),
+      stopDictate: () => this.setState({dictating:false, dictKept:true}),
+      dictatedText: s.dictating
+        ? ' angry at her. ' + DICT.split(' ').slice(0, Math.floor(s.dictT/4) % (DICT.split(' ').length+1)).join(' ')
+        : (s.dictKept ? ' angry at her. ' + DICT : ''),
+      dictatedColor: s.dictating ? 'rgba(181,171,252,.95)' : 'rgba(233,233,237,.8)',
+      dictClock: '0:' + String(8 + Math.floor(s.dictT/9)).padStart(2,'0'),
+      dictBars: Array.from({length:26}, (_,i) => ({
+        h: 3 + Math.abs(Math.sin(s.dictT*0.4 + i*0.6) * Math.cos(i*0.3)) * 17 })),
+
+
+      isIntro: sc==='intro', isToday: sc==='today', isRecording: sc==='record',
+      isNote: sc==='note', isRecaps: sc==='recaps', isSearch: sc==='search', isSettings: sc==='settings',
+      goToday: this.go('today'), goRecaps: this.go('recaps'), goSearch: this.go('search'), goIntro: this.go('intro'),
+      introPoints: [
+        {n:'01', t:'Spoken or typed, it all lands in the same place. Transcription happens on your iPhone.'},
+        {n:'02', t:'Everything is kept on the device first, then copied to your own Drive as files you can still read without this app.'},
+        {n:'03', t:"It's open source. Nothing here is a subscription to your own thoughts."}
+      ],
+      todayGreeting: (() => {
+        if (s.folder !== 'All') {
+          if (!filtered.length) return 'Nothing in ' + s.folder + ' yet.';
+          const n = filtered.length;
+          return n + (n === 1 ? ' note' : ' notes') + ' in ' + s.folder + '.';
+        }
+        if (day1) return 'Your first note. That\u2019s the whole app, really.';
+        if (wk1) return 'Four notes in. Two of them mention your father.';
+        const today = eraNotes.filter(x => /AM|PM/.test(x.time) && !/,/.test(x.time)).length;
+        if (!today) return 'Nothing yet today.';
+        if (today === 1) return 'One note today, first thing.';
+        return 'Four notes today. Two of them about the same walk.';
+      })(),
+      eraDay1: day1, eraWeek1: wk1, eraFull: full, notDay1: !day1,
+      showRecapCard: full,
+      eraChips: [{k:'day1',l:'Day one'},{k:'week1',l:'First week'},{k:'full',l:'Four months in'}]
+        .map(e => ({ label:e.l, pick: () => this.setState({era:e.k, folder:'All', screen:'today'}),
+          bg: era===e.k ? 'rgba(145,132,217,.16)' : 'transparent',
+          border: era===e.k ? '#9184d9' : 'rgba(233,233,237,.14)',
+          fg: era===e.k ? '#b5abfc' : 'rgba(233,233,237,.6)' })),
+      listHeading: s.folder === 'All' ? 'Everything, newest first' : s.folder,
+      folders: FOLDERS.filter(f => f === 'All' || eraNotes.some(n => n.folder === f))
+        .map(f => ({ label:f, pick: () => this.setState({folder:f}),
+        bg: s.folder===f ? 'rgba(145,132,217,.16)' : 'transparent',
+        border: s.folder===f ? '#9184d9' : 'rgba(233,233,237,.14)',
+        fg: s.folder===f ? '#b5abfc' : 'rgba(233,233,237,.6)' })),
+      notes: filtered.map(n => ({...n, isText: !n.isVoice, isLocal: !!s.local[n.id],
+        open: () => this.setState({screen:'note', noteId:n.id}) })),
+      pushNote: this.pushNote,
+      syncLabel: s.local[note.id] ? 'on phone · push up' : 'on Drive',
+      syncFg: s.local[note.id] ? '#b5abfc' : 'rgba(233,233,237,.42)',
+      syncBorder: s.local[note.id] ? 'rgba(145,132,217,.4)' : 'rgba(233,233,237,.14)',
+
+      clock, bars, liveText,
+      togglePause: () => {}, addMark: () => {},
+      stopRec: () => this.setState({screen:'note', noteId:'garden'}),
+
+      note: {...note, summary: summaryLines,
+        threads: (note.threads || []).map(x => { const m = THREADS.find(th =>
+          th.name.toLowerCase() === x.t.toLowerCase());
+          return {...x, open: m ? () => this.setState({screen:'thread', threadId:m.id}) : this.go('search')}; })},
+      staticBars, hasAudio: !!note.isVoice,
+      playing: s.playing, notPlaying: !s.playing,
+      togglePlay: () => this.setState(st => ({playing: !st.playing})),
+      summarizing: s.summarizing, hasSummary: summarized && !s.summarizing,
+      noSummary: !summarized && !s.summarizing,
+      summaryMeta: summarized ? 'Claude · a moment ago' : 'not yet',
+      summarize: () => { this.setState({summarizing:true});
+        setTimeout(() => this.setState(st => ({summarizing:false,
+          summarized:{...st.summarized, [note.id]:true}})), 1400); },
+
+      recapReady: !day1, recapWaiting: day1,
+      recapWaitCopy: "Your first letter arrives on Sunday. It'll be short — there isn't much of a week yet — and they get better as the notebook fills up.",
+      recap: day1 ? WEEKS[0] : wk1 ? FIRSTWEEK : WEEKS[s.weekIdx],
+      showWeekNav: full,
+      weekNav: WEEKS.map((w, i) => ({ label: w.label, pick: () => this.setState({weekIdx:i}),
+        bg: s.weekIdx===i ? 'rgba(145,132,217,.16)' : 'transparent',
+        border: s.weekIdx===i ? '#9184d9' : 'rgba(233,233,237,.14)',
+        fg: s.weekIdx===i ? on : 'rgba(233,233,237,.6)' })),
+
+      results: (() => {
+        const all = [
+          {title:"My father's garden, and the thing about rows", snippet:"…past the allotments and it hit me why he planted in rows…", time:'Today, 7:42 AM', id:'garden', era:'day1'},
+          {title:'Soil book — fungal networks', snippet:"…the garden version of this story is much too tidy…", time:'Today, 11:15 AM', id:'soil', era:'week1'},
+          {title:'The back garden, eventually', snippet:"…if we do the fence first the garden can wait until spring…", time:'Mon, 9:04 PM', id:'idea', era:'full'},
+          {title:'Dad on the phone', snippet:"…he asked about the garden before he asked about me, which is…", time:'27 Jul, 6:12 PM', id:'garden', era:'full'}
+        ];
+        const allow = day1 ? ['day1'] : wk1 ? ['day1','week1'] : ['day1','week1','full'];
+        return all.filter(r => allow.includes(r.era))
+          .map(r => ({...r, open: () => this.setState({screen:'note', noteId:r.id}) }));
+      })(),
+
+      isThread: sc==='thread',
+      threadView: (() => { const t = THREADS.find(x => x.id === s.threadId) || THREADS[0];
+        return {...t, notes: t.notes.map(n => { const id = findNote(n.t);
+          return {...n, open: id ? openNote(id) : () => {}, color: id ? '#e9e9ed' : 'rgba(233,233,237,.62)'}; })}; })(),
+      threadList: eraThreads.map(t => ({...t, sub: t.count + ' notes · since ' + t.since,
+        open: () => this.setState({screen:'thread', threadId:t.id}) })),
+      hasThreads: eraThreads.length > 0, noThreads: eraThreads.length === 0,
+      threadsEmptyCopy: day1
+        ? "Nothing yet. After a week or so I'll start noticing what you keep coming back to, and they'll appear here on their own."
+        : "Two forming. They need a few more notes before they say anything useful.",
+
+      askCanAsk: !day1, askTooEarly: day1, hasResults: !day1,
+      resultHeading: wk1 ? 'Notes matching "garden" · 2' : 'Notes matching "garden" · 4',
+      askIdleCopy: day1
+        ? "One note isn't much to ask questions of yet. Come back in a week — this gets useful somewhere around the fiftieth note."
+        : "A word finds notes. A question gets an answer — either way it's all your own words.",
+      askIsIdle: s.askIdx === null && !s.asking,
+      showResults: s.askIdx === null && !s.asking && !day1,
+      askThinking: s.asking,
+      askAnswered: s.askIdx !== null && !s.asking,
+      askQ: s.askIdx !== null ? ASKS[s.askIdx].q : '',
+      askA: s.askIdx !== null ? ASKS[s.askIdx].a : '',
+      askSrc: s.askIdx !== null ? ASKS[s.askIdx].src.map(t => { const id = findNote(t);
+        return {t, open: id ? openNote(id) : () => {}}; }) : [],
+      askSuggestions: ASKS.map((a, i) => ({ q: a.q,
+        run: () => { this.setState({asking:true, askIdx:null});
+          setTimeout(() => this.setState({asking:false, askIdx:i}), 1500); } })),
+      askReset: () => this.setState({askIdx:null, asking:false}),
+
+      drives, toggles, tabs, heat,
+      pendingLabel: (() => { const n = NOTES.filter(x => s.local[x.id]).length;
+        return n === 0 ? 'Everything is on Drive' : 'Push ' + n + ' note' + (n===1?'':'s') + ' up now'; })(),
+      pushAll: () => this.setState({local:{}}),
+
+      thread: [
+        {time:'7:42', title:"My father's garden", body:'Rows, inheritance, and which habits I actually chose.', dot:'#9184d9'},
+        {time:'11:15', title:'Soil book, ch. 4', body:'The fungal network story is much less friendly than advertised.', dot:'#5d5294'},
+        {time:'18:31', title:'Bus home', body:"Stopped rehearsing the argument with Kate. Made a plan instead.", dot:'#9184d9'},
+        {time:'20:05', title:'The fence', body:'Replace the whole run. Ask Dev.', dot:'#423a6a'}
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
