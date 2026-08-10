@@ -37,7 +37,7 @@ ios/Murmur/
   Intelligence/   prompts, proxy client, scheduling, on-device retrieval
   Threads/        thread index, arc generation
   UI/             screens — build to docs/DESIGN_SPEC.md
-proxy/            the stateless Claude proxy (~150 lines)
+proxy/            the stateless Claude proxy (~300 lines)
 docs/             ARCHITECTURE, CLAUDE_LAYER, DESIGN_SPEC, FILE_FORMAT, PRIVACY
 design/           Murmur.dc.html — the interactive design reference
 ```

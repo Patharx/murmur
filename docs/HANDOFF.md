@@ -42,7 +42,7 @@ every token. Where the HTML prototype and this documentation disagree, the docum
 | Sync engine | On device (Drive REST v3) | Build — hardest part |
 | Weekly recap generation | On device, scheduled Sunday | Build |
 | Ask — retrieval | On device (FTS5 + NLEmbedding) | Build |
-| Claude API access | Thin stateless proxy | Build — ~150 lines, stores nothing |
+| Claude API access | Thin stateless proxy | Build — ~300 lines, stores nothing |
 | Daily recap | — | **Cut.** ~75% of running cost, wrong cadence |
 | Email digest | — | **Cut permanently.** No address is ever collected |
 | Tags, streaks, sharing | — | **Rejected.** See DESIGN_SPEC §6 |

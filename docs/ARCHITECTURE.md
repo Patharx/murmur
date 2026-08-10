@@ -256,7 +256,7 @@ A single serverless function (Cloudflare Worker, Deno Deploy, Lambda — any of 
 4. Streams the response back.
 5. **Logs nothing. Stores nothing. Has no database.**
 
-~150 lines. It never persists note content — the request passes through memory and is gone. This is
+~300 lines. It never persists note content — the request passes through memory and is gone. This is
 the only piece of infrastructure in the product, and if it is breached the attacker gets an API key,
 not anyone's journal. That is exactly the liability profile you asked for.
 
@@ -357,7 +357,7 @@ murmur/
       Intelligence/       # prompt construction, proxy client, scheduling, on-device retrieval
       Threads/            # thread index, arc generation, thread screen
       UI/                 # screens — see DESIGN_SPEC.md
-  proxy/                  # the ~150-line stateless Claude proxy
+  proxy/                  # the ~300-line stateless Claude proxy
   docs/
     FILE_FORMAT.md        # §3 of this document, published — it is a public contract
     PRIVACY.md

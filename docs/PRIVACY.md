@@ -37,7 +37,7 @@ on-device search and on-device embeddings. Only the matches are sent — never y
 Requests to Anthropic pass through a small proxy so that an API key does not have to ship inside the
 app. It verifies you are a real user, forwards the request, and returns the response. It writes no
 logs of note content and has no database. Its full source is in `proxy/` in this repository — it is
-about 150 lines and you can read all of it.
+about 300 lines and you can read all of it.
 
 If you would rather not route through us at all, put your own Anthropic API key in Settings and the
 app will call the API directly. That path involves us not at all.
