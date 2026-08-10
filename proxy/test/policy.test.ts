@@ -28,12 +28,15 @@ describe('normaliseRequest', () => {
     expect(body).toEqual(input);
   });
 
-  it('allows the weekly recap and Ask model', () => {
-    expect(normaliseRequest({ ...gist(), model: 'claude-sonnet-5' }).model).toBe('claude-sonnet-5');
+  it('runs the weekly recap and Ask on the same model', () => {
+    const recap = { ...gist(), model: 'claude-haiku-4-5', max_tokens: 400 };
+    expect(normaliseRequest(recap).model).toBe('claude-haiku-4-5');
   });
 
-  it('refuses a model outside the two the app uses', () => {
+  it('refuses any model but Haiku, however capable', () => {
+    expect(rejection({ ...gist(), model: 'claude-sonnet-5' }).status).toBe(403);
     expect(rejection({ ...gist(), model: 'claude-opus-5' }).status).toBe(403);
+    expect(rejection({ ...gist(), model: 'claude-haiku-4-5-20251001' }).status).toBe(403);
   });
 
   it('clamps max_tokens rather than refusing the request', () => {

@@ -8,12 +8,13 @@
 import { ProxyError } from './errors';
 
 /**
- * Models the app is allowed to ask for.
+ * The only model the app is allowed to ask for.
  *
- * docs/CLAUDE_LAYER.md §1: Haiku for note gists and thread arcs, Sonnet for the
- * weekly recap and Ask. The cost table in §4 is calculated against these two.
+ * All four read-back jobs — note gist, weekly recap, thread arc and Ask — run
+ * on Haiku 4.5 (docs/CLAUDE_LAYER.md §1). Anything else is a 403, so a bug in
+ * the app cannot quietly start billing at a larger model's rates.
  */
-export const ALLOWED_MODELS = new Set(['claude-haiku-4-5', 'claude-sonnet-5']);
+export const ALLOWED_MODELS = new Set(['claude-haiku-4-5']);
 
 /**
  * Ceiling on `max_tokens`.

@@ -49,28 +49,31 @@ Every successful response carries `x-murmur-requests-remaining`, and Anthropic's
 
 ### What it will forward
 
-- **Models**: `claude-haiku-4-5` and `claude-sonnet-5` only — the two the
-  design calls for ([docs/CLAUDE_LAYER.md](../docs/CLAUDE_LAYER.md) §1). Anything
-  else is a 403.
+- **Models**: `claude-haiku-4-5` only. All four read-back jobs run on it
+  ([docs/CLAUDE_LAYER.md](../docs/CLAUDE_LAYER.md) §1). Anything else is a 403,
+  including a dated variant like `claude-haiku-4-5-20251001` — the alias is what
+  the app sends.
 - **`max_tokens`**: clamped to 4096. The largest documented value is 300, so
   this should never bind; it is there so a bug in the app can't run up a bill.
 - **`metadata`**: dropped. Anthropic's `metadata.user_id` would attach a user
   identifier to every request, and PRIVACY.md says only the text leaves the phone.
 - **Body size**: 1 MB.
 
-### Two things the client must get right
+### Two things worth knowing on the client side
 
-**Send `"thinking": {"type": "disabled"}` on every `claude-sonnet-5` request.**
-Sonnet 5 runs adaptive thinking when the field is omitted, which would spend
-thinking tokens on every weekly recap and every Ask, and the cost table in
-CLAUDE_LAYER.md §4 assumes none. Haiku 4.5 does not think unless asked, so gists
-and thread arcs are unaffected. The proxy deliberately does *not* set this for
-you — silently rewriting the request would be a worse surprise than a documented
-requirement.
+**Thinking is off unless you ask for it.** Haiku 4.5 does not think when the
+`thinking` field is omitted, which is what the cost table in CLAUDE_LAYER.md §4
+assumes. Leave the field out. (This is a real difference between model tiers —
+Sonnet 5 and the Opus models *do* think by default, so if the model ever changes,
+revisit this before the bill does.)
 
-**Cache the system block.** CLAUDE_LAYER.md §2 wants
-`cache_control: {"type": "ephemeral"}` on the shared system block, cached-prefix
-first. That is the app's job; the proxy forwards the body as-is.
+**Prompt caching will not fire, and that is fine.** CLAUDE_LAYER.md §2 asks for
+`cache_control: {"type": "ephemeral"}` on the shared system block. Haiku 4.5's
+minimum cacheable prefix is 4096 tokens and the system block in §3.1 is nowhere
+near that, so the marker is silently ignored — no error, just
+`cache_creation_input_tokens: 0`. Setting it anyway costs nothing and starts
+working by itself if the block ever grows, so the app may as well send it; just
+don't budget for the saving. The proxy forwards the body as-is either way.
 
 ## Deploying it
 

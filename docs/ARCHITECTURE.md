@@ -85,7 +85,7 @@ audio: 2026-08-06-0742-fathers-garden.m4a
 duration: 258
 title: My father's garden, and the thing about rows
 threads: [Your father, Writing, Inheritance]
-summary_model: claude-sonnet-4-6
+summary_model: claude-haiku-4-5
 summary_at: 2026-08-06T07:59:40+01:00
 ---
 

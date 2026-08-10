@@ -8,9 +8,9 @@ features the user has switched on.
 | Job | Trigger | Input | Output | Model |
 | --- | --- | --- | --- | --- |
 | Note gist | User taps "Read it back to me", or auto-on-save | One transcript, **only if over ~80 words** | 2–3 sentences + threads | Haiku |
-| Weekly recap | Local schedule, Sunday 09:00 | The week's note gists | 100–130 words of prose | Sonnet |
+| Weekly recap | Local schedule, Sunday 09:00 | The week's note gists | 100–130 words of prose | Haiku |
 | Thread arc | When a thread gains a note (debounced, max once/day/thread) | That thread's gists | One or two sentences | Haiku |
-| Ask | User asks a question | Question + top ~10 retrieved notes | Prose answer + sources | Sonnet |
+| Ask | User asks a question | Question + top ~10 retrieved notes | Prose answer + sources | Haiku |
 
 **There is no daily recap.** It was cut deliberately: it was ~75% of the running cost, and once a
 week is the right cadence for a reflective notebook — a daily read-back of three notes has little to
@@ -29,7 +29,12 @@ and the writing is better because the per-note pass already discarded the noise.
 
 Cache the system block (§3.1) with `cache_control: {"type": "ephemeral"}`. It is identical across
 every gist call and every weekly, and gist calls cluster (a user finishes a walk, three notes get
-processed together). Roughly 15% off the total.
+processed together).
+
+**On Haiku 4.5 this will not actually fire.** Its minimum cacheable prefix is 4096
+tokens and the system block is nowhere near that, so the marker is ignored silently —
+no error, `cache_creation_input_tokens` simply stays 0. Send it anyway: it costs
+nothing and starts working by itself if the block ever grows. Do not budget the saving.
 
 Order the prompt cached-prefix-first: system block, then the per-note content. Do not interpolate
 anything variable into the system block — including the date, which is tempting and would break the
@@ -92,8 +97,10 @@ Write:
 No preamble, no heading, no closing line.
 ```
 
-Model: **Haiku**. This runs on every note and the task is genuinely easy. Escalate to Sonnet only
-if evaluation shows it failing on long, rambling notes.
+Model: **Haiku**. This runs on every note and the task is genuinely easy — and it is the
+model every other job here uses too. If evaluation ever shows it
+failing on long, rambling notes, that is a change to proxy/src/policy.ts as well as
+to this table.
 
 Max tokens 300. If the transcript exceeds ~15,000 words (about two hours of speech), summarise in
 two passes rather than truncating — truncation silently drops the end of a note, which is usually
@@ -140,7 +147,7 @@ it turned, by day. Mention what else was going on in a clause, not a paragraph.
 End on a fact, not a feeling. Do not offer advice or encouragement.
 ```
 
-Model: **Sonnet**. Hard cap 130 words — a long weekly recap does not get read, and length is where
+Model: **Haiku**. Hard cap 130 words — a long weekly recap does not get read, and length is where
 the tone goes wrong.
 
 ### 3.5 Thread arc
@@ -191,7 +198,7 @@ Do not give advice. Do not ask a follow-up question.
 End with SOURCES: the titles of the notes you actually drew on, at most four.
 ```
 
-Model: **Sonnet**. The sources line is not decoration — it is the thing that keeps this feature
+Model: **Haiku**. The sources line is not decoration — it is the thing that keeps this feature
 honest and keeps it feeling like a notebook rather than an oracle. Render each source as a tappable
 row that opens the note.
 
@@ -207,11 +214,11 @@ prompt caching.
 | Call | Frequency | Model | ~Cost each | Monthly |
 | --- | --- | --- | --- | --- |
 | Note gist | ~36/mo (gate removes ~30%) | Haiku | \$0.0007 | \$0.025 |
-| Weekly recap | 4/mo | Sonnet | \$0.020 | \$0.080 |
+| Weekly recap | 4/mo | Haiku | \$0.0067 | \$0.027 |
 | Thread arcs | ~15/mo | Haiku | \$0.0025 | \$0.038 |
-| Ask | ~6/mo | Sonnet | \$0.022 | \$0.132 |
+| Ask | ~6/mo | Haiku | \$0.0073 | \$0.044 |
 
-**~\$0.28/user/month for an engaged user; ~\$0.10 for a typical one.** Cutting the daily recap took
+**~\$0.13/user/month for an engaged user; ~\$0.05 for a typical one.** Cutting the daily recap took
 roughly 75% of the previous running cost out. Ask is now the largest single line, and it is the
 easiest to bound because it is user-initiated and bursty — most users will ask a handful of
 questions a month, not a handful a day.
@@ -222,7 +229,7 @@ questions a month they are the best user you have; eat it.
 
 ### 4.1 What this means for pricing
 
-At ~\$0.28/mo, \$25 net of Apple's 15% (\$21.25) covers roughly **six years**. Claim five. Model
+At ~\$0.13/mo, \$25 net of Apple's 15% (\$21.25) covers roughly **thirteen years**. Claim five. Model
 costs have fallen consistently and almost certainly will again, so understating is the safe
 direction — a user who gets eight years out of a "five year" claim is delighted, and the reverse is
 a support burden and a bad review.
