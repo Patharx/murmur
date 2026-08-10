@@ -1,0 +1,23 @@
+name = "murmur-proxy"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+
+# Requests per user per day. Generous on purpose — docs/ARCHITECTURE.md §7 says
+# to treat exceeding this as a bug report rather than an attack.
+[vars]
+DAILY_REQUEST_LIMIT = "200"
+
+# The Google OAuth client ID(s) the app's ID tokens are issued to. Comma-separated.
+# This is not a secret — it ships inside the iOS app — so it lives here rather
+# than in `wrangler secret`.
+# GOOGLE_CLIENT_IDS = "1234567890-abcdef.apps.googleusercontent.com"
+
+# The only thing this proxy stores: one integer per user per day, self-expiring.
+# Create it with:  wrangler kv namespace create RATE_LIMIT
+# then paste the id below.
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "PASTE_KV_NAMESPACE_ID_HERE"
+
+# ANTHROPIC_API_KEY is a secret and is never written to this file:
+#   wrangler secret put ANTHROPIC_API_KEY

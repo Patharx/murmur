@@ -1,0 +1,5 @@
+# Copy to .dev.vars for `wrangler dev`. .dev.vars is gitignored — never commit
+# a real key.
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_CLIENT_IDS=1234567890-abcdef.apps.googleusercontent.com
+DAILY_REQUEST_LIMIT=200
