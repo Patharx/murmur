@@ -208,28 +208,35 @@ failure mode this product is defined against.
 
 ## 4. Cost
 
-Per user, assuming an engaged one: 12 notes/week, ~700 words each. After the short-note gate and
-prompt caching.
+Per user, assuming an engaged one: 12 notes/week, ~700 words each. After the short-note gate strips
+out anything under ~80 words (§1). Prompt caching is not a factor here — it does not fire on Haiku
+(§2), so it buys nothing to net out.
+
+Worked from Haiku 4.5's real per-token price (\$1/\$5 per MTok, input/output) and each prompt's own
+word counts above, at roughly 1.3 tokens per word. This traces back to this document rather than
+being carried over from an earlier draft — if a prompt above changes, recompute the row it feeds.
 
 | Call | Frequency | Model | ~Cost each | Monthly |
 | --- | --- | --- | --- | --- |
-| Note gist | ~36/mo (gate removes ~30%) | Haiku | \$0.0007 | \$0.025 |
-| Weekly recap | 4/mo | Haiku | \$0.0067 | \$0.027 |
-| Thread arcs | ~15/mo | Haiku | \$0.0025 | \$0.038 |
-| Ask | ~6/mo | Haiku | \$0.0073 | \$0.044 |
+| Note gist | ~36/mo (gate removes ~30%) | Haiku | \$0.0017 | \$0.061 |
+| Weekly recap | 4/mo | Haiku | \$0.0022 | \$0.009 |
+| Thread arcs | ~15/mo | Haiku | \$0.0013 | \$0.020 |
+| Ask | ~6/mo | Haiku | \$0.0097 | \$0.058 |
 
-**~\$0.13/user/month for an engaged user; ~\$0.05 for a typical one.** Cutting the daily recap took
-roughly 75% of the previous running cost out. Ask is now the largest single line, and it is the
-easiest to bound because it is user-initiated and bursty — most users will ask a handful of
-questions a month, not a handful a day.
+**~\$0.15/user/month for an engaged user; ~\$0.06 for a typical one.** Cutting the daily recap took
+roughly 75% of the previous running cost out. Note gists are the largest monthly line (\$0.061) —
+not because they're expensive, but because there are 36 of them a month against Ask's 6. Per call,
+Ask costs nearly six times as much as a gist (\$0.0097 vs \$0.0017, driven by the ~8,000-token
+retrieval cap in §3.6), and it's the one line a single user can actually move: most people ask a
+handful of questions a month, not a handful a day, but nothing stops someone from doing the latter.
 
 Do **not** meter Ask visibly. Good retrieval is the cost control: sending 10 gists instead of a whole
-notebook is the difference between \$0.02 and \$2.00 a question. If someone genuinely asks 200
-questions a month they are the best user you have; eat it.
+notebook is the difference between a cent or two and several dollars a question. If someone
+genuinely asks 200 questions a month they are the best user you have; eat it.
 
 ### 4.1 What this means for pricing
 
-At ~\$0.13/mo, \$25 net of Apple's 15% (\$21.25) covers roughly **thirteen years**. Claim five. Model
+At ~\$0.15/mo, \$25 net of Apple's 15% (\$21.25) covers roughly **twelve years**. Claim five. Model
 costs have fallen consistently and almost certainly will again, so understating is the safe
 direction — a user who gets eight years out of a "five year" claim is delighted, and the reverse is
 a support burden and a bad review.

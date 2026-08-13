@@ -59,7 +59,7 @@ Every successful response carries `x-murmur-requests-remaining`, and Anthropic's
   identifier to every request, and PRIVACY.md says only the text leaves the phone.
 - **Body size**: 1 MB.
 
-### Two things worth knowing on the client side
+### Three things worth knowing on the client side
 
 **Thinking is off unless you ask for it.** Haiku 4.5 does not think when the
 `thinking` field is omitted, which is what the cost table in CLAUDE_LAYER.md §4
@@ -74,6 +74,12 @@ near that, so the marker is silently ignored — no error, just
 `cache_creation_input_tokens: 0`. Setting it anyway costs nothing and starts
 working by itself if the block ever grows, so the app may as well send it; just
 don't budget for the saving. The proxy forwards the body as-is either way.
+
+**Don't add `output_config.effort`.** It's a real lever on larger models, but it
+errors outright on Haiku 4.5 — the proxy would forward the request as-is and the
+whole call would 400 at Anthropic, not here. If a future job on a bigger model
+needs effort tuning, that request has to skip this field entirely on the Haiku
+path; there's no cheap-mode equivalent to reach for on this model.
 
 ## Deploying it
 

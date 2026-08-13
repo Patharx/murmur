@@ -81,7 +81,7 @@ and you will not have those until sync is trustworthy enough that you stop being
 Drive sync, search, folders, threads — is free forever with no account. What is sold is the
 read-back. After the included period: add your own API key for free, or buy another five years.
 
-No subscription. Running cost is ~\$0.13/user/month for an engaged user (CLAUDE_LAYER §4), so the
+No subscription. Running cost is ~\$0.15/user/month for an engaged user (CLAUDE_LAYER §4), so the
 numbers work and understating the duration is deliberate — model costs fall, and a user who gets
 eight years from a five-year claim is delighted. Build the entitlement as a one-time StoreKit
 purchase with a stored expiry date, and surface the remaining time honestly in Settings.
