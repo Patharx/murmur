@@ -49,7 +49,6 @@ Murmur/
   Reading/
   Odds and ends/
   Recaps/
-    daily/2026-08-06.md
     weekly/2026-W32.md
   .murmur/
     index.json          # note id -> path, mtime, revision. The sync ledger.

@@ -5,7 +5,7 @@
 Murmur is a personal note-taking and voice-recording app for iPhone. It is explicitly **not** a work
 tool: no meetings, no action items, no productivity metrics. Users capture thoughts by speaking
 (on a walk, driving) or by typing, everything lands in one chronological notebook organised by
-folders, and once a day Claude reads the day back to them in plain language.
+folders, and on Sundays Claude reads the week back to them in plain language.
 
 Three things define the architecture, and they are all consequences of one decision:
 
@@ -81,7 +81,7 @@ and you will not have those until sync is trustworthy enough that you stop being
 Drive sync, search, folders, threads — is free forever with no account. What is sold is the
 read-back. After the included period: add your own API key for free, or buy another five years.
 
-No subscription. Running cost is ~\$0.28/user/month for an engaged user (CLAUDE_LAYER §4), so the
+No subscription. Running cost is ~\$0.13/user/month for an engaged user (CLAUDE_LAYER §4), so the
 numbers work and understating the duration is deliberate — model costs fall, and a user who gets
 eight years from a five-year claim is delighted. Build the entitlement as a one-time StoreKit
 purchase with a stored expiry date, and surface the remaining time honestly in Settings.

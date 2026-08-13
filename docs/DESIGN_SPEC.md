@@ -100,7 +100,7 @@ Full-bleed, centred vertically. A 62pt breathing circle,
 
 Headline: "Say it or write it. / I'll keep it either way."
 Body: "The thought you had on a walk. The letter you drafted at midnight. The three lines you copied
-out of a book. Murmur holds all of it in one notebook, and once a day reads it back to you."
+out of a book. Murmur holds all of it in one notebook, and once a week reads it back to you."
 
 Three numbered points (01/02/03 in `#9184d9`):
 01 — Spoken or typed, it all lands in the same place. Transcription happens on your iPhone.
