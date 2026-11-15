@@ -57,11 +57,11 @@ final class ListeningSession {
     func togglePause() {
         guard isRunning else { return }
         if isPaused {
-            try? engine?.start()
+            try? rig?.engine.start()
             isPaused = false
             startTimer()
         } else {
-            engine?.pause()
+            rig?.engine.pause()
             accumulated = elapsed
             timer?.invalidate()
             isPaused = true
