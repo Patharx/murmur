@@ -24,7 +24,7 @@ enum FileTranscriber {
 @available(iOS 26.0, *)
 enum SpeechAnalyzerTranscriber {
     static func transcribe(url: URL) async throws -> String {
-        let locale = SpeechTranscriber.supportedLocale(equivalentTo: Locale.current) ?? Locale.current
+        let locale = await SpeechTranscriber.supportedLocale(equivalentTo: Locale.current) ?? Locale.current
         let transcriber = SpeechTranscriber(locale: locale, preset: .transcription)
         if let installer = try await AssetInventory.assetInstallationRequest(supporting: [transcriber]) {
             try await installer.downloadAndInstall()
