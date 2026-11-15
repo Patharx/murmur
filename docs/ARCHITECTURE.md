@@ -39,9 +39,10 @@ that users can move things and break sync; §6.4 handles that.
 
 ```
 Murmur/
-  Walks/
+  Unlabeled/
     2026-08-06-0742-fathers-garden.m4a
     2026-08-06-0742-fathers-garden.md
+  Walks/
   Reflections/
     2026-08-06-1831-bus-home.md
   Written/
@@ -59,11 +60,14 @@ Notes:
 
 - **Folders in the app map 1:1 to folders in Drive.** This is the whole promise. Renaming a folder
   in the app renames it in Drive; renaming it in Drive is picked up on next sync.
-- **Voice notes are an .m4a + .md pair sharing a basename.** The .md is the note; the .m4a is the
-  audio. Written notes have no .m4a. Pairing is by basename, never by Drive file ID.
+- **Voice notes start in `Unlabeled`.** That folder is the inbox. Refiling moves the files into
+  Walks, Reflections, Written, Reading, or Odds and ends. Odds and ends stays its own folder.
+- **A voice note is an .m4a + .md pair sharing a basename.** The .md is the note; the first .m4a is
+  the audio. A later clip is another .m4a, listed in `recordings`, and is never overwritten.
+  Written notes have no .m4a. Pairing is by filename, never by Drive file ID.
 - **Filenames are `YYYY-MM-DD-HHmm-<slug>`.** Sortable, human-meaningful, collision-resistant.
-  The slug is derived from the title, ASCII-only, max 40 chars. Filenames are *display*, not
-  identity — see §3.
+  The slug is the first two meaningful words of the title, ASCII-only. See FILE_FORMAT.md.
+  Filenames are *display*, not identity — see §3.
 - `.murmur/` is a real folder (a leading dot does not hide anything in Drive, but it signals intent
   and sorts to the top). Users who delete it lose sync state, not data — the app can rebuild the
   index by walking the tree.

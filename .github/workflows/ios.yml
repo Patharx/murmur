@@ -43,6 +43,21 @@ jobs:
           -derivedDataPath /tmp/murmur-derived
           CODE_SIGNING_ALLOWED=NO
 
+  core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.2.4"
+      - name: SQLite headers
+        run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev
+      - name: Test MurmurCore
+        working-directory: ios/MurmurCore
+        run: swift test
+
   proxy:
     runs-on: ubuntu-latest
     defaults:

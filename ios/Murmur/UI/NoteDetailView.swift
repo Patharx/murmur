@@ -4,27 +4,35 @@ import SwiftUI
 
 struct NoteDetailView: View {
     var library: Library
-    var path: String
+    var id: String
     @Environment(\.dismiss) private var dismiss
     @State private var player = NoteAudioPlayer()
+    @State private var editing = false
+    @State private var title = ""
+    @State private var said = ""
+    @State private var folder = ""
 
-    private var document: NoteDocument? { library.load(path: path) }
-    private var row: NoteRow? { library.notes.first { $0.path == path } }
+    private var path: String? { library.notes.first { $0.id == id }?.path }
+    private var document: NoteDocument? { path.flatMap { library.load(path: $0) } }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                if let document {
-                    Text(document.title.isEmpty ? "Untitled" : document.title)
-                        .font(MurmurType.noteTitle)
-                        .foregroundStyle(Theme.text)
-                        .tracking(-0.4)
-                    meta(document)
-                    if let audio = library.audioURL(for: path, filename: document.audioFilename) {
-                        playerCard(url: audio, duration: document.durationSeconds ?? 0)
+                if let document, let path {
+                    if editing {
+                        editor()
+                    } else {
+                        Text(document.title.isEmpty ? "Untitled" : document.title)
+                            .font(MurmurType.noteTitle)
+                            .foregroundStyle(Theme.text)
+                            .tracking(-0.4)
+                        meta(document)
+                        ForEach(Array(library.audioFiles(path: path).enumerated()), id: \.offset) { _, audio in
+                            playerCard(url: audio, duration: document.durationSeconds ?? 0)
+                        }
+                        gist(document)
+                        transcript(document)
                     }
-                    gist(document)
-                    transcript(document)
                 } else {
                     Text("This note isn't in the files anymore.")
                         .font(MurmurType.body)
@@ -42,23 +50,36 @@ struct NoteDetailView: View {
                     dismiss()
                 } label: {
                     HStack(spacing: 4) {
-                        Image(systemName: "chevron.left")
+                        PhosphorIcon(name: "caret-left", size: 16)
                         Text(MurmurCopy.today)
                     }
                     .font(MurmurType.secondary)
                     .foregroundStyle(Theme.textSecondary)
                 }
             }
-            if let url = library.fileURL(path: path) {
-                ToolbarItem(placement: .topBarTrailing) {
-                    ShareLink(item: url) {
-                        Image(systemName: "square.and.arrow.up")
-                            .font(.system(size: 15))
-                            .foregroundStyle(Theme.textSecondary)
-                            .frame(width: 34, height: 34)
-                            .overlay(RoundedRectangle(cornerRadius: 9).stroke(Theme.chipEdge, lineWidth: 1))
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack(spacing: 8) {
+                    Button(editing ? MurmurCopy.keep : "Edit") {
+                        if editing {
+                            keepEdits()
+                        } else if let document {
+                            title = document.title
+                            said = document.said
+                            folder = document.folder
+                            editing = true
+                        }
                     }
-                    .accessibilityLabel("Export this note")
+                    .font(MurmurType.secondary)
+                    .foregroundStyle(Theme.accent400)
+                    if let path, let url = library.fileURL(path: path) {
+                        ShareLink(item: url) {
+                            PhosphorIcon(name: "export", size: 16)
+                                .foregroundStyle(Theme.textSecondary)
+                                .frame(width: 34, height: 34)
+                                .overlay(RoundedRectangle(cornerRadius: 9).stroke(Theme.chipEdge, lineWidth: 1))
+                        }
+                        .accessibilityLabel("Export this note")
+                    }
                 }
             }
         }
@@ -75,16 +96,6 @@ struct NoteDetailView: View {
             }
             Text("·")
             Text(NotebookLayout.chipLabel(for: document.folder))
-            if row?.onPhoneOnly != false {
-                Text(MurmurCopy.onPhone)
-                    .font(MurmurType.chip)
-                    .tracking(0.8)
-                    .textCase(.uppercase)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 3)
-                    .overlay(Capsule().stroke(Theme.accent.opacity(0.55), lineWidth: 1))
-                    .foregroundStyle(Theme.accent400)
-            }
         }
         .font(MurmurType.meta)
         .foregroundStyle(Theme.textTertiary)
@@ -96,8 +107,7 @@ struct NoteDetailView: View {
             Button {
                 player.toggle(url: url)
             } label: {
-                Image(systemName: player.isPlaying ? "pause.fill" : "play.fill")
-                    .font(.system(size: 14, weight: .medium))
+                PhosphorIcon(name: player.isPlaying ? "pause" : "play", size: 16)
                     .foregroundStyle(Theme.accent400)
                     .frame(width: 38, height: 38)
                     .background(Theme.accent.opacity(0.16), in: Circle())
@@ -130,9 +140,15 @@ struct NoteDetailView: View {
 
     @ViewBuilder
     private func gist(_ document: NoteDocument) -> some View {
+        if let gist = document.gist, !gist.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            gistCard(gist)
+        }
+    }
+
+    private func gistCard(_ gist: String) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Image(systemName: "sparkle")
+                PhosphorIcon(name: "sparkle", size: 14)
                     .foregroundStyle(Theme.accent400)
                 Text(MurmurCopy.theGist)
                     .font(MurmurType.chip)
@@ -141,14 +157,10 @@ struct NoteDetailView: View {
                     .foregroundStyle(Theme.accent400)
                 Spacer()
             }
-            if let gist = document.gist, !gist.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                Text(gist)
-                    .font(MurmurType.custom(14, weight: .regular, relativeTo: .subheadline))
-                    .foregroundStyle(Theme.text.opacity(0.9))
-                    .lineSpacing(5)
-            } else {
-                OutlinedButton(title: MurmurCopy.readItBack) {}
-            }
+            Text(gist)
+                .font(MurmurType.custom(14, weight: .regular, relativeTo: .subheadline))
+                .foregroundStyle(Theme.text.opacity(0.9))
+                .lineSpacing(5)
         }
         .padding(16)
         .background(
@@ -175,6 +187,38 @@ struct NoteDetailView: View {
                 .lineSpacing(8)
                 .textSelection(.enabled)
         }
+    }
+
+    private func editor() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            TextField("Title", text: $title)
+                .font(MurmurType.noteTitle)
+                .foregroundStyle(Theme.text)
+            TextEditor(text: $said)
+                .font(MurmurType.body)
+                .foregroundStyle(Theme.text.opacity(0.85))
+                .scrollContentBackground(.hidden)
+                .frame(minHeight: 180)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(NotebookLayout.chipFolders, id: \.self) { name in
+                        FolderChip(title: NotebookLayout.chipLabel(for: name), active: folder == name) {
+                            folder = name
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func keepEdits() {
+        guard let path, var document = library.load(path: path) else { return }
+        document.title = title
+        document.said = said
+        document.folder = folder
+        document.modified = NoteClock.stamp()
+        _ = library.save(document, path: path)
+        editing = false
     }
 
     private static let clock: DateFormatter = {

@@ -3,6 +3,7 @@ import Foundation
 public enum NotebookError: Error, Equatable {
     case escapesNotebook
     case missingNote
+    case couldNotPlaceAudio
 }
 
 /// Files first, then the index. A save never waits on the network; there is no network here.
@@ -34,27 +35,36 @@ public final class Notebook {
         )
         let relative = folder + "/" + filename
         let destination = try layout.url(relativePath: relative)
+        let oldClips = existingPath.flatMap { try? load(path: $0).audioFiles } ?? []
+        let moves = try audioMoves(document: &document, oldClips: oldClips, existingPath: existingPath, folder: folder, filename: filename)
 
-        if let audio = document.audioFilename, let existingPath {
-            let oldFolder = (existingPath as NSString).deletingLastPathComponent
-            let oldAudio = (oldFolder.isEmpty ? "" : oldFolder + "/") + audio
-            let newAudioName = destination.deletingPathExtension().lastPathComponent + ".m4a"
-            if oldAudio != folder + "/" + newAudioName {
-                if let oldURL = try? layout.url(relativePath: oldAudio),
-                   FileManager.default.fileExists(atPath: oldURL.path) {
-                    let newURL = folderURL.appendingPathComponent(newAudioName)
-                    if FileManager.default.fileExists(atPath: newURL.path) {
-                        try FileManager.default.removeItem(at: newURL)
-                    }
-                    try FileManager.default.moveItem(at: oldURL, to: newURL)
-                }
-            }
-            document.audioFilename = newAudioName
-        }
-
+        let previousMarkdown = FileManager.default.fileExists(atPath: destination.path)
+            ? try Data(contentsOf: destination)
+            : nil
         let text = NoteCodec.serialize(document)
         try Data(text.utf8).write(to: destination, options: .atomic)
         try FileManager.default.setAttributes([.modificationDate: now], ofItemAtPath: destination.path)
+
+        var completed: [(URL, URL)] = []
+        do {
+            for move in moves {
+                if FileManager.default.fileExists(atPath: move.destination.path) {
+                    throw NotebookError.couldNotPlaceAudio
+                }
+                try FileManager.default.moveItem(at: move.source, to: move.destination)
+                completed.append((move.destination, move.source))
+            }
+        } catch {
+            for (nowAt, originally) in completed.reversed() {
+                try? FileManager.default.moveItem(at: nowAt, to: originally)
+            }
+            if let previousMarkdown {
+                try? previousMarkdown.write(to: destination, options: .atomic)
+            } else if existingPath != relative {
+                try? FileManager.default.removeItem(at: destination)
+            }
+            throw error
+        }
 
         if let existingPath, existingPath != relative {
             let oldURL = try layout.url(relativePath: existingPath)
@@ -63,22 +73,167 @@ public final class Notebook {
             }
         }
 
-        let millis = fileMtimeMillis(destination)
+        try upsert(document, path: relative, file: destination, previous: previous, now: now)
+        return relative
+    }
+
+    /// Writes a new voice note, then moves the recording beside it. A failed move removes the new file.
+    @discardableResult
+    public func storeVoiceNote(_ document: NoteDocument, audioSource: URL, now: Date = Date()) throws -> String {
+        var document = document
+        document.folder = NotebookLayout.unlabeled
+        let filename = try layout.allocateFilename(
+            folder: document.folder,
+            created: document.created,
+            title: document.title
+        )
+        let base = (filename as NSString).deletingPathExtension
+        document.audioFilename = base + ".m4a"
+        document.recordings = []
+        document.kind = .voice
+        let relative = document.folder + "/" + filename
+        let destination = try layout.url(relativePath: relative)
+        let audioURL = destination.deletingPathExtension().appendingPathExtension("m4a")
+        if FileManager.default.fileExists(atPath: audioURL.path) {
+            throw NotebookError.couldNotPlaceAudio
+        }
+        try Data(NoteCodec.serialize(document).utf8).write(to: destination, options: .atomic)
+        do {
+            try FileManager.default.moveItem(at: audioSource, to: audioURL)
+        } catch {
+            try? FileManager.default.removeItem(at: destination)
+            throw NotebookError.couldNotPlaceAudio
+        }
+        try upsert(document, path: relative, file: destination, previous: nil, now: now)
+        return relative
+    }
+
+    /// Puts the first recording beside a written note. Refuses to replace a clip that is already there.
+    public func placeFirstClip(id: String, source: URL, now: Date = Date()) throws {
+        guard let row = try index.row(id: id) else { throw NotebookError.missingNote }
+        var document = try load(path: row.path)
+        if !document.audioFiles.isEmpty { throw NotebookError.couldNotPlaceAudio }
+        let base = ((row.path as NSString).lastPathComponent as NSString).deletingPathExtension
+        document.audioFilename = base + ".m4a"
+        if document.kind == .written { document.kind = .hybrid }
+        let noteURL = try layout.url(relativePath: row.path)
+        let audioURL = noteURL.deletingLastPathComponent().appendingPathComponent(document.audioFilename ?? "")
+        if FileManager.default.fileExists(atPath: audioURL.path) { throw NotebookError.couldNotPlaceAudio }
+        let previousMarkdown = try Data(contentsOf: noteURL)
+        try Data(NoteCodec.serialize(document).utf8).write(to: noteURL, options: .atomic)
+        do {
+            try FileManager.default.moveItem(at: source, to: audioURL)
+        } catch {
+            try? previousMarkdown.write(to: noteURL, options: .atomic)
+            throw NotebookError.couldNotPlaceAudio
+        }
+        try upsert(document, path: row.path, file: noteURL, previous: row, now: now)
+    }
+
+    /// Keeps every earlier clip and adds one more. The markdown is written first; a failed move rolls it back.
+    @discardableResult
+    public func addRecording(id: String, source: URL, addedAt: Date, liveText: String, modified: NoteTimestamp, now: Date = Date()) throws -> String {
+        guard let row = try index.row(id: id) else { throw NotebookError.missingNote }
+        let current = try load(path: row.path)
+        let folderURL = layout.root.appendingPathComponent(current.folder, isDirectory: true)
+        let clipName = try uniqueClipName(in: folderURL, addedAt: addedAt, title: current.title)
+        let updated = NoteEditing.appendingClip(
+            to: current,
+            liveText: liveText,
+            marker: ListeningText.addedMarker(at: addedAt),
+            clipFilename: clipName,
+            modified: modified
+        )
+        let noteURL = try layout.url(relativePath: row.path)
+        let previousMarkdown = try Data(contentsOf: noteURL)
+        let clipURL = folderURL.appendingPathComponent(clipName)
+        if FileManager.default.fileExists(atPath: clipURL.path) {
+            throw NotebookError.couldNotPlaceAudio
+        }
+        try Data(NoteCodec.serialize(updated).utf8).write(to: noteURL, options: .atomic)
+        do {
+            try FileManager.default.moveItem(at: source, to: clipURL)
+        } catch {
+            try? previousMarkdown.write(to: noteURL, options: .atomic)
+            throw NotebookError.couldNotPlaceAudio
+        }
+        try upsert(updated, path: row.path, file: noteURL, previous: row, now: now)
+        return row.path
+    }
+
+    private struct AudioMove {
+        var source: URL
+        var destination: URL
+    }
+
+    private func audioMoves(
+        document: inout NoteDocument,
+        oldClips: [String],
+        existingPath: String?,
+        folder: String,
+        filename: String
+    ) throws -> [AudioMove] {
+        guard let existingPath, !oldClips.isEmpty else { return [] }
+        let oldFolder = (existingPath as NSString).deletingLastPathComponent
+        let newBase = (filename as NSString).deletingPathExtension
+        var clips = document.audioFiles
+        if clips.isEmpty { clips = oldClips }
+        if !clips.isEmpty {
+            clips[0] = newBase + ".m4a"
+        }
+        document.audioFilename = clips.first
+        document.recordings = clips.count > 1 ? clips : []
+        var moves: [AudioMove] = []
+        for (index, newName) in clips.enumerated() where index < oldClips.count {
+            let fromRelative = (oldFolder.isEmpty ? "" : oldFolder + "/") + oldClips[index]
+            let toRelative = folder + "/" + newName
+            if fromRelative == toRelative { continue }
+            let source = try layout.url(relativePath: fromRelative)
+            guard FileManager.default.fileExists(atPath: source.path) else { continue }
+            let destination = try layout.url(relativePath: toRelative)
+            moves.append(AudioMove(source: source, destination: destination))
+        }
+        return moves
+    }
+
+    private func uniqueClipName(in folder: URL, addedAt: Date, title: String) throws -> String {
+        let stamp = NoteTimestamp(date: addedAt, text: Self.iso(addedAt))
+        var collision = 0
+        while collision < 100 {
+            let name = NoteFilename.basename(created: stamp, title: title, collision: collision) + ".m4a"
+            if !FileManager.default.fileExists(atPath: folder.appendingPathComponent(name).path) {
+                return name
+            }
+            collision += 1
+        }
+        throw NotebookError.couldNotPlaceAudio
+    }
+
+    private static func iso(_ date: Date) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withColonSeparatorInTimeZone]
+        formatter.timeZone = .current
+        return formatter.string(from: date)
+    }
+
+    private func upsert(_ document: NoteDocument, path: String, file: URL, previous: NoteRow?, now: Date) throws {
+        _ = now
         let row = NoteRow(
             id: document.id,
-            path: relative,
+            path: path,
             title: document.title,
-            folder: folder,
+            folder: document.folder,
             kind: document.kind.rawValue,
             created: document.created.date,
             duration: document.durationSeconds,
             hasSummary: document.hasSummary,
             body: document.said,
-            localMtime: millis,
-            syncedMtime: previous?.syncedMtime
+            localMtime: fileMtimeMillis(file),
+            syncedMtime: previous?.syncedMtime,
+            driveId: previous?.driveId,
+            driveRev: previous?.driveRev
         )
         try index.upsert(row)
-        return relative
     }
 
     public func load(path: String) throws -> NoteDocument {
@@ -141,7 +296,9 @@ public final class Notebook {
                     hasSummary: document.hasSummary,
                     body: document.said,
                     localMtime: mtime,
-                    syncedMtime: byID[document.id]?.syncedMtime
+                    syncedMtime: byID[document.id]?.syncedMtime,
+                    driveId: byID[document.id]?.driveId,
+                    driveRev: byID[document.id]?.driveRev
                 )
                 try index.upsert(row)
             } else {

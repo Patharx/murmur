@@ -132,11 +132,11 @@ struct MurmurTabBar: View {
     var body: some View {
         ZStack(alignment: .top) {
             HStack {
-                tabButton(.today, system: "sun.max", title: MurmurCopy.today)
-                tabButton(.ask, system: "sparkle", title: MurmurCopy.ask)
+                tabButton(.today, icon: "sun", title: MurmurCopy.today)
+                tabButton(.ask, icon: "sparkle", title: MurmurCopy.ask)
                 Color.clear.frame(width: 72, height: 44)
-                tabButton(.weekly, system: "envelope", title: MurmurCopy.weekly)
-                tabButton(.you, system: "person", title: MurmurCopy.you)
+                tabButton(.weekly, icon: "envelope-simple", title: MurmurCopy.weekly)
+                tabButton(.you, icon: "user", title: MurmurCopy.you)
             }
             .padding(.top, 28)
             .padding(.horizontal, 8)
@@ -157,8 +157,7 @@ struct MurmurTabBar: View {
                         .fill(Theme.accent)
                         .frame(width: 56, height: 56)
                         .shadow(color: Theme.accent.opacity(0.4), radius: 11, y: 6)
-                    Image(systemName: "waveform")
-                        .font(.system(size: 20, weight: .medium))
+                    PhosphorIcon(name: "waveform", size: 22)
                         .foregroundStyle(Theme.bg)
                 }
             }
@@ -168,13 +167,12 @@ struct MurmurTabBar: View {
         }
     }
 
-    private func tabButton(_ value: AppTab, system: String, title: String) -> some View {
+    private func tabButton(_ value: AppTab, icon: String, title: String) -> some View {
         Button {
             tab = value
         } label: {
             VStack(spacing: 4) {
-                Image(systemName: system)
-                    .font(.system(size: 18, weight: .regular))
+                PhosphorIcon(name: icon, size: 21)
                 Text(title)
                     .font(MurmurType.custom(10, weight: .medium, relativeTo: .caption2))
             }

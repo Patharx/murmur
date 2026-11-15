@@ -6,12 +6,12 @@ final class NotebookTests: XCTestCase {
     func testSlugIsASCIIAndCapped() {
         XCTAssertEqual(
             NoteFilename.slug(from: "My father's garden, and the thing about rows"),
-            "my-fathers-garden-and-the-thing-about-ro"
+            "fathers-garden"
         )
         XCTAssertEqual(NoteFilename.slug(from: "Hello"), "hello")
         XCTAssertEqual(NoteFilename.slug(from: "   "), "note")
-        XCTAssertEqual(NoteFilename.slug(from: "Café au lait"), "cafe-au-lait")
-        XCTAssertLessThanOrEqual(NoteFilename.slug(from: String(repeating: "word ", count: 30)).count, 40)
+        XCTAssertEqual(NoteFilename.slug(from: "Café au lait"), "cafe-au")
+        XCTAssertEqual(NoteFilename.basename(created: NoteTimestamp(date: Date(timeIntervalSince1970: 0), text: "2026-08-06T07:42:11+01:00"), title: "My father's garden, and the thing about rows"), "2026-08-06-0742-fathers-garden")
     }
 
     func testBasenameUsesTheTimestampWallClock() {
@@ -146,6 +146,139 @@ final class NotebookTests: XCTestCase {
         XCTAssertTrue(safePath.hasPrefix("Odds and ends/"))
     }
 
+    func testALaterClipKeepsTheEarlierAudioAndDriveIdentitySurvivesRebuild() throws {
+        let container = try makeRoot()
+        let root = container.appendingPathComponent("Murmur", isDirectory: true)
+        let notebook = try Notebook(root: root, databaseURL: container.appendingPathComponent("notes.sqlite"))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: root.appendingPathComponent("Unlabeled").path))
+        let created = NoteTimestamp(date: Date(timeIntervalSince1970: 1_700_000_000), text: "2026-08-05T22:40:00+01:00")
+        let source = container.appendingPathComponent("take.m4a")
+        try Data("first".utf8).write(to: source)
+        var note = NoteDocument(
+            id: "01ARZ3NDEKTSV4RRFFQ69G5FC0",
+            created: created,
+            modified: created,
+            kind: .voice,
+            folder: "Walks",
+            title: "Morning",
+            said: "hello"
+        )
+        let path = try notebook.storeVoiceNote(note, audioSource: source, now: Date(timeIntervalSince1970: 5_000))
+        XCTAssertTrue(path.hasPrefix("Unlabeled/"))
+        let stored = try notebook.load(path: path)
+        let firstAudio = try notebook.layout.url(relativePath: (path as NSString).deletingLastPathComponent + "/" + (stored.audioFilename ?? ""))
+        XCTAssertEqual(try Data(contentsOf: firstAudio), Data("first".utf8))
+
+        var row = try XCTUnwrap(notebook.row(id: note.id))
+        row.driveId = "drive-1"
+        row.driveRev = "rev-1"
+        try notebook.index.upsert(row)
+        try notebook.rebuildIndex()
+        let rebuilt = try XCTUnwrap(notebook.row(id: note.id))
+        XCTAssertEqual(rebuilt.driveId, "drive-1")
+        XCTAssertEqual(rebuilt.driveRev, "rev-1")
+
+        let second = container.appendingPathComponent("later.m4a")
+        try Data("second".utf8).write(to: second)
+        let modified = NoteTimestamp(date: Date(timeIntervalSince1970: 1_700_003_600), text: "2026-08-06T15:42:00+01:00")
+        _ = try notebook.addRecording(id: note.id, source: second, addedAt: Date(timeIntervalSince1970: 1_754_000_000), liveText: "a later one", modified: modified)
+        let after = try notebook.load(path: path)
+        XCTAssertEqual(after.audioFiles.count, 2)
+        XCTAssertEqual(try Data(contentsOf: firstAudio), Data("first".utf8))
+        let extra = try notebook.layout.url(relativePath: (path as NSString).deletingLastPathComponent + "/" + after.audioFiles[1])
+        XCTAssertEqual(try Data(contentsOf: extra), Data("second".utf8))
+        XCTAssertTrue(after.said.contains("— Added"))
+        XCTAssertTrue(after.said.contains("a later one"))
+        let still = try XCTUnwrap(notebook.row(id: note.id))
+        XCTAssertEqual(still.driveId, "drive-1")
+        XCTAssertEqual(still.driveRev, "rev-1")
+        note.said = "hello"
+    }
+
+    func testAFailedAudioMoveDoesNotPointTheNoteAtAMissingFile() throws {
+        let container = try makeRoot()
+        let root = container.appendingPathComponent("Murmur", isDirectory: true)
+        let notebook = try Notebook(root: root, databaseURL: container.appendingPathComponent("notes.sqlite"))
+        let created = NoteTimestamp(date: Date(timeIntervalSince1970: 1_700_000_000), text: "2026-08-05T22:40:00+01:00")
+        let source = container.appendingPathComponent("take.m4a")
+        try Data("first".utf8).write(to: source)
+        let note = NoteDocument(
+            id: "01ARZ3NDEKTSV4RRFFQ69G5FC1",
+            created: created,
+            modified: created,
+            kind: .voice,
+            folder: NotebookLayout.unlabeled,
+            title: "Morning",
+            said: "hello"
+        )
+        let path = try notebook.storeVoiceNote(note, audioSource: source, now: Date(timeIntervalSince1970: 5_000))
+        let folder = (path as NSString).deletingLastPathComponent
+        let audioName = try notebook.load(path: path).audioFilename ?? ""
+        let blocker = try notebook.layout.url(relativePath: folder + "/" + audioName.replacingOccurrences(of: ".m4a", with: "-2.m4a"))
+        // Occupy the name the renamed primary would take by saving a title whose slug collides after we plant a file.
+        var renamed = try notebook.load(path: path)
+        let nextBase = NoteFilename.basename(created: created, title: "Evening")
+        let planted = try notebook.layout.url(relativePath: folder + "/" + nextBase + ".m4a")
+        try Data("do-not-delete".utf8).write(to: planted)
+        renamed.title = "Evening"
+        XCTAssertThrowsError(try notebook.save(renamed, path: path, now: Date(timeIntervalSince1970: 6_000)))
+        let original = try notebook.load(path: path)
+        XCTAssertEqual(original.title, "Morning")
+        let originalAudio = try notebook.layout.url(relativePath: folder + "/" + audioName)
+        XCTAssertEqual(try Data(contentsOf: originalAudio), Data("first".utf8))
+        XCTAssertEqual(try Data(contentsOf: planted), Data("do-not-delete".utf8))
+        _ = blocker
+    }
+
+    func testTranscriptApplyLeavesAnEditedNoteAndDoesNotRetitle() {
+        let created = NoteTimestamp(date: Date(timeIntervalSince1970: 0), text: "2026-08-06T07:42:11+01:00")
+        let note = NoteDocument(
+            id: "01ARZ3NDEKTSV4RRFFQ69G5FC2",
+            created: created,
+            modified: created,
+            kind: .voice,
+            folder: NotebookLayout.unlabeled,
+            title: "Morning",
+            said: "live draft",
+            audioFilename: "clip.m4a"
+        )
+        let applied = NoteEditing.applyingFileTranscript(
+            to: note,
+            liveDraft: "live draft",
+            authoritative: "from the file",
+            bookmarks: [1],
+            duration: 4
+        )
+        XCTAssertEqual(applied?.title, "Morning")
+        XCTAssertEqual(applied?.said.contains("from the file"), true)
+        var edited = note
+        edited.said = "I changed this"
+        XCTAssertNil(NoteEditing.applyingFileTranscript(to: edited, liveDraft: "live draft", authoritative: "from the file", bookmarks: [], duration: 4))
+        let replaced = NoteEditing.applyingClipTranscript(
+            said: "hello\n\n— Added 3:42 PM\n\nlive words",
+            marker: "— Added 3:42 PM",
+            liveDraft: "live words",
+            authoritative: "from the file"
+        )
+        XCTAssertEqual(replaced, "hello\n\n— Added 3:42 PM\n\nfrom the file")
+        XCTAssertNil(NoteEditing.applyingClipTranscript(said: "hello\n\n— Added 3:42 PM\n\nI fixed it", marker: "— Added 3:42 PM", liveDraft: "live words", authoritative: "from the file"))
+    }
+
+    func testSilenceChunkerSplitsALongTakeAtTheQuietGap() {
+        var windows: [LevelWindow] = []
+        for step in 0..<180 {
+            let time = Double(step) * 0.5
+            let quiet = time >= 40 && time < 41
+            windows.append(LevelWindow(time: time, rms: quiet ? 0.001 : 0.2))
+        }
+        let ranges = SilenceChunker.ranges(windows: windows, duration: 90)
+        XCTAssertGreaterThan(ranges.count, 1)
+        XCTAssertEqual(ranges.first?.lowerBound, 0)
+        XCTAssertLessThanOrEqual(ranges[0].upperBound, 50)
+        XCTAssertGreaterThanOrEqual(ranges[0].upperBound, 40)
+        XCTAssertEqual(ranges.last?.upperBound, 90)
+    }
+
     func testSchemaNamesTheArchitectureColumns() {
         let sql = NoteIndex.createTableSQL
         for column in ["id", "path", "drive_id", "drive_rev", "local_mtime", "synced_mtime", "title", "folder", "kind", "created", "duration", "has_summary", "body"] {
@@ -208,9 +341,19 @@ final class TodayAndListeningTests: XCTestCase {
         XCTAssertEqual(ListeningText.reconcile(live: "live line", authoritative: "  "), "live line")
         XCTAssertEqual(ListeningText.reconcile(live: "live line", authoritative: "from the file"), "from the file")
         XCTAssertEqual(
-            ListeningText.merge(transcript: "from the file", bookmarks: [12]),
-            "from the file\n\n— 0:12\n"
+            ListeningText.merge(transcript: "from the file", bookmarks: [12], duration: 24),
+            "from\n\n— 0:12\n\nthe file"
         )
+        var zone = TimeZone(secondsFromGMT: 0)!
+        var parts = DateComponents()
+        parts.year = 2026
+        parts.month = 8
+        parts.day = 6
+        parts.hour = 15
+        parts.minute = 42
+        parts.timeZone = zone
+        let added = Calendar(identifier: .gregorian).date(from: parts)!
+        XCTAssertEqual(ListeningText.addedMarker(at: added, timeZone: zone), "— Added 3:42 PM")
         XCTAssertEqual(WaveformMetrics.barCount, 40)
         XCTAssertEqual(WaveformMetrics.height(decibels: -160), 6)
         XCTAssertEqual(WaveformMetrics.height(decibels: 0), 68)

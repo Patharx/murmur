@@ -12,6 +12,8 @@ public struct NoteRow: Equatable, Sendable, Identifiable {
     public var body: String
     public var localMtime: Int64
     public var syncedMtime: Int64?
+    public var driveId: String?
+    public var driveRev: String?
 
     public var onPhoneOnly: Bool {
         guard let syncedMtime else { return true }
@@ -29,7 +31,9 @@ public struct NoteRow: Equatable, Sendable, Identifiable {
         hasSummary: Bool,
         body: String,
         localMtime: Int64,
-        syncedMtime: Int64?
+        syncedMtime: Int64?,
+        driveId: String? = nil,
+        driveRev: String? = nil
     ) {
         self.id = id
         self.path = path
@@ -42,6 +46,8 @@ public struct NoteRow: Equatable, Sendable, Identifiable {
         self.body = body
         self.localMtime = localMtime
         self.syncedMtime = syncedMtime
+        self.driveId = driveId
+        self.driveRev = driveRev
     }
 }
 
@@ -105,9 +111,11 @@ public final class NoteIndex {
             INSERT INTO notes (
               id, path, drive_id, drive_rev, local_mtime, synced_mtime,
               title, folder, kind, created, duration, has_summary, body
-            ) VALUES (?, ?, NULL, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
               path = excluded.path,
+              drive_id = excluded.drive_id,
+              drive_rev = excluded.drive_rev,
               local_mtime = excluded.local_mtime,
               synced_mtime = excluded.synced_mtime,
               title = excluded.title,
@@ -120,6 +128,8 @@ public final class NoteIndex {
             """, bindings: [
                 .text(row.id),
                 .text(row.path),
+                row.driveId.map(SQLiteValue.text) ?? .null,
+                row.driveRev.map(SQLiteValue.text) ?? .null,
                 .int(row.localMtime),
                 row.syncedMtime.map(SQLiteValue.int) ?? .null,
                 .text(row.title),
@@ -198,7 +208,9 @@ public final class NoteIndex {
             hasSummary: (values["has_summary"]?.int ?? 0) != 0,
             body: values["body"]?.textValue ?? "",
             localMtime: values["local_mtime"]?.int ?? 0,
-            syncedMtime: values["synced_mtime"]?.int
+            syncedMtime: values["synced_mtime"]?.int,
+            driveId: values["drive_id"]?.textValue,
+            driveRev: values["drive_rev"]?.textValue
         )
     }
 }

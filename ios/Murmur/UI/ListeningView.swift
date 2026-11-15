@@ -6,6 +6,7 @@ struct ListeningView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var session = ListeningSession()
+    @State private var dismissed = false
 
     var body: some View {
         VStack(spacing: 22) {
@@ -31,12 +32,20 @@ struct ListeningView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.bg)
         .task { await session.start() }
+        .onDisappear {
+            guard !dismissed else { return }
+            dismissed = true
+            if let captured = session.stop() {
+                library.keepVoiceNote(captured: captured)
+            }
+        }
     }
 
     private var header: some View {
         HStack {
             Button(MurmurCopy.neverMind) {
                 session.abandon()
+                dismissed = true
                 dismiss()
             }
             .font(MurmurType.secondary)
@@ -105,10 +114,11 @@ struct ListeningView: View {
 
     private var controls: some View {
         HStack(spacing: 28) {
-            circleButton(system: session.isPaused ? "play" : "pause", label: session.isPaused ? "Carry on" : "Pause") {
+            circleButton(icon: session.isPaused ? "play" : "pause", label: session.isPaused ? "Carry on" : "Pause") {
                 session.togglePause()
             }
             Button {
+                dismissed = true
                 if let captured = session.stop() {
                     library.keepVoiceNote(captured: captured)
                 }
@@ -126,16 +136,15 @@ struct ListeningView: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel("Stop listening")
-            circleButton(system: "bookmark", label: "Drop a bookmark") {
+            circleButton(icon: "bookmark-simple", label: "Drop a bookmark") {
                 session.bookmark()
             }
         }
     }
 
-    private func circleButton(system: String, label: String, action: @escaping () -> Void) -> some View {
+    private func circleButton(icon: String, label: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Image(systemName: system)
-                .font(.system(size: 18, weight: .regular))
+            PhosphorIcon(name: icon, size: 20)
                 .foregroundStyle(Theme.accent400)
                 .frame(width: 52, height: 52)
                 .overlay(Circle().stroke(Theme.outline, lineWidth: 1))

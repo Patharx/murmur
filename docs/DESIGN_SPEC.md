@@ -128,7 +128,8 @@ Only claim these if §10 of ARCHITECTURE.md stays true.
    ordinary Tuesday shows no card at all, and that is correct. Do not fill the space.
 4. **Folder chips** — horizontal scroll. Inactive: transparent, 1px `rgba(233,233,237,0.14)`,
    `rgba(233,233,237,0.6)`. Active: `rgba(145,132,217,0.16)` fill, `#9184d9` border, `#b5abfc` text.
-   Order: All, Written, Walks, Reflections, Reading, Odds & ends.
+   Order: All, Unlabeled, Written, Walks, Reflections, Reading, Odds & ends.
+   Unlabeled is the inbox a new voice note lands in. Odds & ends stays its own folder.
 5. **Note list** — surface cards, radius 12, 1px `#3f424d`, hover/press edge `#5d5294`.
    30pt rounded-square icon tile, `rgba(145,132,217,0.14)`: microphone for voice, three lines for
    written. Title 15/500; preview 12.5pt at 50% opacity, clamped to 2 lines; meta row of

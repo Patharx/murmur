@@ -97,14 +97,13 @@ struct FolderChip: View {
 }
 
 struct IconButton: View {
-    var systemName: String
+    var icon: String
     var label: String
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: systemName)
-                .font(.system(size: 16, weight: .regular))
+            PhosphorIcon(name: icon, size: 18)
                 .foregroundStyle(Theme.textSecondary)
                 .frame(width: 37, height: 37)
                 .overlay(

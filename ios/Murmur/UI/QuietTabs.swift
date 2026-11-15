@@ -5,6 +5,7 @@ struct AskView: View {
     @Bindable var library: Library
 
     var body: some View {
+        NavigationStack {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 Text(MurmurCopy.ask)
@@ -23,13 +24,20 @@ struct AskView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 LazyVStack(spacing: 10) {
                     ForEach(results) { note in
-                        NoteRowView(note: note)
+                        NavigationLink(value: note.id) {
+                            NoteRowView(note: note)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
             }
             .padding(20)
         }
         .background(Theme.bg)
+        .navigationDestination(for: String.self) { id in
+            NoteDetailView(library: library, id: id)
+        }
+        }
     }
 
     private var results: [NoteRow] {

@@ -7,8 +7,11 @@ public enum NotebookLayoutError: Error, Equatable {
 public struct NotebookLayout: Equatable, Sendable {
     public static let mirroredFolderName = "Murmur"
     public static let oddsAndEnds = "Odds and ends"
+    public static let unlabeled = "Unlabeled"
     public static let written = "Written"
-    public static let defaultFolders = ["Walks", "Reflections", "Written", "Reading", "Odds and ends"]
+    public static let defaultFolders = ["Unlabeled", "Walks", "Reflections", "Written", "Reading", "Odds and ends"]
+    /// Inbox first, then the places a note can be refiled to.
+    public static let chipFolders = ["Unlabeled", "Written", "Walks", "Reflections", "Reading", "Odds and ends"]
 
     public var root: URL
 

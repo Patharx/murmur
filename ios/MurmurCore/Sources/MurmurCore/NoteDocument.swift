@@ -41,6 +41,7 @@ struct CapturedNote: Equatable, Sendable {
     var kind: NoteKind
     var folder: String
     var audio: String?
+    var recordings: [String]
     var duration: Int?
     var title: String
     var threads: [String]
@@ -59,7 +60,18 @@ public struct NoteDocument: Equatable, Sendable {
     public var kind: NoteKind
     public var folder: String
     public var audioFilename: String?
+    /// Later clips, in order, including the original. Empty when the note has at most one file,
+    /// so a single `audio:` line stays the whole story.
+    public var recordings: [String]
     public var durationSeconds: Int?
+
+    public var audioFiles: [String] {
+        if recordings.isEmpty {
+            if let audioFilename, !audioFilename.isEmpty { return [audioFilename] }
+            return []
+        }
+        return recordings
+    }
     public var title: String
     public var threads: [String]
     public var summaryModel: String?
@@ -100,6 +112,7 @@ public struct NoteDocument: Equatable, Sendable {
         title: String,
         said: String,
         audioFilename: String? = nil,
+        recordings: [String] = [],
         durationSeconds: Int? = nil,
         threads: [String] = [],
         summaryModel: String? = nil,
@@ -114,6 +127,7 @@ public struct NoteDocument: Equatable, Sendable {
         self.kind = kind
         self.folder = folder
         self.audioFilename = audioFilename
+        self.recordings = recordings
         self.durationSeconds = durationSeconds
         self.title = title
         self.threads = threads

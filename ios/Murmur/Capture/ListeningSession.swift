@@ -21,10 +21,7 @@ final class ListeningSession {
     var failure: String?
     private(set) var bookmarks: [TimeInterval] = []
 
-    private var engine: AVAudioEngine?
-    private var file: AVAudioFile?
-    private var request: SFSpeechAudioBufferRecognitionRequest?
-    private var recognition: SFSpeechRecognitionTask?
+    private var rig: CaptureRig?
     private var started: Date?
     private var accumulated: TimeInterval = 0
     private var timer: Timer?
@@ -80,7 +77,10 @@ final class ListeningSession {
     }
 
     func stop() -> CapturedAudio? {
-        guard isRunning || file != nil else { return nil }
+        guard isRunning || rig != nil else { return nil }
+        if let problem = rig?.writer.latestError(), failure == nil {
+            failure = problem
+        }
         timer?.invalidate()
         let duration = elapsed
         let when = started ?? Date()
@@ -119,16 +119,11 @@ final class ListeningSession {
         guard format.sampleRate > 0, format.channelCount > 0 else {
             throw TranscribeError.unavailable
         }
-        let settings: [String: Any] = [
-            AVFormatIDKey: kAudioFormatMPEG4AAC,
-            AVSampleRateKey: format.sampleRate,
-            AVNumberOfChannelsKey: 1,
-            AVEncoderBitRateKey: CaptureFormat.bitRate,
-        ]
-        let file = try AVAudioFile(forWriting: url, settings: settings)
+        let writer = try MonoAACWriter(url: url, input: format)
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.shouldReportPartialResults = true
         request.requiresOnDeviceRecognition = true
+        let recognition: SFSpeechRecognitionTask?
         if let recognizer = SFSpeechRecognizer(), recognizer.isAvailable {
             recognition = recognizer.recognitionTask(with: request) { [weak self] result, _ in
                 guard let result else { return }
@@ -138,23 +133,30 @@ final class ListeningSession {
                     self.liveText = self.finalized + piece
                 }
             }
+        } else {
+            recognition = nil
         }
         input.installTap(onBus: 0, bufferSize: 4096, format: format) { [weak self] buffer, _ in
-            try? file.write(from: buffer)
-            request.append(buffer)
+            let converted = writer.append(buffer)
+            if let converted {
+                request.append(converted)
+            }
             let power = Self.decibels(buffer)
             let height = WaveformMetrics.height(decibels: power)
+            let problem = writer.latestError()
             Task { @MainActor in
-                guard let self, !self.isPaused else { return }
+                guard let self else { return }
+                if let problem, self.failure == nil {
+                    self.failure = problem
+                }
+                guard !self.isPaused else { return }
                 self.levels.removeFirst()
                 self.levels.append(CGFloat(height))
             }
         }
         engine.prepare()
         try engine.start()
-        self.engine = engine
-        self.file = file
-        self.request = request
+        rig = CaptureRig(engine: engine, writer: writer, request: request, recognition: recognition)
     }
 
     private func startTimer() {
@@ -170,14 +172,8 @@ final class ListeningSession {
     }
 
     private func teardown() {
-        engine?.inputNode.removeTap(onBus: 0)
-        engine?.stop()
-        request?.endAudio()
-        recognition?.cancel()
-        engine = nil
-        file = nil
-        request = nil
-        recognition = nil
+        rig?.stop()
+        rig = nil
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
@@ -192,5 +188,103 @@ final class ListeningSession {
         }
         let rms = sqrt(sum / Float(count))
         return 20 * log10(max(rms, 1e-7))
+    }
+}
+
+/// Owns the engine so a dismissed screen still closes the file and the session.
+final class CaptureRig {
+    let engine: AVAudioEngine
+    let writer: MonoAACWriter
+    let request: SFSpeechAudioBufferRecognitionRequest
+    let recognition: SFSpeechRecognitionTask?
+    private var stopped = false
+
+    init(engine: AVAudioEngine, writer: MonoAACWriter, request: SFSpeechAudioBufferRecognitionRequest, recognition: SFSpeechRecognitionTask?) {
+        self.engine = engine
+        self.writer = writer
+        self.request = request
+        self.recognition = recognition
+    }
+
+    func stop() {
+        guard !stopped else { return }
+        stopped = true
+        engine.inputNode.removeTap(onBus: 0)
+        engine.stop()
+        request.endAudio()
+        recognition?.cancel()
+        writer.close()
+    }
+
+    deinit { stop() }
+}
+
+final class MonoAACWriter {
+    private let file: AVAudioFile
+    private let converter: AVAudioConverter
+    private let output: AVAudioFormat
+    private let lock = NSLock()
+    private var closed = false
+    private(set) var errorMessage: String?
+
+    init(url: URL, input: AVAudioFormat) throws {
+        let settings: [String: Any] = [
+            AVFormatIDKey: kAudioFormatMPEG4AAC,
+            AVSampleRateKey: CaptureFormat.sampleRate,
+            AVNumberOfChannelsKey: CaptureFormat.channelCount,
+            AVEncoderBitRateKey: CaptureFormat.bitRate,
+        ]
+        file = try AVAudioFile(forWriting: url, settings: settings)
+        output = file.processingFormat
+        guard let converter = AVAudioConverter(from: input, to: output) else {
+            throw TranscribeError.unavailable
+        }
+        self.converter = converter
+    }
+
+    func append(_ buffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
+        lock.lock()
+        defer { lock.unlock() }
+        guard !closed, errorMessage == nil else { return nil }
+        let ratio = output.sampleRate / max(buffer.format.sampleRate, 1)
+        let capacity = AVAudioFrameCount(Double(buffer.frameLength) * ratio) + 64
+        guard let converted = AVAudioPCMBuffer(pcmFormat: output, frameCapacity: max(capacity, 64)) else {
+            errorMessage = "The audio couldn't be converted."
+            return nil
+        }
+        var failure: NSError?
+        var consumed = false
+        let status = converter.convert(to: converted, error: &failure) { _, statusOut in
+            if consumed {
+                statusOut.pointee = .noDataNow
+                return nil
+            }
+            consumed = true
+            statusOut.pointee = .haveData
+            return buffer
+        }
+        if status == .error || failure != nil || converted.frameLength == 0 {
+            errorMessage = "The audio couldn't be converted."
+            return nil
+        }
+        do {
+            try file.write(from: converted)
+        } catch {
+            errorMessage = "The audio couldn't be written."
+            return nil
+        }
+        return converted
+    }
+
+    func latestError() -> String? {
+        lock.lock()
+        defer { lock.unlock() }
+        return errorMessage
+    }
+
+    func close() {
+        lock.lock()
+        closed = true
+        lock.unlock()
     }
 }

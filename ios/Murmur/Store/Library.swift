@@ -10,7 +10,7 @@ final class Library {
     var query = ""
     var problem: String?
 
-    static let folderOrder = ["Written", "Walks", "Reflections", "Reading", "Odds and ends"]
+    static let folderOrder = NotebookLayout.chipFolders
 
     init(notebook: Notebook) {
         self.notebook = notebook
@@ -103,87 +103,121 @@ final class Library {
     /// Writes the voice note immediately, then replaces the words with the file transcript when it arrives.
     func keepVoiceNote(captured: CapturedAudio) {
         let stamp = NoteClock.stamp(captured.started)
-        let said = ListeningText.merge(transcript: captured.liveText, bookmarks: captured.bookmarks)
+        let said = ListeningText.merge(
+            transcript: captured.liveText,
+            bookmarks: captured.bookmarks,
+            duration: captured.duration
+        )
         let document = NoteDocument(
             id: ULID().description,
             created: stamp,
             modified: stamp,
             kind: .voice,
-            folder: NotebookLayout.oddsAndEnds,
+            folder: NotebookLayout.unlabeled,
             title: Self.title(from: said, at: captured.started),
             said: said,
-            audioFilename: "audio.m4a",
             durationSeconds: max(0, Int(captured.duration.rounded()))
         )
-        guard let path = save(document, path: nil, now: captured.started) else { return }
-        guard let noteURL = fileURL(path: path) else { return }
-        let destination = noteURL.deletingPathExtension().appendingPathExtension(CaptureFormat.fileExtension)
         do {
-            if FileManager.default.fileExists(atPath: destination.path) {
-                try FileManager.default.removeItem(at: destination)
-            }
-            try FileManager.default.moveItem(at: captured.url, to: destination)
-        } catch {
-            problem = "The audio is still in a temporary file. The words were kept."
-        }
-        if var stored = load(path: path) {
-            stored.audioFilename = destination.lastPathComponent
-            _ = save(stored, path: path, now: captured.started)
-        }
-        let bookmarks = captured.bookmarks
-        let live = said
-        let id = document.id
-        Task { [weak self] in
-            let authoritative = (try? await FileTranscriber.transcribe(url: destination)) ?? ""
-            await MainActor.run {
-                self?.applyTranscript(id: id, live: live, authoritative: authoritative, bookmarks: bookmarks)
-            }
-        }
-    }
-
-    func attachDictation(path: String, captured: CapturedAudio, to document: NoteDocument) -> String? {
-        var document = document
-        document.kind = .hybrid
-        document.modified = NoteClock.stamp()
-        let previousAudio = document.audioFilename
-        document.audioFilename = document.audioFilename ?? "dictation.m4a"
-        guard let savedPath = save(document, path: path) else { return nil }
-        guard let noteURL = fileURL(path: savedPath) else { return savedPath }
-        let destination = noteURL.deletingPathExtension().appendingPathExtension(CaptureFormat.fileExtension)
-        if let previousAudio {
-            let old = noteURL.deletingLastPathComponent().appendingPathComponent(previousAudio)
-            if old.path != destination.path, FileManager.default.fileExists(atPath: old.path) {
-                let kept = noteURL.deletingLastPathComponent().appendingPathComponent(
-                    noteURL.deletingPathExtension().lastPathComponent + "-earlier.m4a"
-                )
-                if !FileManager.default.fileExists(atPath: kept.path) {
-                    try? FileManager.default.moveItem(at: old, to: kept)
+            let path = try notebook.storeVoiceNote(document, audioSource: captured.url, now: captured.started)
+            reload()
+            guard let audio = audioFiles(path: path).first else { return }
+            let id = document.id
+            Task { [weak self] in
+                let authoritative = (try? await FileTranscriber.transcribe(url: audio)) ?? ""
+                await MainActor.run {
+                    self?.applyFileTranscript(
+                        id: id,
+                        live: said,
+                        authoritative: authoritative,
+                        bookmarks: captured.bookmarks,
+                        duration: captured.duration
+                    )
                 }
             }
+        } catch {
+            problem = "The words were kept. The audio didn't land beside them."
         }
-        try? FileManager.default.removeItem(at: destination)
-        try? FileManager.default.moveItem(at: captured.url, to: destination)
-        if var stored = load(path: savedPath) {
-            stored.audioFilename = destination.lastPathComponent
-            stored.kind = .hybrid
-            if stored.durationSeconds == nil {
-                stored.durationSeconds = max(0, Int(captured.duration.rounded()))
-            }
-            return save(stored, path: savedPath)
-        }
-        return savedPath
     }
 
-    private func applyTranscript(id: String, live: String, authoritative: String, bookmarks: [TimeInterval]) {
-        guard let row = try? notebook.row(id: id), var document = load(path: row.path) else { return }
-        let merged = ListeningText.reconcile(live: live, authoritative: authoritative)
-        document.said = ListeningText.merge(transcript: merged, bookmarks: bookmarks)
-        document.modified = NoteClock.stamp()
-        if document.title == Self.title(from: live, at: document.created.date),
-           !authoritative.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            document.title = Self.title(from: document.said, at: document.created.date)
+    func placeFirstClip(id: String, source: URL, liveDraft: String) {
+        do {
+            try notebook.placeFirstClip(id: id, source: source)
+            reload()
+            guard let row = try? notebook.row(id: id), let audio = audioFiles(path: row.path).first else { return }
+            Task { [weak self] in
+                let authoritative = (try? await FileTranscriber.transcribe(url: audio)) ?? ""
+                await MainActor.run {
+                    self?.applyTrailingDraft(id: id, liveDraft: liveDraft, authoritative: authoritative)
+                }
+            }
+        } catch {
+            problem = "The words were kept. The audio didn't land beside them."
         }
+    }
+
+    func addClip(id: String, captured: CapturedAudio) {
+        let modified = NoteClock.stamp()
+        let marker = ListeningText.addedMarker(at: captured.started)
+        do {
+            _ = try notebook.addRecording(
+                id: id,
+                source: captured.url,
+                addedAt: captured.started,
+                liveText: captured.liveText,
+                modified: modified
+            )
+            reload()
+            guard let row = try? notebook.row(id: id), let audio = audioFiles(path: row.path).last else { return }
+            Task { [weak self] in
+                let authoritative = (try? await FileTranscriber.transcribe(url: audio)) ?? ""
+                await MainActor.run {
+                    self?.applyClipTranscript(id: id, marker: marker, liveDraft: captured.liveText, authoritative: authoritative)
+                }
+            }
+        } catch {
+            problem = "The earlier recording is still there. The new one didn't land."
+        }
+    }
+
+    private func applyFileTranscript(id: String, live: String, authoritative: String, bookmarks: [TimeInterval], duration: TimeInterval) {
+        guard let row = try? notebook.row(id: id), let document = load(path: row.path) else { return }
+        guard var next = NoteEditing.applyingFileTranscript(
+            to: document,
+            liveDraft: live,
+            authoritative: authoritative,
+            bookmarks: bookmarks,
+            duration: duration
+        ) else { return }
+        next.modified = NoteClock.stamp()
+        _ = save(next, path: row.path)
+    }
+
+    private func applyTrailingDraft(id: String, liveDraft: String, authoritative: String) {
+        guard let row = try? notebook.row(id: id), var document = load(path: row.path) else { return }
+        guard let said = NoteEditing.replacingTrailingDraft(said: document.said, liveDraft: liveDraft, authoritative: authoritative) else { return }
+        document.said = said
+        document.modified = NoteClock.stamp()
         _ = save(document, path: row.path)
+    }
+
+    private func applyClipTranscript(id: String, marker: String, liveDraft: String, authoritative: String) {
+        guard let row = try? notebook.row(id: id), var document = load(path: row.path) else { return }
+        guard let said = NoteEditing.applyingClipTranscript(
+            said: document.said,
+            marker: marker,
+            liveDraft: liveDraft,
+            authoritative: authoritative
+        ) else { return }
+        document.said = said
+        document.modified = NoteClock.stamp()
+        _ = save(document, path: row.path)
+    }
+
+    func audioFiles(path: String) -> [URL] {
+        guard let document = load(path: path), let noteURL = fileURL(path: path) else { return [] }
+        return document.audioFiles.map { noteURL.deletingLastPathComponent().appendingPathComponent($0) }
+            .filter { FileManager.default.fileExists(atPath: $0.path) }
     }
 
     private func threads(for row: NoteRow) -> [String] {

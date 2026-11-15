@@ -14,8 +14,11 @@ struct ComposeView: View {
     @State private var dictating = false
     @State private var session = ListeningSession()
     @State private var pending = ""
+    @State private var confirmNewRecording = false
+    @State private var addingClip = false
+    @State private var flushed = false
 
-    private let folders = ["Written", "Reflections", "Reading", "Odds and ends"]
+    private let folders = NotebookLayout.chipFolders
 
     var body: some View {
         VStack(spacing: 0) {
@@ -44,6 +47,7 @@ struct ComposeView: View {
         .onChange(of: session.liveText) { _, newValue in
             if dictating { pending = newValue }
         }
+        .onDisappear { flush(andDismiss: false) }
     }
 
     private var header: some View {
@@ -59,7 +63,13 @@ struct ComposeView: View {
                 .foregroundStyle(Theme.textTertiary)
             Spacer()
             Button(MurmurCopy.keep) {
-                saveNow()
+                saveTask?.cancel()
+                if dictating {
+                    finishDictation()
+                } else {
+                    saveNow()
+                }
+                flushed = true
                 dismiss()
             }
             .font(MurmurType.custom(15, weight: .medium, relativeTo: .body))
@@ -71,9 +81,12 @@ struct ComposeView: View {
 
     private var footer: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label(MurmurCopy.keptAsYouType, systemImage: "checkmark")
-                .font(MurmurType.meta)
-                .foregroundStyle(Theme.textTertiary)
+            HStack(spacing: 6) {
+                PhosphorIcon(name: "check", size: 14)
+                Text(MurmurCopy.keptAsYouType)
+            }
+            .font(MurmurType.meta)
+            .foregroundStyle(Theme.textTertiary)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(folders, id: \.self) { name in
@@ -83,7 +96,22 @@ struct ComposeView: View {
                     }
                 }
             }
-            if !dictating {
+            if confirmNewRecording {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("This note already has a recording.")
+                        .font(MurmurType.secondary)
+                        .foregroundStyle(Theme.textSecondary)
+                    Button("New recording") {
+                        confirmNewRecording = false
+                        addingClip = true
+                        Task { await startDictation() }
+                    }
+                    .font(MurmurType.custom(15, weight: .medium, relativeTo: .body))
+                    .foregroundStyle(Theme.accent400)
+                    .buttonStyle(.plain)
+                }
+            }
+            if !dictating && !confirmNewRecording {
                 HStack(spacing: 16) {
                     Text("Aa")
                         .font(MurmurType.secondary)
@@ -97,8 +125,11 @@ struct ComposeView: View {
                     Button {
                         Task { await beginDictation() }
                     } label: {
-                        Label(MurmurCopy.sayItInstead, systemImage: "mic")
-                            .font(MurmurType.secondary)
+                        HStack(spacing: 6) {
+                            PhosphorIcon(name: "microphone", size: 16)
+                            Text(MurmurCopy.sayItInstead)
+                        }
+                        .font(MurmurType.secondary)
                     }
                     .buttonStyle(.plain)
                     .foregroundStyle(Theme.accent400)
@@ -167,26 +198,48 @@ struct ComposeView: View {
             title: title,
             said: said
         )
-        if let existing = path, let current = library.load(path: existing), current.kind == .hybrid {
-            document.kind = .hybrid
+        if let existing = path, let current = library.load(path: existing) {
+            if current.kind != .written { document.kind = current.kind }
             document.audioFilename = current.audioFilename
+            document.recordings = current.recordings
             document.durationSeconds = current.durationSeconds
         }
         path = library.save(document, path: path)
     }
 
+    private var hasAudio: Bool {
+        guard let path, let current = library.load(path: path) else { return false }
+        return !current.audioFiles.isEmpty
+    }
+
     private func close() {
+        flush(andDismiss: true)
+    }
+
+    private func flush(andDismiss dismissAfter: Bool) {
+        guard !flushed else { return }
+        flushed = true
         saveTask?.cancel()
-        if NoteDraft.isEmpty(title: title, said: said), let path {
+        if dictating {
+            finishDictation()
+        } else if NoteDraft.isEmpty(title: title, said: said), let path {
             library.discardIfEmpty(path: path)
         } else {
             saveNow()
         }
-        if dictating { session.abandon() }
-        dismiss()
+        if dismissAfter { dismiss() }
     }
 
     private func beginDictation() async {
+        saveNow()
+        if hasAudio {
+            confirmNewRecording = true
+            return
+        }
+        await startDictation()
+    }
+
+    private func startDictation() async {
         dictating = true
         pending = ""
         await session.start()
@@ -196,21 +249,31 @@ struct ComposeView: View {
         dictating = false
         let captured = session.stop()
         let spoken = (captured?.liveText ?? pending).trimmingCharacters(in: .whitespacesAndNewlines)
-        if !spoken.isEmpty {
-            if said.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                said = spoken
-            } else if said.hasSuffix(" ") || said.hasSuffix("\n") {
-                said += spoken
-            } else {
-                said += " " + spoken
-            }
-        }
+        let addsClip = addingClip
+        addingClip = false
         pending = ""
-        saveNow()
-        guard let captured, let path, var document = library.load(path: path) else { return }
-        document.said = said
-        document.folder = folder
-        document.title = title
-        _ = library.attachDictation(path: path, captured: captured, to: document)
+        guard let captured else {
+            saveNow()
+            return
+        }
+        if addsClip {
+            saveNow()
+            library.addClip(id: documentID, captured: captured)
+        } else {
+            if !spoken.isEmpty {
+                if said.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    said = spoken
+                } else if said.hasSuffix(" ") || said.hasSuffix("\n") {
+                    said += spoken
+                } else {
+                    said += " " + spoken
+                }
+            }
+            saveNow()
+            library.placeFirstClip(id: documentID, source: captured.url, liveDraft: spoken)
+        }
+        if let path, let current = library.load(path: path) {
+            said = current.said
+        }
     }
 }

@@ -24,8 +24,8 @@ struct TodayView: View {
                 .padding(.bottom, 24)
             }
             .background(Theme.bg)
-            .navigationDestination(for: String.self) { path in
-                NoteDetailView(library: library, path: path)
+            .navigationDestination(for: String.self) { id in
+                NoteDetailView(library: library, id: id)
             }
         }
     }
@@ -45,8 +45,8 @@ struct TodayView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 12)
                 HStack(spacing: 8) {
-                    IconButton(systemName: "square.and.pencil", label: "Write a note", action: compose)
-                    IconButton(systemName: "magnifyingglass", label: "Search notes") {
+                    IconButton(icon: "pencil-simple", label: "Write a note", action: compose)
+                    IconButton(icon: "magnifying-glass", label: "Search notes") {
                         searching.toggle()
                         if !searching { library.query = "" }
                     }
@@ -86,7 +86,7 @@ struct TodayView: View {
     private var notes: some View {
         LazyVStack(spacing: 10) {
             ForEach(library.visibleNotes) { note in
-                NavigationLink(value: note.path) {
+                NavigationLink(value: note.id) {
                     NoteRowView(note: note)
                 }
                 .buttonStyle(.plain)
@@ -104,8 +104,7 @@ struct NoteRowView: View {
                 .fill(Theme.accent.opacity(0.14))
                 .frame(width: 30, height: 30)
                 .overlay {
-                    Image(systemName: note.kind == "written" ? "text.alignleft" : "mic")
-                        .font(.system(size: 13, weight: .regular))
+                    PhosphorIcon(name: note.kind == "written" ? "text-align-left" : "microphone", size: 16)
                         .foregroundStyle(Theme.accent400)
                 }
                 .accessibilityHidden(true)
@@ -128,16 +127,6 @@ struct NoteRowView: View {
                     }
                     dot
                     meta(NotebookLayout.chipLabel(for: note.folder))
-                    if note.onPhoneOnly {
-                        Text(MurmurCopy.onPhone)
-                            .font(MurmurType.chip)
-                            .tracking(0.8)
-                            .textCase(.uppercase)
-                            .foregroundStyle(Theme.textSecondary)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 3)
-                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(Theme.chipEdge, lineWidth: 1))
-                    }
                 }
             }
             Spacer(minLength: 0)

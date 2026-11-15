@@ -2,12 +2,12 @@ import Foundation
 
 public enum NoteCodec {
     static let knownKeys: Set<String> = [
-        "id", "created", "modified", "kind", "folder", "audio", "duration",
+        "id", "created", "modified", "kind", "folder", "audio", "recordings", "duration",
         "title", "threads", "summary_model", "summary_at", "range_start", "range_end",
     ]
 
     private static let keyOrder = [
-        "id", "created", "modified", "kind", "folder", "audio", "duration",
+        "id", "created", "modified", "kind", "folder", "audio", "recordings", "duration",
         "title", "threads", "summary_model", "summary_at", "range_start", "range_end",
     ]
 
@@ -37,7 +37,9 @@ public enum NoteCodec {
         }
         let modified = try NoteTimestamp.parse(scalar(from: modifiedBlock))
 
-        let audio = values["audio"].map { scalar(from: $0) }.flatMap { $0.isEmpty ? nil : $0 }
+        let recordings = values["recordings"].map { parseThreads(from: $0) } ?? []
+        var audio = values["audio"].map { scalar(from: $0) }.flatMap { $0.isEmpty ? nil : $0 }
+        if audio == nil { audio = recordings.first }
         let kind = try parseKind(values["kind"].map { scalar(from: $0) }, audio: audio)
         let folderScalar = values["folder"].map { scalar(from: $0) } ?? ""
         let folder = folderScalar.isEmpty ? "Odds and ends" : folderScalar
@@ -64,6 +66,7 @@ public enum NoteCodec {
             title: title,
             said: said,
             audioFilename: audio,
+            recordings: recordings.count > 1 ? recordings : [],
             durationSeconds: duration,
             threads: threads,
             summaryModel: summaryModel,
@@ -85,6 +88,7 @@ public enum NoteCodec {
             kind: kind,
             folder: folder,
             audio: audio,
+            recordings: recordings.count > 1 ? recordings : [],
             duration: duration,
             title: title,
             threads: threads,
@@ -125,6 +129,7 @@ public enum NoteCodec {
             && note.kind == snap.kind
             && note.folder == snap.folder
             && note.audioFilename == snap.audio
+            && note.recordings == snap.recordings
             && note.durationSeconds == snap.duration
             && note.title == snap.title
             && note.threads == snap.threads
@@ -173,6 +178,7 @@ public enum NoteCodec {
         case "kind": return note.kind == snap.kind
         case "folder": return note.folder == snap.folder
         case "audio": return note.audioFilename == snap.audio
+        case "recordings": return note.recordings == snap.recordings
         case "duration": return note.durationSeconds == snap.duration
         case "title": return note.title == snap.title
         case "threads": return note.threads == snap.threads
@@ -190,6 +196,8 @@ public enum NoteCodec {
             return true
         case "audio":
             return note.audioFilename != nil
+        case "recordings":
+            return note.recordings.count > 1
         case "duration":
             return note.durationSeconds != nil
         case "threads":
@@ -219,6 +227,7 @@ public enum NoteCodec {
         case "kind": return "kind: \(note.kind.rawValue)"
         case "folder": return "folder: \(yamlScalar(note.folder))"
         case "audio": return "audio: \(yamlScalar(note.audioFilename ?? ""))"
+        case "recordings": return "recordings: \(yamlFlow(note.recordings))"
         case "duration": return "duration: \(note.durationSeconds ?? 0)"
         case "title": return "title: \(yamlScalar(note.title))"
         case "threads": return "threads: \(yamlFlow(note.threads))"

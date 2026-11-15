@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import MurmurCore
 import Speech
 
 enum TranscribeError: Error {
@@ -49,6 +50,19 @@ enum SpeechAnalyzerTranscriber {
 
 enum LegacyFileTranscriber {
     static func transcribe(url: URL) async throws -> String {
+        let pieces = try chunkURLs(for: url)
+        var spoken: [String] = []
+        for piece in pieces {
+            let text = try await recognize(url: piece)
+            let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !trimmed.isEmpty { spoken.append(trimmed) }
+            if piece != url { try? FileManager.default.removeItem(at: piece) }
+        }
+        if spoken.isEmpty { throw TranscribeError.empty }
+        return spoken.joined(separator: " ")
+    }
+
+    private static func recognize(url: URL) async throws -> String {
         let status = await authorization()
         guard status == .authorized else { throw TranscribeError.notAuthorized }
         guard let recognizer = SFSpeechRecognizer(), recognizer.isAvailable else {
@@ -65,14 +79,57 @@ enum LegacyFileTranscriber {
                     return
                 }
                 guard let result, result.isFinal else { return }
-                let text = result.bestTranscription.formattedString
-                if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    box.resume(continuation, throwing: TranscribeError.empty)
-                } else {
-                    box.resume(continuation, returning: text)
-                }
+                box.resume(continuation, returning: result.bestTranscription.formattedString)
             }
         }
+    }
+
+    /// Silence-bounded pieces so a walk longer than a minute still transcribes on iOS 17–25.
+    private static func chunkURLs(for url: URL) throws -> [URL] {
+        let file = try AVAudioFile(forReading: url)
+        let rate = file.processingFormat.sampleRate
+        guard rate > 0, file.length > 0 else { return [url] }
+        let duration = Double(file.length) / rate
+        if duration <= 50 { return [url] }
+        let window = AVAudioFrameCount(rate * 0.05)
+        var windows: [LevelWindow] = []
+        var frame: AVAudioFramePosition = 0
+        while frame < file.length {
+            let count = min(window, AVAudioFrameCount(file.length - frame))
+            guard let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: count) else { break }
+            file.framePosition = frame
+            try file.read(into: buffer, frameCount: count)
+            windows.append(LevelWindow(time: Double(frame) / rate, rms: rms(buffer)))
+            frame += AVAudioFramePosition(count)
+        }
+        let ranges = SilenceChunker.ranges(windows: windows, duration: duration)
+        if ranges.count <= 1 { return [url] }
+        var urls: [URL] = []
+        for (index, range) in ranges.enumerated() {
+            let start = AVAudioFramePosition(range.lowerBound * rate)
+            let end = min(file.length, AVAudioFramePosition(range.upperBound * rate))
+            let count = AVAudioFrameCount(max(0, end - start))
+            guard count > 0, let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: count) else { continue }
+            file.framePosition = start
+            try file.read(into: buffer, frameCount: count)
+            let piece = FileManager.default.temporaryDirectory.appendingPathComponent("murmur-chunk-\(index)-\(UUID().uuidString).caf")
+            let writer = try AVAudioFile(forWriting: piece, settings: file.fileFormat.settings)
+            try writer.write(from: buffer)
+            urls.append(piece)
+        }
+        return urls.isEmpty ? [url] : urls
+    }
+
+    private static func rms(_ buffer: AVAudioPCMBuffer) -> Float {
+        guard let samples = buffer.floatChannelData?.pointee else { return 0 }
+        let count = Int(buffer.frameLength)
+        guard count > 0 else { return 0 }
+        var sum: Float = 0
+        for index in 0..<count {
+            let sample = samples[index]
+            sum += sample * sample
+        }
+        return sqrt(sum / Float(count))
     }
 
     static func authorization() async -> SFSpeechRecognizerAuthorizationStatus {

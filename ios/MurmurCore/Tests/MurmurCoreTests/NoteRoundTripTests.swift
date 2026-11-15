@@ -142,6 +142,40 @@ final class NoteRoundTripTests: XCTestCase {
         XCTAssertEqual(parsed.threads, ["Your father", "Writing"])
     }
 
+    func testASecondRecordingRoundTripsWithoutDroppingTheFirst() throws {
+        let original = """
+        ---
+        id: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+        created: 2026-08-05T22:40:00+01:00
+        modified: 2026-08-06T15:42:00+01:00
+        kind: hybrid
+        folder: Written
+        audio: 2026-08-05-2240-letter.m4a
+        recordings: [2026-08-05-2240-letter.m4a, 2026-08-06-1542-letter.m4a]
+        title: A letter
+        ---
+
+        ## What you said
+
+        The first take.
+
+        — Added 3:42 PM
+
+        A later one.
+
+        """
+        let parsed = try NoteCodec.parse(original)
+        XCTAssertEqual(parsed.audioFilename, "2026-08-05-2240-letter.m4a")
+        XCTAssertEqual(parsed.audioFiles, ["2026-08-05-2240-letter.m4a", "2026-08-06-1542-letter.m4a"])
+        XCTAssertEqual(NoteCodec.serialize(parsed), original)
+        var edited = parsed
+        edited.said = "The first take.\n\n— Added 3:42 PM\n\nA later one, kept."
+        let written = NoteCodec.serialize(edited)
+        XCTAssertTrue(written.contains("audio: 2026-08-05-2240-letter.m4a"))
+        XCTAssertTrue(written.contains("recordings: [2026-08-05-2240-letter.m4a, 2026-08-06-1542-letter.m4a]"))
+        XCTAssertEqual(try NoteCodec.parse(written).audioFiles.count, 2)
+    }
+
     func testNewWrittenNoteSerializesWithoutAudioOrDuration() {
         let created = NoteTimestamp(date: Date(timeIntervalSince1970: 0), text: "2026-08-05T22:40:00+01:00")
         let note = NoteDocument(
