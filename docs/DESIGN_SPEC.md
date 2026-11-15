@@ -118,7 +118,8 @@ Only claim these if §10 of ARCHITECTURE.md stays true.
    truthful*, derived from the actual note set: on "All", the count of today's notes and, if two or
    more share a thread, that fact. On a selected folder, that folder's count. Never a fixed string —
    the prototype had a bug here precisely because it was hardcoded.
-2. **Two icon buttons**, 37pt, radius 10, 1px `rgba(233,233,237,0.14)`: pencil (compose) and search.
+2. **One icon button**, 37pt, radius 10, 1px `rgba(233,233,237,0.14)`: pencil (compose). Search lives
+   on Ask, not here.
 3. **Weekly recap card** — radius 14, `linear-gradient(150deg, #262a60, #1d2043)`, 1px
    `rgba(145,132,217,0.32)`, with a 150pt radial bloom of `#4c5397` at 45% opacity bleeding off the
    top-right corner. Star icon + "SUNDAY · YOUR WEEK" in `#b5abfc`; a 16.5pt headline;
@@ -128,7 +129,8 @@ Only claim these if §10 of ARCHITECTURE.md stays true.
    ordinary Tuesday shows no card at all, and that is correct. Do not fill the space.
 4. **Folder chips** — horizontal scroll. Inactive: transparent, 1px `rgba(233,233,237,0.14)`,
    `rgba(233,233,237,0.6)`. Active: `rgba(145,132,217,0.16)` fill, `#9184d9` border, `#b5abfc` text.
-   Order: All, Written, Walks, Reflections, Reading, Odds & ends.
+   Order: All, Unlabeled, Written, Walks, Reflections, Reading, Odds & ends.
+   Unlabeled is the inbox a new voice note lands in. Odds & ends stays its own folder.
 5. **Note list** — surface cards, radius 12, 1px `#3f424d`, hover/press edge `#5d5294`.
    30pt rounded-square icon tile, `rgba(145,132,217,0.14)`: microphone for voice, three lines for
    written. Title 15/500; preview 12.5pt at 50% opacity, clamped to 2 lines; meta row of
@@ -165,11 +167,11 @@ survive.** In SwiftUI this is free with `Text`, but verify with a multi-paragrap
 Footer, above the keyboard:
 - A check glyph + "Kept on this iPhone as you type — no connection needed". This must be literally
   true (ARCHITECTURE §4).
-- Folder chips (Written / Reflections / Reading / Odds & ends).
+- Folder chips (Unlabeled / Written / Walks / Reflections / Reading / Odds & ends).
 - **Drive toggle row** — surface card, cloud icon, title toggling between "Copy to Google Drive" and
   "Keep on this phone only", subtitle explaining the .md file, and a 44 × 26pt switch with a 20pt
   knob. Track `#9184d9` on, `#3f424d` off.
-- Format bar: Aa · List · Quote · **Dictate into this note** — the last one appends a voice segment
+- Format bar: Aa · List · Quote · **Say it instead** — the last one appends a voice segment
   to a written note, which is the feature that makes the two capture modes one product rather than
   two apps sharing a tab bar.
 
@@ -202,7 +204,7 @@ bug in the prototype.
 
 **Weekly only. There is no daily recap.**
 
-Title "Read back", then the **letter card** — radius 14, `linear-gradient(160deg, #262a60, #1a1c33)`,
+Title "Weekly", the same word as the tab, then the **letter card** — radius 14, `linear-gradient(160deg, #262a60, #1a1c33)`,
 1px `rgba(145,132,217,0.28)`. "SUNDAY, FROM YOUR WEEK" at 10pt/600/0.16em in `#b5abfc`; the recap as
 **prose** at 15pt/1.75 with paragraph breaks preserved; a fading accent rule; three inline stats
 (18pt value, 9.5pt uppercase label).
@@ -275,7 +277,7 @@ Dropbox and OneDrive are shown in the design as intent. **Ship Drive only in v1*
 others or mark them "soon" — a dead radio button is worse than an absent one.
 
 **Reading back** — four toggle rows: a letter on Sunday · notice recurring threads · the gist on
-longer notes ("Skipped on anything under a minute — short notes are their own summary") · let me ask
+longer notes ("Skipped under 80 words, or under a minute of audio — short notes are their own summary") · let me ask
 my notes questions ("Searching happens on this phone; only the notes it finds are read").
 
 Footer: "Transcription runs on your iPhone. Only the text goes to Claude, and only for the parts you
@@ -320,8 +322,10 @@ Tapping it swaps the format bar for a **dictation bar** on the summary-card grad
 accent circle, a 26-bar live waveform driven by input level, "Carries on where you left off · 0:14",
 and a "Done" button.
 
-**The dictated words arrive tinted** — `rgba(181,171,252,0.95)` — appended at the cursor,
-mid-sentence, and settle to normal body colour `rgba(233,233,237,0.8)` when Done is tapped.
+**The new words arrive tinted** — `rgba(181,171,252,0.95)` — inserted at the cursor when the cursor
+is mid-text, and appended when the cursor is at the end. They settle to normal body colour
+`rgba(233,233,237,0.8)` when Done is tapped. A new recording, one the note did not already have,
+also inserts `— Added h:mm AM/PM` on its own line before those words.
 
 That tint is the design. It marks the text you have not proofread yet, so recognition errors are not
 silently absorbed into something you believe you wrote. Do not skip it.
@@ -342,8 +346,8 @@ Highest-priority item in the whole build, and it adds no screens.
 - **Lock Screen / Control Center control** — one tap, no Face ID, no unlock.
 - **Siri** — "Hey Siri, murmur."
 
-All four land in the same place: recording, transcribing on device, filed to *Odds & ends* until the
-user says otherwise. A short haptic on start and on stop is the entire feedback; do not present UI.
+All four land in the same place: listening, transcribing on device, filed to *Unlabeled* until the
+user says otherwise. Odds & ends is a folder they choose, not the inbox. A short haptic on start and on stop is the entire feedback; do not present UI.
 
 The rationale: the stated primary uses are walking and driving, where the current path is phone out,
 unlock, find app, load, tap record — about eight seconds, which the thoughts this product exists to

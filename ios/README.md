@@ -1,6 +1,17 @@
 # ios/
 
-The SwiftUI app. Not built yet.
+The SwiftUI app. Step 1 is the local notebook: files, the SQLite index, listening, and transcription. No Drive and no Claude.
+
+Pure-Swift store code lives in [`MurmurCore`](MurmurCore) so `swift test` runs on Linux as well as on a Mac. The Xcode project is generated, not hand-edited:
+
+```
+brew install xcodegen
+cd ios
+xcodegen generate
+open Murmur.xcodeproj
+```
+
+Run the app on an iPhone simulator from the Murmur scheme. The same scheme's tests are what CI runs.
 
 Build order is in [CLAUDE.md](../CLAUDE.md) and must not be reordered:
 

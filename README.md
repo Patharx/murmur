@@ -7,8 +7,8 @@ Most voice-note apps are built for work — meetings, action items, follow-ups. 
 
 ## How it works
 
-- **Say it or write it.** Both land in the same notebook. Dictate into a written note mid-sentence
-  if you'd rather stop typing.
+- **Say it or write it.** Talking is the way in. Typing is there when you'd rather. Say it instead
+  of typing, mid-sentence, and the words land in the same note.
 - **Transcription happens on your iPhone.** The audio doesn't have to go anywhere.
 - **Your notes live in your own Google Drive**, as `.m4a` and `.md` files in folders that mirror the
   app. Readable in any text editor. See [FILE_FORMAT.md](docs/FILE_FORMAT.md) — it's a public
