@@ -17,7 +17,9 @@ let package = Package(
         ),
         .target(
             name: "MurmurCore",
-            dependencies: ["CSQLite"]
+            dependencies: [
+                .target(name: "CSQLite", condition: .when(platforms: [.linux])),
+            ]
         ),
         .testTarget(
             name: "MurmurCoreTests",
