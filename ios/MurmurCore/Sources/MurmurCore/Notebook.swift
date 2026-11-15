@@ -132,18 +132,30 @@ public final class Notebook {
 
     /// Keeps every earlier clip and adds one more. The markdown is written first; a failed move rolls it back.
     @discardableResult
-    public func addRecording(id: String, source: URL, addedAt: Date, liveText: String, modified: NoteTimestamp, now: Date = Date()) throws -> String {
+    public func addRecording(id: String, source: URL, addedAt: Date, liveText: String, modified: NoteTimestamp, now: Date = Date(), textAlreadyInserted: Bool = false) throws -> String {
         guard let row = try index.row(id: id) else { throw NotebookError.missingNote }
         let current = try load(path: row.path)
         let folderURL = layout.root.appendingPathComponent(current.folder, isDirectory: true)
         let clipName = try uniqueClipName(in: folderURL, addedAt: addedAt, title: current.title)
-        let updated = NoteEditing.appendingClip(
-            to: current,
-            liveText: liveText,
-            marker: ListeningText.addedMarker(at: addedAt),
-            clipFilename: clipName,
-            modified: modified
-        )
+        let updated: NoteDocument
+        if textAlreadyInserted {
+            var next = current
+            if next.kind == .written { next.kind = .hybrid }
+            var files = next.audioFiles
+            if !files.contains(clipName) { files.append(clipName) }
+            next.audioFilename = files.first
+            next.recordings = files.count > 1 ? files : []
+            next.modified = modified
+            updated = next
+        } else {
+            updated = NoteEditing.appendingClip(
+                to: current,
+                liveText: liveText,
+                marker: ListeningText.addedMarker(at: addedAt),
+                clipFilename: clipName,
+                modified: modified
+            )
+        }
         let noteURL = try layout.url(relativePath: row.path)
         let previousMarkdown = try Data(contentsOf: noteURL)
         let clipURL = folderURL.appendingPathComponent(clipName)
@@ -231,7 +243,8 @@ public final class Notebook {
             localMtime: fileMtimeMillis(file),
             syncedMtime: previous?.syncedMtime,
             driveId: previous?.driveId,
-            driveRev: previous?.driveRev
+            driveRev: previous?.driveRev,
+            phoneOnly: document.phoneOnly
         )
         try index.upsert(row)
     }
@@ -298,7 +311,8 @@ public final class Notebook {
                     localMtime: mtime,
                     syncedMtime: byID[document.id]?.syncedMtime,
                     driveId: byID[document.id]?.driveId,
-                    driveRev: byID[document.id]?.driveRev
+                    driveRev: byID[document.id]?.driveRev,
+                    phoneOnly: document.phoneOnly
                 )
                 try index.upsert(row)
             } else {

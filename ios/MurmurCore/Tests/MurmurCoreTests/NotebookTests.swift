@@ -279,9 +279,43 @@ final class NotebookTests: XCTestCase {
         XCTAssertEqual(ranges.last?.upperBound, 90)
     }
 
+    func testGistGateIsEitherShortWordsOrShortAudio() {
+        XCTAssertTrue(GistGate.shouldSkip(words: 79, durationSeconds: nil))
+        XCTAssertTrue(GistGate.shouldSkip(words: 200, durationSeconds: 59))
+        XCTAssertFalse(GistGate.shouldSkip(words: 80, durationSeconds: 60))
+        XCTAssertFalse(GistGate.shouldSkip(words: 80, durationSeconds: nil))
+        XCTAssertEqual(GistGate.wordCount(in: "one two\nthree"), 3)
+        let said = "Keep the garden"
+        XCTAssertEqual(NoteEditing.insert(said, utf16: 4, block: "ing"), "Keeping the garden")
+        XCTAssertEqual(NoteEditing.insert(said, utf16: (said as NSString).length, block: " rows"), "Keep the garden rows")
+    }
+
+    func testPhoneOnlySurvivesAnIndexRebuild() throws {
+        let container = try makeRoot()
+        let root = container.appendingPathComponent("Murmur", isDirectory: true)
+        let notebook = try Notebook(root: root, databaseURL: container.appendingPathComponent("notes.sqlite"))
+        let created = NoteTimestamp(date: Date(timeIntervalSince1970: 1_700_000_000), text: "2026-08-05T22:40:00+01:00")
+        let note = NoteDocument(
+            id: "01ARZ3NDEKTSV4RRFFQ69G5FC3",
+            created: created,
+            modified: created,
+            kind: .written,
+            folder: "Written",
+            title: "Private",
+            said: "Just this phone.",
+            phoneOnly: true
+        )
+        let path = try notebook.save(note, path: nil)
+        XCTAssertTrue(try notebook.load(path: path).phoneOnly)
+        XCTAssertTrue(try XCTUnwrap(notebook.row(id: note.id)).phoneOnly)
+        try notebook.rebuildIndex()
+        XCTAssertTrue(try XCTUnwrap(notebook.row(id: note.id)).phoneOnly)
+        XCTAssertTrue(try notebook.load(path: path).phoneOnly)
+    }
+
     func testSchemaNamesTheArchitectureColumns() {
         let sql = NoteIndex.createTableSQL
-        for column in ["id", "path", "drive_id", "drive_rev", "local_mtime", "synced_mtime", "title", "folder", "kind", "created", "duration", "has_summary", "body"] {
+        for column in ["id", "path", "drive_id", "drive_rev", "local_mtime", "synced_mtime", "title", "folder", "kind", "created", "duration", "has_summary", "body", "phone_only"] {
             XCTAssertTrue(sql.contains(column), column)
         }
         XCTAssertTrue(NoteIndex.createFTSSQL.contains("fts5"))

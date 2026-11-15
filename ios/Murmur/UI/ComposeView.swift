@@ -6,6 +6,8 @@ struct ComposeView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var title = ""
     @State private var said = ""
+    @State private var cursor = 0
+    @State private var phoneOnly = false
     @State private var folder = NotebookLayout.written
     @State private var path: String?
     @State private var documentID = ULID().description
@@ -17,6 +19,7 @@ struct ComposeView: View {
     @State private var confirmNewRecording = false
     @State private var addingClip = false
     @State private var flushed = false
+    @State private var dictationStarted = Date()
 
     private let folders = NotebookLayout.chipFolders
 
@@ -28,13 +31,9 @@ struct ComposeView: View {
                 .foregroundStyle(Theme.text)
                 .padding(.horizontal, 20)
                 .padding(.top, 18)
-            TextEditor(text: $said)
-                .font(MurmurType.body)
-                .foregroundStyle(Theme.text.opacity(0.8))
-                .scrollContentBackground(.hidden)
-                .padding(.horizontal, 16)
+            JournalTextView(text: $said, cursor: $cursor, pending: pendingInsertion)
+                .padding(.horizontal, 20)
                 .padding(.top, 8)
-                .lineSpacing(6)
             if dictating {
                 dictationBar
             }
@@ -44,6 +43,7 @@ struct ComposeView: View {
         .onChange(of: title) { _, _ in scheduleSave() }
         .onChange(of: said) { _, _ in scheduleSave() }
         .onChange(of: folder) { _, _ in scheduleSave() }
+        .onChange(of: phoneOnly) { _, _ in scheduleSave() }
         .onChange(of: session.liveText) { _, newValue in
             if dictating { pending = newValue }
         }
@@ -87,6 +87,19 @@ struct ComposeView: View {
             }
             .font(MurmurType.meta)
             .foregroundStyle(Theme.textTertiary)
+            Toggle(isOn: $phoneOnly) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(phoneOnly ? "Keep on this phone only" : "Copy to Google Drive")
+                        .font(MurmurType.rowTitle)
+                        .foregroundStyle(Theme.text)
+                    Text(phoneOnly
+                         ? "A later sync leaves it here. A copy already in Drive stays there."
+                         : "When sync exists, this note can be copied to your Drive.")
+                        .font(MurmurType.meta)
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+            .tint(Theme.accent)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(folders, id: \.self) { name in
@@ -144,10 +157,6 @@ struct ComposeView: View {
 
     private var dictationBar: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(pending.isEmpty ? " " : pending)
-                .font(MurmurType.body)
-                .foregroundStyle(Theme.accent400.opacity(0.95))
-                .frame(maxWidth: .infinity, alignment: .leading)
             HStack {
                 Text("Carries on where you left off")
                     .font(MurmurType.meta)
@@ -196,7 +205,8 @@ struct ComposeView: View {
             kind: .written,
             folder: folder,
             title: title,
-            said: said
+            said: said,
+            phoneOnly: phoneOnly
         )
         if let existing = path, let current = library.load(path: existing) {
             if current.kind != .written { document.kind = current.kind }
@@ -239,7 +249,19 @@ struct ComposeView: View {
         await startDictation()
     }
 
+    private var pendingInsertion: String {
+        guard dictating else { return "" }
+        if addingClip {
+            return NoteEditing.clipBlock(
+                marker: ListeningText.addedMarker(at: dictationStarted),
+                liveText: pending
+            )
+        }
+        return pending
+    }
+
     private func startDictation() async {
+        dictationStarted = Date()
         dictating = true
         pending = ""
         await session.start()
@@ -256,20 +278,18 @@ struct ComposeView: View {
             saveNow()
             return
         }
+        let marker = ListeningText.addedMarker(at: dictationStarted)
+        let block = addsClip
+            ? NoteEditing.clipBlock(marker: marker, liveText: spoken)
+            : spoken
+        if !block.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            said = NoteEditing.insert(said, utf16: cursor, block: block)
+            cursor += (block as NSString).length
+        }
+        saveNow()
         if addsClip {
-            saveNow()
-            library.addClip(id: documentID, captured: captured)
+            library.addClip(id: documentID, captured: captured, textAlreadyInserted: true, marker: marker)
         } else {
-            if !spoken.isEmpty {
-                if said.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    said = spoken
-                } else if said.hasSuffix(" ") || said.hasSuffix("\n") {
-                    said += spoken
-                } else {
-                    said += " " + spoken
-                }
-            }
-            saveNow()
             library.placeFirstClip(id: documentID, source: captured.url, liveDraft: spoken)
         }
         if let path, let current = library.load(path: path) {

@@ -70,7 +70,7 @@ Where the HTML and the spec disagree, the spec wins.
 - No tags, no streaks, no sharing, no collaboration.
 - Ask is one question, one answer. **No conversation history, no follow-up field.** The moment
   there is a message thread it has become a chatbot, which is the thing this app is defined against.
-- Notes under ~80 words get no summary at all.
+- No gist when a note is under 80 words or under one minute of audio. Either one is enough.
 - Dropbox/OneDrive are designed but not in v1.
 
 ## Testing

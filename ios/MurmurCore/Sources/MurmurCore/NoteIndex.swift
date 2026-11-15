@@ -14,6 +14,7 @@ public struct NoteRow: Equatable, Sendable, Identifiable {
     public var syncedMtime: Int64?
     public var driveId: String?
     public var driveRev: String?
+    public var phoneOnly: Bool
 
     public var onPhoneOnly: Bool {
         guard let syncedMtime else { return true }
@@ -33,7 +34,8 @@ public struct NoteRow: Equatable, Sendable, Identifiable {
         localMtime: Int64,
         syncedMtime: Int64?,
         driveId: String? = nil,
-        driveRev: String? = nil
+        driveRev: String? = nil,
+        phoneOnly: Bool = false
     ) {
         self.id = id
         self.path = path
@@ -48,6 +50,7 @@ public struct NoteRow: Equatable, Sendable, Identifiable {
         self.syncedMtime = syncedMtime
         self.driveId = driveId
         self.driveRev = driveRev
+        self.phoneOnly = phoneOnly
     }
 }
 
@@ -68,7 +71,8 @@ public final class NoteIndex {
       created      INTEGER,
       duration     INTEGER,
       has_summary  INTEGER DEFAULT 0,
-      body         TEXT
+      body         TEXT,
+      phone_only   INTEGER NOT NULL DEFAULT 0
     );
     """
 
@@ -87,6 +91,8 @@ public final class NoteIndex {
         db = try SQLiteConnection(path: databaseURL.path)
         try db.execute(Self.createTableSQL)
         try db.execute(Self.createFTSSQL)
+        // Databases created before phone_only existed still open. A duplicate column is ignored.
+        try? db.execute("ALTER TABLE notes ADD COLUMN phone_only INTEGER NOT NULL DEFAULT 0")
         try db.execute("""
         CREATE TRIGGER IF NOT EXISTS notes_ai AFTER INSERT ON notes BEGIN
           INSERT INTO notes_fts(rowid, title, body) VALUES (new.rowid, new.title, new.body);
@@ -110,8 +116,8 @@ public final class NoteIndex {
             try db.run("""
             INSERT INTO notes (
               id, path, drive_id, drive_rev, local_mtime, synced_mtime,
-              title, folder, kind, created, duration, has_summary, body
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              title, folder, kind, created, duration, has_summary, body, phone_only
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
               path = excluded.path,
               drive_id = excluded.drive_id,
@@ -124,7 +130,8 @@ public final class NoteIndex {
               created = excluded.created,
               duration = excluded.duration,
               has_summary = excluded.has_summary,
-              body = excluded.body
+              body = excluded.body,
+              phone_only = excluded.phone_only
             """, bindings: [
                 .text(row.id),
                 .text(row.path),
@@ -139,6 +146,7 @@ public final class NoteIndex {
                 row.duration.map { .int(Int64($0)) } ?? .null,
                 .int(row.hasSummary ? 1 : 0),
                 .text(row.body),
+                .int(row.phoneOnly ? 1 : 0),
             ])
         }
     }
@@ -210,7 +218,8 @@ public final class NoteIndex {
             localMtime: values["local_mtime"]?.int ?? 0,
             syncedMtime: values["synced_mtime"]?.int,
             driveId: values["drive_id"]?.textValue,
-            driveRev: values["drive_rev"]?.textValue
+            driveRev: values["drive_rev"]?.textValue,
+            phoneOnly: (values["phone_only"]?.int ?? 0) != 0
         )
     }
 }

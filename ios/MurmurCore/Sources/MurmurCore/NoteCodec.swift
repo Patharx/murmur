@@ -2,12 +2,12 @@ import Foundation
 
 public enum NoteCodec {
     static let knownKeys: Set<String> = [
-        "id", "created", "modified", "kind", "folder", "audio", "recordings", "duration",
+        "id", "created", "modified", "kind", "folder", "audio", "recordings", "phone_only", "duration",
         "title", "threads", "summary_model", "summary_at", "range_start", "range_end",
     ]
 
     private static let keyOrder = [
-        "id", "created", "modified", "kind", "folder", "audio", "recordings", "duration",
+        "id", "created", "modified", "kind", "folder", "audio", "recordings", "phone_only", "duration",
         "title", "threads", "summary_model", "summary_at", "range_start", "range_end",
     ]
 
@@ -38,6 +38,7 @@ public enum NoteCodec {
         let modified = try NoteTimestamp.parse(scalar(from: modifiedBlock))
 
         let recordings = values["recordings"].map { parseThreads(from: $0) } ?? []
+        let phoneOnly = values["phone_only"].map { truthy(scalar(from: $0)) } ?? false
         var audio = values["audio"].map { scalar(from: $0) }.flatMap { $0.isEmpty ? nil : $0 }
         if audio == nil { audio = recordings.first }
         let kind = try parseKind(values["kind"].map { scalar(from: $0) }, audio: audio)
@@ -67,6 +68,7 @@ public enum NoteCodec {
             said: said,
             audioFilename: audio,
             recordings: recordings.count > 1 ? recordings : [],
+            phoneOnly: phoneOnly,
             durationSeconds: duration,
             threads: threads,
             summaryModel: summaryModel,
@@ -89,6 +91,7 @@ public enum NoteCodec {
             folder: folder,
             audio: audio,
             recordings: recordings.count > 1 ? recordings : [],
+            phoneOnly: phoneOnly,
             duration: duration,
             title: title,
             threads: threads,
@@ -130,6 +133,7 @@ public enum NoteCodec {
             && note.folder == snap.folder
             && note.audioFilename == snap.audio
             && note.recordings == snap.recordings
+            && note.phoneOnly == snap.phoneOnly
             && note.durationSeconds == snap.duration
             && note.title == snap.title
             && note.threads == snap.threads
@@ -179,6 +183,7 @@ public enum NoteCodec {
         case "folder": return note.folder == snap.folder
         case "audio": return note.audioFilename == snap.audio
         case "recordings": return note.recordings == snap.recordings
+        case "phone_only": return note.phoneOnly == snap.phoneOnly
         case "duration": return note.durationSeconds == snap.duration
         case "title": return note.title == snap.title
         case "threads": return note.threads == snap.threads
@@ -198,6 +203,8 @@ public enum NoteCodec {
             return note.audioFilename != nil
         case "recordings":
             return note.recordings.count > 1
+        case "phone_only":
+            return note.phoneOnly
         case "duration":
             return note.durationSeconds != nil
         case "threads":
@@ -228,6 +235,7 @@ public enum NoteCodec {
         case "folder": return "folder: \(yamlScalar(note.folder))"
         case "audio": return "audio: \(yamlScalar(note.audioFilename ?? ""))"
         case "recordings": return "recordings: \(yamlFlow(note.recordings))"
+        case "phone_only": return "phone_only: true"
         case "duration": return "duration: \(note.durationSeconds ?? 0)"
         case "title": return "title: \(yamlScalar(note.title))"
         case "threads": return "threads: \(yamlFlow(note.threads))"
@@ -389,6 +397,10 @@ public enum NoteCodec {
         }
         flush()
         return pieces
+    }
+
+    private static func truthy(_ raw: String) -> Bool {
+        ["true", "yes", "1"].contains(raw.lowercased())
     }
 
     private static func parseKind(_ raw: String?, audio: String?) throws -> NoteKind {

@@ -43,14 +43,14 @@ struct AskView: View {
     private var results: [NoteRow] {
         let query = library.query.trimmingCharacters(in: .whitespacesAndNewlines)
         if query.isEmpty { return [] }
-        return library.visibleNotes
+        return library.searchResults
     }
 }
 
 struct WeeklyView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Read back")
+            Text(MurmurCopy.weekly)
                 .font(MurmurType.screenTitle)
                 .foregroundStyle(Theme.text)
                 .tracking(-0.7)

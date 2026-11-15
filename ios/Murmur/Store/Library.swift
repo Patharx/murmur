@@ -31,14 +31,13 @@ final class Library {
     }
 
     var visibleNotes: [NoteRow] {
-        let base: [NoteRow]
-        if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            base = (try? notebook.rows(folder: folder)) ?? notes.filter { folder == nil || $0.folder == folder }
-        } else {
-            let found = (try? notebook.search(query)) ?? []
-            base = found.filter { folder == nil || $0.folder == folder }
-        }
-        return base
+        (try? notebook.rows(folder: folder)) ?? notes.filter { folder == nil || $0.folder == folder }
+    }
+
+    var searchResults: [NoteRow] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty { return [] }
+        return (try? notebook.search(trimmed)) ?? []
     }
 
     func headline(now: Date = Date(), calendar: Calendar = .current) -> String {
@@ -156,23 +155,24 @@ final class Library {
         }
     }
 
-    func addClip(id: String, captured: CapturedAudio) {
+    func addClip(id: String, captured: CapturedAudio, textAlreadyInserted: Bool = false, marker: String? = nil) {
         let modified = NoteClock.stamp()
-        let marker = ListeningText.addedMarker(at: captured.started)
+        let clipMarker = marker ?? ListeningText.addedMarker(at: captured.started)
         do {
             _ = try notebook.addRecording(
                 id: id,
                 source: captured.url,
                 addedAt: captured.started,
                 liveText: captured.liveText,
-                modified: modified
+                modified: modified,
+                textAlreadyInserted: textAlreadyInserted
             )
             reload()
             guard let row = try? notebook.row(id: id), let audio = audioFiles(path: row.path).last else { return }
             Task { [weak self] in
                 let authoritative = (try? await FileTranscriber.transcribe(url: audio)) ?? ""
                 await MainActor.run {
-                    self?.applyClipTranscript(id: id, marker: marker, liveDraft: captured.liveText, authoritative: authoritative)
+                    self?.applyClipTranscript(id: id, marker: clipMarker, liveDraft: captured.liveText, authoritative: authoritative)
                 }
             }
         } catch {
@@ -195,7 +195,7 @@ final class Library {
 
     private func applyTrailingDraft(id: String, liveDraft: String, authoritative: String) {
         guard let row = try? notebook.row(id: id), var document = load(path: row.path) else { return }
-        guard let said = NoteEditing.replacingTrailingDraft(said: document.said, liveDraft: liveDraft, authoritative: authoritative) else { return }
+        guard let said = NoteEditing.replacingDraft(said: document.said, liveDraft: liveDraft, authoritative: authoritative) else { return }
         document.said = said
         document.modified = NoteClock.stamp()
         _ = save(document, path: row.path)

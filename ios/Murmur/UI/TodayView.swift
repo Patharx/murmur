@@ -4,7 +4,6 @@ import SwiftUI
 struct TodayView: View {
     @Bindable var library: Library
     var compose: () -> Void
-    @State private var searching = false
 
     var body: some View {
         NavigationStack {
@@ -44,23 +43,7 @@ struct TodayView: View {
                     .tracking(-0.7)
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 12)
-                HStack(spacing: 8) {
-                    IconButton(icon: "pencil-simple", label: "Write a note", action: compose)
-                    IconButton(icon: "magnifying-glass", label: "Search notes") {
-                        searching.toggle()
-                        if !searching { library.query = "" }
-                    }
-                }
-            }
-            if searching {
-                TextField("A word you used", text: $library.query)
-                    .font(MurmurType.body)
-                    .foregroundStyle(Theme.text)
-                    .padding(12)
-                    .background(Theme.surface, in: RoundedRectangle(cornerRadius: 12))
-                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Theme.neutral800, lineWidth: 1))
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
+                IconButton(icon: "pencil-simple", label: "Write a note", action: compose)
             }
         }
     }

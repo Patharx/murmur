@@ -176,6 +176,39 @@ final class NoteRoundTripTests: XCTestCase {
         XCTAssertEqual(try NoteCodec.parse(written).audioFiles.count, 2)
     }
 
+    func testPhoneOnlySurvivesARewriteAndStaysOffTheUploadList() throws {
+        let original = """
+        ---
+        id: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+        created: 2026-08-05T22:40:00+01:00
+        modified: 2026-08-05T22:40:00+01:00
+        kind: written
+        folder: Written
+        phone_only: true
+        title: Just here
+        ---
+
+        ## What you said
+
+        Kept on this phone.
+
+        """
+        var note = try NoteCodec.parse(original)
+        XCTAssertTrue(note.phoneOnly)
+        XCTAssertFalse(DriveUpload.shouldUpload(note))
+        XCTAssertEqual(NoteCodec.serialize(note), original)
+        note.title = "Still just here"
+        let written = NoteCodec.serialize(note)
+        XCTAssertTrue(written.contains("phone_only: true"))
+        XCTAssertEqual(try NoteCodec.parse(written).phoneOnly, true)
+        var ordinary = try NoteCodec.parse(Fixtures.writtenWithoutGist)
+        XCTAssertFalse(ordinary.phoneOnly)
+        XCTAssertTrue(DriveUpload.shouldUpload(ordinary))
+        XCTAssertFalse(NoteCodec.serialize(ordinary).contains("phone_only"))
+        ordinary.phoneOnly = true
+        XCTAssertTrue(NoteCodec.serialize(ordinary).contains("phone_only: true"))
+    }
+
     func testNewWrittenNoteSerializesWithoutAudioOrDuration() {
         let created = NoteTimestamp(date: Date(timeIntervalSince1970: 0), text: "2026-08-05T22:40:00+01:00")
         let note = NoteDocument(

@@ -46,6 +46,7 @@ modified: 2026-08-06T07:58:02+01:00
 kind: voice            # voice | written | hybrid
 folder: Walks
 audio: 2026-08-06-0742-fathers-garden.m4a   # the first clip; omitted when there is none
+phone_only: true       # omit the key when the note may be copied to Drive
 recordings: [2026-08-06-0742-fathers-garden.m4a, 2026-08-06-1542-fathers-garden.m4a]
                                    # only when there is more than one clip
 duration: 258          # seconds; omitted for written notes
@@ -85,6 +86,9 @@ Words from a later clip. The line is the time that clip was kept.
   about rows" is `fathers-garden`. A collision adds `-2`, `-3`, and so on.
 - `recordings`, when present, is the full list of audio files in the order they were kept.
   `audio` remains the first of them. A file with only `audio` is still a complete note.
+- **`phone_only: true` means a sync must not upload this note.** Omit the key otherwise.
+  Turning it on after a copy is already in Drive does not delete that copy. The person deletes
+  the Drive file themselves if they want it gone.
 
 ## Recaps
 

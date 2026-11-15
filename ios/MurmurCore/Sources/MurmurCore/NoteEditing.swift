@@ -2,6 +2,17 @@ import Foundation
 
 /// Text rules for a file transcript and for a later clip. The files themselves are moved by `Notebook`.
 public enum NoteEditing {
+    /// Inserts `block` at a UTF-16 cursor. A cursor at the end appends.
+    public static func insert(_ said: String, utf16 cursor: Int, block: String) -> String {
+        let ns = said as NSString
+        let location = min(max(0, cursor), ns.length)
+        return ns.replacingCharacters(in: NSRange(location: location, length: 0), with: block)
+    }
+
+    public static func clipBlock(marker: String, liveText: String) -> String {
+        let spoken = liveText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return marker + "\n\n" + spoken
+    }
     /// The file transcript replaces the live draft only when nobody has edited the note since.
     /// The title is left alone, so the file does not move out from under an open note.
     public static func applyingFileTranscript(
@@ -33,13 +44,15 @@ public enum NoteEditing {
         return said.replacingOccurrences(of: tail, with: marker + "\n\n" + replacement)
     }
 
-    /// Replaces a live draft that was appended at the end of a written note.
-    public static func replacingTrailingDraft(said: String, liveDraft: String, authoritative: String) -> String? {
+    /// Replaces the one untouched live draft, including one that was inserted mid-sentence.
+    public static func replacingDraft(said: String, liveDraft: String, authoritative: String) -> String? {
         let draft = liveDraft.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !draft.isEmpty, said.hasSuffix(draft) else { return nil }
+        guard !draft.isEmpty else { return nil }
+        let pieces = said.components(separatedBy: draft)
+        guard pieces.count == 2 else { return nil }
         let spoken = authoritative.trimmingCharacters(in: .whitespacesAndNewlines)
         if spoken.isEmpty { return said }
-        return String(said.dropLast(draft.count)) + spoken
+        return pieces.joined(separator: spoken)
     }
 
     /// Appends a later recording. Earlier clips stay listed, and the body gains a time marker.

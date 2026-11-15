@@ -42,6 +42,7 @@ struct CapturedNote: Equatable, Sendable {
     var folder: String
     var audio: String?
     var recordings: [String]
+    var phoneOnly: Bool
     var duration: Int?
     var title: String
     var threads: [String]
@@ -63,6 +64,8 @@ public struct NoteDocument: Equatable, Sendable {
     /// Later clips, in order, including the original. Empty when the note has at most one file,
     /// so a single `audio:` line stays the whole story.
     public var recordings: [String]
+    /// When true, a future sync must not upload this note. A copy already in Drive is left there.
+    public var phoneOnly: Bool
     public var durationSeconds: Int?
 
     public var audioFiles: [String] {
@@ -113,6 +116,7 @@ public struct NoteDocument: Equatable, Sendable {
         said: String,
         audioFilename: String? = nil,
         recordings: [String] = [],
+        phoneOnly: Bool = false,
         durationSeconds: Int? = nil,
         threads: [String] = [],
         summaryModel: String? = nil,
@@ -128,6 +132,7 @@ public struct NoteDocument: Equatable, Sendable {
         self.folder = folder
         self.audioFilename = audioFilename
         self.recordings = recordings
+        self.phoneOnly = phoneOnly
         self.durationSeconds = durationSeconds
         self.title = title
         self.threads = threads

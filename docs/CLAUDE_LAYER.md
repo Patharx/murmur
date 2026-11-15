@@ -7,7 +7,7 @@ features the user has switched on.
 
 | Job | Trigger | Input | Output | Model |
 | --- | --- | --- | --- | --- |
-| Note gist | User taps "Read it back to me", or auto-on-save | One transcript, **only if over ~80 words** | 2–3 sentences + threads | Haiku |
+| Note gist | User taps "Read it back to me", or auto-on-save | One transcript, **only if it is at least 80 words and, when there is audio, at least a minute** | 2–3 sentences + threads | Haiku |
 | Weekly recap | Local schedule, Sunday 09:00 | The week's note gists | 100–130 words of prose | Haiku |
 | Thread arc | When a thread gains a note (debounced, max once/day/thread) | That thread's gists | One or two sentences | Haiku |
 | Ask | User asks a question | Question + top ~10 retrieved notes | Prose answer + sources | Haiku |
@@ -19,8 +19,9 @@ later behind a one-time unlock, but do not build it now.
 
 **The short-note gate is a product decision, not just a cost one.** A three-line note about a fence
 does not need a summary, and a summary of it is *worse than nothing* — it pads, it restates, and it
-makes the feature feel automatic rather than attentive. Skip anything under ~80 words and show no
-summary card at all. This also removes roughly a third of gist calls.
+makes the feature feel automatic rather than attentive. Skip the gist when the note is under 80
+words **or** under one minute of audio. Either condition is enough. A written note has no duration,
+so only the word count applies. Show no gist card at all. This also removes roughly a third of gist calls.
 
 **The weekly reads gists, not transcripts.** Cost stays flat no matter how much the user recorded,
 and the writing is better because the per-note pass already discarded the noise.
@@ -209,7 +210,7 @@ failure mode this product is defined against.
 ## 4. Cost
 
 Per user, assuming an engaged one: 12 notes/week, ~700 words each. After the short-note gate strips
-out anything under ~80 words (§1). Prompt caching is not a factor here — it does not fire on Haiku
+out anything under 80 words or under a minute of audio (§1). Prompt caching is not a factor here — it does not fire on Haiku
 (§2), so it buys nothing to net out.
 
 Worked from Haiku 4.5's real per-token price (\$1/\$5 per MTok, input/output) and each prompt's own

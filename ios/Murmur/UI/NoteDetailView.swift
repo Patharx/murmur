@@ -11,6 +11,7 @@ struct NoteDetailView: View {
     @State private var title = ""
     @State private var said = ""
     @State private var folder = ""
+    @State private var phoneOnly = false
 
     private var path: String? { library.notes.first { $0.id == id }?.path }
     private var document: NoteDocument? { path.flatMap { library.load(path: $0) } }
@@ -66,6 +67,7 @@ struct NoteDetailView: View {
                             title = document.title
                             said = document.said
                             folder = document.folder
+                            phoneOnly = document.phoneOnly
                             editing = true
                         }
                     }
@@ -199,6 +201,17 @@ struct NoteDetailView: View {
                 .foregroundStyle(Theme.text.opacity(0.85))
                 .scrollContentBackground(.hidden)
                 .frame(minHeight: 180)
+            Toggle(isOn: $phoneOnly) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Keep on this phone only")
+                        .font(MurmurType.rowTitle)
+                        .foregroundStyle(Theme.text)
+                    Text("A later sync leaves it here. A copy already in Drive stays there.")
+                        .font(MurmurType.meta)
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+            .tint(Theme.accent)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(NotebookLayout.chipFolders, id: \.self) { name in
@@ -216,6 +229,7 @@ struct NoteDetailView: View {
         document.title = title
         document.said = said
         document.folder = folder
+        document.phoneOnly = phoneOnly
         document.modified = NoteClock.stamp()
         _ = library.save(document, path: path)
         editing = false

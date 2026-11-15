@@ -18,7 +18,7 @@ anywhere to be transcribed.
 **Note text goes to Anthropic only for the read-back features you switch on**, and only the text —
 never the audio. If a toggle is off, no call is made. Specifically:
 
-- The gist: the note's transcript, for notes over ~80 words.
+- The gist: the note's transcript, and only when the note is at least 80 words and, if it has audio, at least a minute.
 - The Sunday letter: that week's gists.
 - Threads: the gists of the notes in that thread.
 - Ask: your question, plus the handful of notes your question actually matched.

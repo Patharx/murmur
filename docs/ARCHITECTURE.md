@@ -60,8 +60,9 @@ Notes:
 
 - **Folders in the app map 1:1 to folders in Drive.** This is the whole promise. Renaming a folder
   in the app renames it in Drive; renaming it in Drive is picked up on next sync.
-- **Voice notes start in `Unlabeled`.** That folder is the inbox. Refiling moves the files into
-  Walks, Reflections, Written, Reading, or Odds and ends. Odds and ends stays its own folder.
+- **Voice notes start in `Unlabeled`.** That folder is the inbox, including quick capture from the
+  Action Button, Lock Screen, and Siri. Refiling moves the files into Walks, Reflections, Written,
+  Reading, or Odds and ends. Odds and ends is a folder you choose. It is not the inbox.
 - **A voice note is an .m4a + .md pair sharing a basename.** The .md is the note; the first .m4a is
   the audio. A later clip is another .m4a, listed in `recordings`, and is never overwritten.
   Written notes have no .m4a. Pairing is by filename, never by Drive file ID.
@@ -200,6 +201,10 @@ constraints are battery and cellular data. Therefore:
 - Upload audio on Wi-Fi only by default, with a Settings toggle. A user recording an hour of walks
   a week on cellular will notice, and will blame the app rather than the setting they never saw.
 - Coalesce: a note edited five times in a minute uploads once.
+- **`phone_only: true` is never uploaded.** The key lives in the note file (FILE_FORMAT.md). The
+  index caches it and a rebuild reads it back from the file. Turning the flag on after a copy is
+  already in Drive leaves that copy where it is. There is no automatic delete. The person removes
+  the Drive file themselves if they want it gone.
 
 ## 6. Conflicts
 
