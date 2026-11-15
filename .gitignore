@@ -4,6 +4,9 @@ xcuserdata/
 build/
 DerivedData/
 .swiftpm/
+.build/
+ios/Murmur.xcodeproj/
+*.xcodeproj/xcuserdata/
 Secrets.xcconfig
 GoogleService-Info.plist
 proxy/.dev.vars

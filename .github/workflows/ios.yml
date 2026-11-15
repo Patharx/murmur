@@ -1,0 +1,59 @@
+name: iOS
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ios:
+    runs-on: macos-26
+    timeout-minutes: 45
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          if [ -d /Applications/Xcode_26.6.app ]; then
+            sudo xcode-select -s /Applications/Xcode_26.6.app
+          else
+            sudo xcode-select -s /Applications/Xcode.app
+          fi
+          xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate the Xcode project
+        working-directory: ios
+        run: xcodegen generate
+
+      - name: Choose an iPhone simulator
+        id: sim
+        run: python3 ios/ci/destination.py
+
+      - name: Build and test
+        run: >
+          xcodebuild test
+          -project ios/Murmur.xcodeproj
+          -scheme Murmur
+          -destination "${{ steps.sim.outputs.destination }}"
+          -derivedDataPath /tmp/murmur-derived
+          CODE_SIGNING_ALLOWED=NO
+
+  proxy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proxy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: proxy/package-lock.json
+      - run: npm ci
+      - run: npm test
